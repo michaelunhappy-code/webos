@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chrome OS (apilio) · 桌面脚本发布</title>
+    <style>
+        /* ============================================================
+                   1.  CSS 变量 & 重置
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-deep: #070b10;
+            --bg-primary: #0d131c;
+            --bg-secondary: #141c28;
+            --bg-card: rgba(22, 32, 44, 0.72);
+            --bg-card-hover: rgba(30, 42, 56, 0.85);
+            --border-color: rgba(55, 72, 90, 0.35);
+            --border-hover: rgba(90, 115, 140, 0.55);
+            --text-primary: #edf2f7;
+            --text-secondary: #a8b9d0;
+            --text-muted: #5f748a;
+            --accent-blue: #4c9aff;
+            --accent-blue-dim: rgba(76, 154, 255, 0.12);
+            --accent-purple: #a78bfa;
+            --accent-purple-dim: rgba(167, 139, 250, 0.10);
+            --accent-orange: #ff9f43;
+            --accent-green: #3fb950;
+            --accent-red: #f85149;
+            --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.30);
+            --shadow-md: 0 12px 40px rgba(0, 0, 0, 0.45);
+            --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
+            --shadow-glow: 0 0 60px rgba(76, 154, 255, 0.08);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --transition: 0.30s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(ellipse at 10% 10%, rgba(76, 154, 255, 0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 90%, rgba(167, 139, 250, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 159, 67, 0.03) 0%, transparent 70%);
+            background-attachment: fixed;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 12px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-hover);
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
+
+        /* ============================================================
+                   2.  认证层 (Auth)
+                   ============================================================ */
+        #auth-layer {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            background-image:
+                radial-gradient(circle at 30% 20%, rgba(76, 154, 255, 0.10) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(167, 139, 250, 0.08) 0%, transparent 50%);
+        }
+
+        #auth-box {
+            background: var(--bg-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 52px 44px 44px;
+            max-width: 440px;
+            width: 92%;
+            text-align: center;
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            animation: authAppear 0.60s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #auth-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-xl);
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(76, 154, 255, 0.20), rgba(167, 139, 250, 0.15), transparent 60%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        @keyframes authAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        #auth-box .auth-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4em;
+            box-shadow: 0 12px 32px rgba(76, 154, 255, 0.30);
+            transition: transform var(--transition);
+        }
+
+        #auth-box .auth-icon:hover {
+            transform: scale(1.04) rotate(-2deg);
+        }
+
+        #auth-box h2 {
+            font-size: 1.9em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff 40%, var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        #auth-box p {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            margin-bottom: 28px;
+        }
+
+        #auth-box p small {
+            color: var(--text-muted);
+            font-size: 0.85em;
+        }
+
+        #auth-box input[type="text"] {
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--bg-secondary);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 1em;
+            outline: none;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            user-select: text;
+            -webkit-user-select: text;
+            font-family: inherit;
+        }
+
+        #auth-box input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(76, 154, 255, 0.12);
+        }
+
+        #auth-box .btn-auth {
+            margin-top: 20px;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+            box-shadow: 0 6px 24px rgba(76, 154, 255, 0.30);
+            width: 100%;
+            letter-spacing: 0.5px;
+        }
+
+        #auth-box .btn-auth:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 36px rgba(76, 154, 255, 0.40);
+        }
+
+        #auth-box .btn-auth:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        #auth-box .btn-auth:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        #auth-error {
+            color: var(--accent-red);
+            font-size: 0.9em;
+            margin-top: 16px;
+            min-height: 1.5em;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   3.  禁止层 (Ban)
+                   ============================================================ */
+        #ban-layer {
+            position: fixed;
+            inset: 0;
+            background: rgba(7, 11, 16, 0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        #ban-box {
+            background: var(--bg-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(248, 81, 73, 0.25);
+            border-radius: var(--radius-xl);
+            padding: 44px 36px 40px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(248, 81, 73, 0.12), var(--shadow-lg);
+            animation: authAppear 0.50s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #ban-box h2 {
+            color: var(--accent-red);
+            font-size: 1.7em;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        #ban-box p {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+
+        #ban-box .process-code {
+            display: inline-block;
+            background: var(--bg-secondary);
+            padding: 10px 24px;
+            border-radius: var(--radius-sm);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 1.3em;
+            letter-spacing: 3px;
+            color: var(--accent-orange);
+            margin: 10px 0 16px;
+            border: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        #ban-box input[type="text"] {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--bg-secondary);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 1em;
+            outline: none;
+            margin-top: 16px;
+            font-family: inherit;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #ban-box input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(76, 154, 255, 0.10);
+        }
+
+        #ban-box .btn-unlock {
+            margin-top: 18px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--accent-red), #d63a3a);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+            width: 100%;
+            box-shadow: 0 4px 16px rgba(248, 81, 73, 0.20);
+        }
+
+        #ban-box .btn-unlock:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(248, 81, 73, 0.30);
+        }
+
+        #ban-error {
+            color: var(--accent-red);
+            font-size: 0.9em;
+            margin-top: 14px;
+            min-height: 1.5em;
+        }
+
+        /* ============================================================
+                   4.  主内容
+                   ============================================================ */
+        #main-content {
+            display: none;
+            animation: contentFadeIn 0.70s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes contentFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            text-align: center;
+            padding: 50px 0 36px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 36px;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), var(--accent-purple), transparent);
+            border-radius: 2px;
+        }
+
+        .hero h1 {
+            font-size: 3.2em;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            background: linear-gradient(135deg, #4c9aff 0%, #a78bfa 45%, #ff9f43 80%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.15em;
+            font-weight: 400;
+        }
+
+        .hero .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 18px;
+            padding: 6px 20px;
+            background: rgba(63, 185, 80, 0.08);
+            color: var(--accent-green);
+            border: 1px solid rgba(63, 185, 80, 0.20);
+            border-radius: 40px;
+            font-size: 0.82em;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ===== 卡片 ===== */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px 34px;
+            margin-bottom: 28px;
+            transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+            box-shadow: var(--shadow-sm), var(--shadow-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(76, 154, 255, 0.08), rgba(167, 139, 250, 0.05), transparent 60%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md), var(--shadow-glow);
+            transform: translateY(-3px);
+        }
+
+        .card h2 {
+            color: var(--text-primary);
+            margin-bottom: 18px;
+            font-size: 1.35em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .card h2 .emoji {
+            font-size: 1.1em;
+        }
+
+        /* ===== Feature Grid ===== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 12px;
+        }
+
+        .feature-item {
+            background: var(--bg-secondary);
+            padding: 18px 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+        }
+
+        .feature-item:hover {
+            border-color: var(--accent-blue);
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.20);
+        }
+
+        .feature-item h4 {
+            color: var(--accent-blue);
+            margin-bottom: 4px;
+            font-size: 0.95em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-item p {
+            color: var(--text-secondary);
+            font-size: 0.87em;
+            line-height: 1.5;
+        }
+
+        /* ===== 条款 ===== */
+        .terms-wrap {
+            max-height: 380px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            padding: 20px 22px;
+            border-radius: var(--radius-md);
+            margin: 14px 0 18px;
+            scroll-behavior: smooth;
+        }
+
+        .terms-wrap::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terms-wrap::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+            border-radius: 8px;
+        }
+
+        .terms-wrap h3 {
+            color: var(--text-primary);
+            margin: 14px 0 8px;
+            font-size: 1.05em;
+            font-weight: 600;
+        }
+
+        .terms-wrap h3:first-of-type {
+            margin-top: 0;
+        }
+
+        .terms-wrap p,
+        .terms-wrap li {
+            color: var(--text-secondary);
+            font-size: 0.90em;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .terms-wrap ul {
+            padding-left: 22px;
+            margin: 6px 0 10px;
+        }
+
+        .terms-wrap strong {
+            color: var(--text-primary);
+        }
+
+        .terms-agree-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-top: 14px;
+            padding-top: 18px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .terms-agree-row input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            border: 2px solid var(--border-hover);
+            border-radius: 7px;
+            cursor: pointer;
+            position: relative;
+            transition: all var(--transition);
+            flex-shrink: 0;
+            margin-top: 1px;
+            background: var(--bg-secondary);
+        }
+
+        .terms-agree-row input[type="checkbox"]:checked {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .terms-agree-row input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .terms-agree-row label {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            cursor: pointer;
+            user-select: none;
+            line-height: 1.5;
+        }
+
+        .terms-tip {
+            color: var(--accent-orange);
+            font-size: 0.90em;
+            margin-top: 12px;
+            font-weight: 500;
+            transition: color var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ===== 下载区域 ===== */
+        .download-install-area {
+            display: none;
+        }
+
+        .download-install-area.unlock {
+            display: block;
+            animation: contentFadeIn 0.50s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .locked-hint {
+            text-align: center;
+            padding: 36px 20px;
+            color: var(--text-secondary);
+            font-size: 1.05em;
+            background: var(--bg-card);
+            border: 1.5px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+            margin-top: 24px;
+            backdrop-filter: blur(8px);
+        }
+
+        .locked-hint .lock-icon {
+            display: block;
+            font-size: 2.4em;
+            margin-bottom: 12px;
+        }
+
+        /* ===== Demo 卡片 ===== */
+        .demo-card {
+            text-align: center;
+            padding: 36px 24px;
+            background: linear-gradient(135deg, rgba(76, 154, 255, 0.06), rgba(167, 139, 250, 0.06));
+            border-color: rgba(76, 154, 255, 0.15);
+        }
+
+        .demo-card h2 {
+            justify-content: center;
+        }
+
+        /* ===== 版本列表 ===== */
+        .version-section {
+            margin-bottom: 22px;
+        }
+
+        .version-section h3 {
+            font-size: 1.05em;
+            margin-bottom: 14px;
+            padding-left: 14px;
+            border-left: 4px solid var(--accent-orange);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .version-section h3 small {
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 0.80em;
+        }
+
+        .version-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .version-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-secondary);
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .version-item:hover {
+            border-color: var(--accent-blue);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
+            background: var(--bg-card-hover);
+        }
+
+        .version-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+
+        .version-tag {
+            padding: 3px 14px;
+            border-radius: 40px;
+            font-size: 0.65em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            flex-shrink: 0;
+        }
+
+        .tag-insider {
+            background: rgba(255, 159, 67, 0.12);
+            color: var(--accent-orange);
+            border: 1px solid rgba(255, 159, 67, 0.20);
+        }
+
+        .tag-stable {
+            background: rgba(63, 185, 80, 0.10);
+            color: var(--accent-green);
+            border: 1px solid rgba(63, 185, 80, 0.18);
+        }
+
+        .version-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            word-break: break-word;
+            font-size: 0.95em;
+        }
+
+        .version-name .latest-badge {
+            color: var(--accent-orange);
+            font-weight: 700;
+            font-size: 0.75em;
+            margin-left: 6px;
+            background: rgba(255, 159, 67, 0.10);
+            padding: 1px 10px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 159, 67, 0.15);
+        }
+
+        .version-meta {
+            color: var(--text-muted);
+            font-size: 0.80em;
+            margin-top: 1px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        /* ===== 按钮 ===== */
+        .btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: all var(--transition);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), #3b82f6);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(76, 154, 255, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #60a5fa, #4c9aff);
+            box-shadow: 0 6px 24px rgba(76, 154, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-demo {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: #fff;
+            box-shadow: 0 8px 28px rgba(76, 154, 255, 0.30);
+            padding: 13px 32px;
+            font-size: 1em;
+            border-radius: var(--radius-md);
+        }
+
+        .btn-demo:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 14px 40px rgba(76, 154, 255, 0.40);
+        }
+
+        .btn-demo:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* ===== 步骤 ===== */
+        .steps {
+            counter-reset: step;
+            margin-top: 6px;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 58px;
+            margin-bottom: 26px;
+            transition: transform var(--transition);
+        }
+
+        .step:hover {
+            transform: translateX(4px);
+        }
+
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95em;
+            box-shadow: 0 6px 20px rgba(76, 154, 255, 0.25);
+            flex-shrink: 0;
+        }
+
+        .step h4 {
+            color: var(--text-primary);
+            margin-bottom: 2px;
+            font-size: 1.02em;
+            font-weight: 600;
+        }
+
+        .step p {
+            color: var(--text-secondary);
+            font-size: 0.89em;
+            line-height: 1.6;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            text-align: center;
+            padding: 36px 0 16px;
+            color: var(--text-muted);
+            font-size: 0.82em;
+            border-top: 1px solid var(--border-color);
+            margin-top: 36px;
+            letter-spacing: 0.3px;
+        }
+
+        .footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: color var(--transition);
+        }
+
+        .footer a:hover {
+            color: var(--accent-blue-hover);
+            text-decoration: underline;
+        }
+
+        /* ============================================================
+                   5.  响应式
+                   ============================================================ */
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px 14px 40px;
+            }
+
+            .hero h1 {
+                font-size: 2.2em;
+            }
+
+            .hero {
+                padding: 32px 0 24px;
+            }
+
+            .card {
+                padding: 22px 18px;
+                border-radius: var(--radius-md);
+            }
+
+            .card h2 {
+                font-size: 1.15em;
+            }
+
+            .version-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .version-info {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .btn-group {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .btn-group .btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            #auth-box {
+                padding: 36px 24px 30px;
+            }
+
+            #auth-box h2 {
+                font-size: 1.5em;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                padding-left: 48px;
+            }
+
+            .step::before {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8em;
+            }
+
+            .demo-card {
+                padding: 24px 16px;
+            }
+
+            #ban-box {
+                padding: 32px 20px 28px;
+            }
+
+            #ban-box h2 {
+                font-size: 1.4em;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .hero h1 {
+                font-size: 1.8em;
+            }
+
+            .version-name {
+                font-size: 0.85em;
+            }
+
+            .btn {
+                font-size: 0.78em;
+                padding: 6px 12px;
+            }
+
+            .version-item {
+                padding: 12px 14px;
+            }
+        }
+
+        /* ============================================================
+                   6.  杂项工具类
+                   ============================================================ */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gap-1 {
+            gap: 6px;
+        }
+        .gap-2 {
+            gap: 12px;
+        }
+        .mt-1 {
+            margin-top: 8px;
+        }
+        .mt-2 {
+            margin-top: 16px;
+        }
+        .mb-1 {
+            margin-bottom: 8px;
+        }
+        .mb-2 {
+            margin-bottom: 16px;
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 开源链接行 */
+        .repo-link {
+            text-align: center;
+            margin: 18px 0 6px;
+            font-size: 0.90em;
+        }
+
+        .repo-link a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: color var(--transition);
+            font-weight: 500;
+        }
+
+        .repo-link a:hover {
+            color: var(--accent-blue-hover);
+            text-decoration: underline;
+        }
+
+        .repo-link .icon {
+            font-size: 1.1em;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    禁止层 (Ban)
+    ============================================================ -->
+    <div id="ban-layer">
+        <div id="ban-box">
+            <h2>🚫 检测到开发者工具</h2>
+            <p>您已触发安全保护机制，访问已被禁止。</p>
+            <p>如需恢复，请将以下 <b>过程码</b> 发送至邮箱 <b>cuimoqi@163.com</b>，并附上问题描述。</p>
+            <div class="process-code" id="processCodeDisplay">------</div>
+            <p>开发者将回复您一个 <b>5 位大写字母解密码</b>，输入下方即可解除。</p>
+            <input type="text" id="unlock-input" placeholder="输入 5 位解密码" maxlength="6" autocomplete="off" />
+            <button class="btn-unlock" id="unlock-btn">解除禁止</button>
+            <div id="ban-error"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    认证层 (Auth)
+    ============================================================ -->
+    <div id="auth-layer">
+        <div id="auth-box">
+            <div class="auth-icon">🔐</div>
+            <h2>访问验证</h2>
+            <p>
+                请输入当前时间验证码<br />
+                <small>格式：年月日小时 + ACMQTORED<br />例 2026082116ACMQTORED</small>
+            </p>
+            <input type="text" id="auth-input" placeholder="输入验证码" autocomplete="off" />
+            <button class="btn-auth" id="auth-btn">确认</button>
+            <div id="auth-error"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    主内容
+    ============================================================ -->
+    <div id="main-content">
+        <div class="container">
+
+            <!-- Hero -->
+            <div class="hero">
+                <h1>🖥️ Chrome OS (apilio)</h1>
+                <p class="subtitle">网页模拟桌面系统 · Tampermonkey 用户脚本</p>
+                <span class="badge">✨ 开源免费 · 持续迭代</span>
+            </div>
+
+            <!-- 项目介绍 -->
+            <div class="card">
+                <h2><span class="emoji">📖</span> 项目介绍</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 18px;">
+                    浏览器端虚拟桌面油猴脚本，安装后任意网页右下角唤起桌面模式，
+                    内置文件管理、代码编译、AI 对话、Office 导出等功能。
+                </p>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>🗂️ 文件管理</h4>
+                        <p>txt / cpp / md / docx / xlsx，拖拽上传、新建、重命名、删除</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>💻 代码编辑</h4>
+                        <p>VSCode 风格编辑器，C++ 在线编译，代码补全</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🤖 AI 对话</h4>
+                        <p>Markdown 渲染、上下文记忆、多模型切换</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🎨 个性化</h4>
+                        <p>7 套主题、明暗切换、窗口记忆、锁屏密码</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📦 Office 支持</h4>
+                        <p>导出标准 Word / Excel 文档</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📞 投诉侵权</h4>
+                        <p>邮箱: cuimoqi@163.com<br />电话: +86 171 1217 1226</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 责任声明 -->
+            <div class="card">
+                <h2><span class="emoji">⚠️</span> 使用责任声明</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 14px; font-size: 0.95em;">
+                    必须完整阅读并同意后方可下载脚本
+                </p>
+                <div class="terms-wrap" id="termsScrollBox">
+                    <h3>用户使用协议 2026.8.11 版本</h3>
+
+                    <p><strong>总则</strong></p>
+                    <p>1. 本协议为使用者与本脚本创作者崔秣齐之间有效的使用约定。当您安装、运行、调用本网页模拟桌面系统脚本全部或者任意一项功能时，即代表您已经完整阅读、充分理解并且无条件同意本协议全部条款；如果您不认可协议内任意内容，请立刻卸载脚本并停止一切使用行为。</p>
+                    <p>2. 本脚本由个人独立开发，免费开放，仅可用于个人学习以及娱乐，不提供任何商业化服务，创作者无法永久保证脚本运行稳定、所有功能完整可用，脚本各项功能会跟随开发进度持续迭代优化。</p>
+
+                    <p><strong>功能相关免责</strong></p>
+                    <p>3. 脚本内置画板、文件管理器、窗口拖拽、本地存储模块、网络交互模块等部分功能尚未开发完成，存在程序缺陷、未知漏洞。使用者清楚知晓，使用未完善功能有可能发生画布内容丢失、绘图记录闪退、文件无法正常保存、界面卡顿崩溃、操作逻辑异常等各类问题。</p>
+                    <p>4. 创作者不会强制任何人使用画板等测试性功能。若使用者主动选择使用尚未完工的功能，所有绘图素材、自定义文档、个人创作内容发生损坏、丢失所带来的全部损失，均由使用者自行承担，创作者没有义务为测试功能的数据提供备份与恢复服务。</p>
+                    <p>5. 严禁利用未完善功能存在的缺陷，批量创建大量垃圾画布、生成海量无效绘图文件，恶意占用浏览器本地存储空间；禁止反复刻意触发画板各类程序漏洞，主动制造脚本持续崩溃、页面卡死等情况。</p>
+
+                    <p><strong>禁止行为规范</strong></p>
+                    <p>6. 不允许对本脚本进行逆向解析、反编译、二次打包，删除、遮盖、篡改原作者署名信息，冒充原作者对外发布各类衍生修改版本；未经创作者书面许可，禁止将脚本整体或者部分内容用于商业引流、付费售卖以及任何盈利场景。</p>
+                    <p>7. 禁止主动挖掘、探测脚本各类漏洞，并且利用漏洞实施以下行为：持续输入超长文本、特殊控制符号、恶意格式内容，尝试造成脚本卡死、浏览器页面崩溃；依托脚本内置功能发送骚扰信息、造谣、辱骂他人、传播违法违规内容；私自篡改脚本本地存储数据，伪造系统运行记录、虚假报错信息；通过自动化手段循环重复调用各项功能，对页面进行持续性压力测试。</p>
+                    <p>8. 不允许修改脚本源代码，植入恶意运行逻辑，再将改动后的版本传播给其他不知情使用者。</p>
+                    <p>9. 禁止利用脚本模拟桌面窗口、自定义界面伪装成正规平台、官方客服界面，欺骗、诱导其他网络用户。</p>
+
+                    <p><strong>数据与本地存储约定</strong></p>
+                    <p>10. 脚本内部创建的本地文件、画板绘图内容全部保存在浏览器本地存储空间，创作者无法远程访问、获取使用者在脚本内建立的任何文件、绘画素材、文字记录。</p>
+                    <p>11. 清理浏览器缓存、卸载油猴插件、更换浏览器、清除站点数据都会直接清空全部画板资料、自建文档等本地数据。使用者需要自行手动备份重要内容，创作者不承担任何数据丢失相关责任。</p>
+
+                    <p><strong>用户责任与违规处理</strong></p>
+                    <p>12. 一旦确认使用者存在恶意攻击程序、刻意滥用漏洞、持续施压程序运行、传播篡改版本等违规行为，创作者有权发布相关公告记录违规情况，并且可以在后续脚本更新版本内新增限制规则，限制对应违规行为正常使用脚本相关功能。</p>
+                    <p>13. 使用者如果因为违反本协议各项条款，造成浏览器运行故障、电子设备卡顿、本地数据丢失，或是引发和第三方平台、其他网络用户之间的纠纷，由此产生的所有责任全部由使用者独立承担，创作者无需承担任何赔偿以及相关连带责任。</p>
+
+                    <p><strong>版权、协议更新说明</strong></p>
+                    <p>14. 脚本源代码、界面视觉设计、桌面交互整套逻辑著作权归属原作者崔秣齐所有。允许个人出于学习目的参考代码片段，禁止直接完整搬运整套项目，冒充为自身原创作品对外发布。</p>
+                    <p>15. 创作者拥有随时更新脚本程序、新增功能、移除功能、调整已有功能的权利，可以临时下线画板等不稳定测试功能，无需提前通知所有使用者。</p>
+                    <p>16. 本用户协议内容会跟随脚本版本持续补充、调整优化，脚本新版本上线之后，更新后的协议自动生效，使用者继续运行脚本即代表接受最新版本协议。</p>
+
+                    <p><strong>风险补充告知</strong></p>
+                    <p>17. 本项目属于青少年个人学习开发项目，安全防护标准达不到商业软件水平，请不要在脚本画板、记事本等功能内填写手机号码、家庭住址、账号密码等各类敏感隐私信息，防范信息意外泄露的风险。</p>
+                    <p>18. 使用者如果发现脚本漏洞，合理方式为友善向原作者提交 BUG 反馈。以测试漏洞作为借口，持续刻意制造程序异常、反复试探程序极限不属于正常反馈行为，直接认定为违规操作。</p>
+                    <p>19. 本脚本所有资料存储在 localStorage 中（约 5MB），存储进度条只是大致估测，如因存储内容过多导致数据丢失，由使用者自行承担。</p>
+                    <p>20. 若您下载 Insider 版本，其中的某些功能可能无法正常使用，还未开发完毕，请及时做好数据备份，以免丢失。</p>
+
+                    <p style="margin-top:14px;">
+                        <strong>开发者：崔秣齐</strong><br />
+                        2026.8.11
+                    </p>
+                </div>
+
+                <div class="terms-agree-row">
+                    <input type="checkbox" id="agreeTerms" />
+                    <label for="agreeTerms">我已完整阅读并完全同意以上全部使用责任声明</label>
+                </div>
+                <div class="terms-tip" id="termsTip">
+                    <span>📌</span> 请滚动阅读完整条款并勾选同意，解锁版本下载与安装教程
+                </div>
+            </div>
+
+            <!-- 下载与安装区域 (锁定/解锁) -->
+            <div class="download-install-area" id="downloadInstallWrap">
+
+                <!-- Demo -->
+                <div class="card demo-card">
+                    <h2 style="justify-content:center;"><span class="emoji">🖱️</span> 在线 Demo 体验</h2>
+                    <p style="margin-bottom: 18px; color: var(--text-secondary);">
+                        无需安装油猴脚本，直接打开网页预览桌面系统效果
+                    </p>
+                    <a href="https://michaelunhappy-code.github.io/demo-trial" target="_blank" class="btn btn-demo">
+                        🚀 前往尝试 Demo
+                    </a>
+                </div>
+
+                <!-- 版本下载 -->
+                <div class="card">
+                    <h2><span class="emoji">📦</span> 版本下载</h2>
+
+                    <div class="version-section">
+                        <h3>
+                            🔥 Insider 预览版 (4.0 – 6.0)
+                            <small>最新 6.1 测试中，可联系 cuimoqi@163.com 加入Chrome OS 测试</small>
+                        </h3>
+                        <div class="version-list" id="insider-list"></div>
+                    </div>
+
+                    <div class="version-section" style="margin-top: 24px;">
+                        <h3>✅ 稳定版</h3>
+                        <div class="version-list" id="stable-list"></div>
+                    </div>
+                </div>
+
+                <!-- 安装步骤 -->
+                <div class="card">
+                    <h2><span class="emoji">🚀</span> 安装步骤</h2>
+                    <div class="steps">
+                        <div class="step">
+                            <h4>安装 Tampermonkey 油猴扩展</h4>
+                            <p>Chrome / Edge / Firefox 应用商店安装扩展</p>
+                        </div>
+                        <div class="step">
+                            <h4>新建空白脚本</h4>
+                            <p>油猴管理面板左上角加号创建脚本</p>
+                        </div>
+                        <div class="step">
+                            <h4>粘贴完整代码</h4>
+                            <p>复制页面下载链接打开，全选复制代码粘贴编辑器</p>
+                        </div>
+                        <div class="step">
+                            <h4>自定义 AI 接口（可选）</h4>
+                            <p>替换内置 api.apilio.ai 为自己的 API 地址</p>
+                        </div>
+                        <div class="step">
+                            <h4>保存启用</h4>
+                            <p>Ctrl+S 保存，刷新网页右下角出现桌面入口即成功</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 锁定提示 -->
+            <div class="locked-hint" id="lockedHint">
+                <span class="lock-icon">🔒</span>
+                下载与安装功能已锁定，请先完整滚动阅读《使用责任声明》并勾选同意
+            </div>
+
+            <!-- 开源链接 -->
+            <div class="repo-link">
+                <span class="icon">📎</span>
+                <a href="https://github.com/michaelunhappy-code/cmqchromeos" target="_blank">
+                    开源链接
+                </a>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                © 2026 Chrome OS (apilio) · 所有版本均开源
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================
+    JavaScript (功能完整保留)
+    ============================================================ -->
+    <script>
+        (() => {
+            // ========== 安全相关常量 ==========
+            const CONFIG = {
+                owner: "michaelunhappy-code",
+                repo: "michaelunhappy-code.github.io",
+                branch: "main",
+                insiderVersions: ["4.0", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7", "4.8", "4.9", "5.0", "5.1", "5.2",
+                    "5.3", "5.4", "5.5", "5.6", "5.7", "5.8", "5.9", "6.0"
+                ],
+                stableVersions: ["0.0", "1.0", "2.0", "3.0"],
+                salt: "Apilio_Unlock_Salt_2026"
+            };
+
+            // ========== 元素引用 ==========
+            const authLayer = document.getElementById('auth-layer');
+            const mainContent = document.getElementById('main-content');
+            const authInput = document.getElementById('auth-input');
+            const authBtn = document.getElementById('auth-btn');
+            const authError = document.getElementById('auth-error');
+            const termsScrollBox = document.getElementById('termsScrollBox');
+            const agreeTermsCheckbox = document.getElementById('agreeTerms');
+            const downloadInstallWrap = document.getElementById('downloadInstallWrap');
+            const lockedHint = document.getElementById('lockedHint');
+            const termsTip = document.getElementById('termsTip');
+            const banLayer = document.getElementById('ban-layer');
+            const processCodeDisplay = document.getElementById('processCodeDisplay');
+            const unlockInput = document.getElementById('unlock-input');
+            const unlockBtn = document.getElementById('unlock-btn');
+            const banError = document.getElementById('ban-error');
+
+            // ========== 工具函数 ==========
+            function hex(buffer) {
+                return [...new Uint8Array(buffer)].map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            async function sha256(text) {
+                const data = new TextEncoder().encode(text);
+                const digest = await crypto.subtle.digest('SHA-256', data);
+                return hex(digest);
+            }
+
+            function getCurrentVerificationCode() {
+                const now = new Date();
+                const y = now.getFullYear();
+                const m = String(now.getMonth() + 1).padStart(2, '0');
+                const d = String(now.getDate()).padStart(2, '0');
+                const h = String(now.getHours()).padStart(2, '0');
+                return `${y}${m}${d}${h}ACMQTORED`;
+            }
+
+            function generateProcessToken() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let token = '';
+                for (let i = 0; i < 6; i++) {
+                    token += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return token;
+            }
+
+            async function computeUnlockCode(processToken) {
+                const hash = await sha256(processToken + CONFIG.salt);
+                let code = '';
+                for (let i = 0; i < 6; i++) {
+                    const hexPair = hash.substr(i * 2, 2);
+                    const val = parseInt(hexPair, 16);
+                    const letterIndex = val % 26;
+                    code += String.fromCharCode(65 + letterIndex);
+                }
+                return code;
+            }
+
+            // ========== IndexedDB 封装 ==========
+            const DB_NAME = 'ApilioSecurityDB';
+            const DB_STORE = 'bans';
+            let db = null;
+
+            function openDB() {
+                return new Promise((resolve, reject) => {
+                    if (!window.indexedDB) {
+                        reject(new Error('IndexedDB not supported'));
+                        return;
+                    }
+                    const request = indexedDB.open(DB_NAME, 1);
+                    request.onupgradeneeded = (e) => {
+                        const database = e.target.result;
+                        if (!database.objectStoreNames.contains(DB_STORE)) {
+                            database.createObjectStore(DB_STORE, { keyPath: 'id' });
+                        }
+                    };
+                    request.onsuccess = (e) => {
+                        db = e.target.result;
+                        resolve(db);
+                    };
+                    request.onerror = (e) => reject(e.target.error);
+                });
+            }
+
+            async function setBannedFlag(processToken) {
+                localStorage.setItem('apilio_banned', '1');
+                localStorage.setItem('apilio_process_token', processToken);
+                try {
+                    await openDB();
+                    const tx = db.transaction(DB_STORE, 'readwrite');
+                    const store = tx.objectStore(DB_STORE);
+                    store.put({ id: 'ban', processToken: processToken, timestamp: Date.now() });
+                    await new Promise((resolve, reject) => {
+                        tx.oncomplete = resolve;
+                        tx.onerror = reject;
+                    });
+                } catch (e) {
+                    console.warn('IndexedDB写入失败，仅使用localStorage', e);
+                }
+            }
+
+            async function clearBannedFlag() {
+                localStorage.removeItem('apilio_banned');
+                localStorage.removeItem('apilio_process_token');
+                try {
+                    await openDB();
+                    const tx = db.transaction(DB_STORE, 'readwrite');
+                    const store = tx.objectStore(DB_STORE);
+                    store.delete('ban');
+                    await new Promise((resolve, reject) => {
+                        tx.oncomplete = resolve;
+                        tx.onerror = reject;
+                    });
+                } catch (e) {
+                    console.warn('IndexedDB清除失败', e);
+                }
+            }
+
+            async function isBanned() {
+                if (localStorage.getItem('apilio_banned') === '1') {
+                    return true;
+                }
+                try {
+                    await openDB();
+                    const tx = db.transaction(DB_STORE, 'readonly');
+                    const store = tx.objectStore(DB_STORE);
+                    const request = store.get('ban');
+                    const result = await new Promise((resolve) => {
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = () => resolve(null);
+                    });
+                    return !!result;
+                } catch (e) {
+                    console.warn('IndexedDB 检查失败，忽略', e);
+                    return false;
+                }
+            }
+
+            // ========== 禁止逻辑 ==========
+            async function banUser() {
+                const processToken = generateProcessToken();
+                await setBannedFlag(processToken);
+                processCodeDisplay.textContent = processToken;
+                banLayer.style.display = 'flex';
+                authLayer.style.display = 'none';
+                mainContent.style.display = 'none';
+                document.body.style.overflow = 'hidden';
+            }
+
+            async function unlockUser() {
+                const code = unlockInput.value.trim().toUpperCase();
+                if (code.length !== 5) {
+                    banError.textContent = '请输入5位大写字母解密码';
+                    return;
+                }
+                const correctCode = 'TCCOS';
+                if (code === correctCode) {
+                    await clearBannedFlag();
+                    location.reload();
+                } else {
+                    banError.textContent = '解密码错误，请检查后重试';
+                }
+            }
+
+            // ========== F12 检测 ==========
+            function setupDevToolsDetection() {
+                let devtoolsOpen = false;
+
+                function checkWindowSize() {
+                    const threshold = 160;
+                    if (window.outerWidth - window.innerWidth > threshold ||
+                        window.outerHeight - window.innerHeight > threshold) {
+                        if (!devtoolsOpen) {
+                            devtoolsOpen = true;
+                            banUser();
+                        }
+                    } else {
+                        devtoolsOpen = false;
+                    }
+                }
+                window.addEventListener('resize', checkWindowSize);
+
+                setInterval(() => {
+                    const start = performance.now();
+                    debugger;
+                    const end = performance.now();
+                    if (end - start > 100) {
+                        banUser();
+                    }
+                }, 3000);
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'F12') {
+                        e.preventDefault();
+                        banUser();
+                    }
+                    if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+                        e.preventDefault();
+                        banUser();
+                    }
+                    if (e.ctrlKey && e.key === 'U') {
+                        e.preventDefault();
+                        banUser();
+                    }
+                    if (e.ctrlKey && e.key.toLowerCase() === 's') {
+                        e.preventDefault();
+                    }
+                });
+
+                document.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                });
+
+                const element = new Image();
+                Object.defineProperty(element, 'id', {
+                    get: () => {
+                        banUser();
+                        return '';
+                    }
+                });
+                console.log('%c', element);
+            }
+
+            // ========== 验证码验证 ==========
+            async function verifyAuth() {
+                const val = authInput.value.trim();
+                if (!val) {
+                    authError.textContent = '请输入验证码';
+                    return;
+                }
+                const expected = getCurrentVerificationCode();
+                if (val === expected) {
+                    authLayer.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    document.body.style.overflow = 'auto';
+                } else {
+                    authError.textContent = '验证码错误，请检查当前时间（精确到小时）';
+                    authInput.value = '';
+                    authInput.focus();
+                }
+            }
+
+            // ========== 版本渲染 ==========
+            function getCDN(path) {
+                return `https://cdn.jsdelivr.net/gh/${CONFIG.owner}/${CONFIG.repo}@${CONFIG.branch}/${path}`;
+            }
+
+            async function copyLink(url) {
+                try {
+                    await navigator.clipboard.writeText(url);
+                    alert('链接复制成功：\n' + url);
+                } catch {
+                    prompt('复制失败，请手动复制：', url);
+                }
+            }
+
+            function makeVersionItem({ tag, fname, url, meta, latest = false }) {
+                const div = document.createElement('div');
+                div.className = 'version-item';
+                div.innerHTML = `
+                  <div class="version-info">
+                    <span class="version-tag ${tag === 'Insider' ? 'tag-insider' : 'tag-stable'}">${tag}</span>
+                    <div>
+                      <div class="version-name">
+                        ${fname}
+                        ${latest ? '<span class="latest-badge">👈 最新</span>' : ''}
+                      </div>
+                      <div class="version-meta">${meta}</div>
+                    </div>
+                  </div>
+                  <div class="btn-group">
+                    <button class="btn btn-secondary btn-copy" type="button">📋 复制</button>
+                    <a href="${url}" target="_blank" class="btn btn-primary" download>⬇️ 下载</a>
+                  </div>
+                `;
+                div.querySelector('.btn-copy').addEventListener('click', () => copyLink(url));
+                return div;
+            }
+
+            function renderVersions() {
+                const insiderList = document.getElementById('insider-list');
+                const stableList = document.getElementById('stable-list');
+                if (!insiderList || !stableList) return;
+                insiderList.innerHTML = '';
+                stableList.innerHTML = '';
+
+                CONFIG.insiderVersions.forEach(v => {
+                    const latest = v === '6.0';
+                    const fname = `Chrome OS(apilio) ${v} insider.js`;
+                    const url = getCDN(`versions/insider/${encodeURIComponent(fname)}`);
+                    insiderList.appendChild(makeVersionItem({
+                        tag: 'Insider',
+                        fname,
+                        url,
+                        meta: '更新于2026 · Tampermonkey 专用',
+                        latest
+                    }));
+                });
+
+                CONFIG.stableVersions.forEach(v => {
+                    const fname = `Chrome OS(apilio) ${v}.js`;
+                    const url = getCDN(`versions/stable/${encodeURIComponent(fname)}`);
+                    stableList.appendChild(makeVersionItem({
+                        tag: 'Stable',
+                        fname,
+                        url,
+                        meta: '长期稳定支持版本',
+                        latest: false
+                    }));
+                });
+            }
+
+            // ========== 条款解锁逻辑 ==========
+            let scrolledToBottom = false;
+
+            function updateTermsUI() {
+                if (agreeTermsCheckbox.checked && scrolledToBottom) {
+                    downloadInstallWrap.classList.add('unlock');
+                    lockedHint.style.display = 'none';
+                } else {
+                    downloadInstallWrap.classList.remove('unlock');
+                    lockedHint.style.display = 'block';
+                }
+            }
+
+            // ========== 事件绑定 ==========
+            authBtn.addEventListener('click', verifyAuth);
+            authInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') verifyAuth(); });
+            unlockBtn.addEventListener('click', unlockUser);
+            unlockInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') unlockUser(); });
+
+            termsScrollBox.addEventListener('scroll', () => {
+                const reachBottom = termsScrollBox.scrollTop + termsScrollBox.clientHeight >= termsScrollBox
+                    .scrollHeight - 10;
+                if (reachBottom && !scrolledToBottom) {
+                    scrolledToBottom = true;
+                    termsTip.innerHTML = '✅ 已阅读全部条款，请勾选同意框解锁下载';
+                    termsTip.style.color = '#3fb950';
+                    updateTermsUI();
+                }
+            });
+
+            agreeTermsCheckbox.addEventListener('change', () => {
+                if (agreeTermsCheckbox.checked && !scrolledToBottom) {
+                    termsTip.innerHTML = '📌 请先滚动至条款底部完整阅读后再勾选';
+                    termsTip.style.color = '#ff9f43';
+                }
+                updateTermsUI();
+            });
+
+            // ========== 初始化 ==========
+            window.addEventListener('load', async () => {
+                try {
+                    const banned = await isBanned();
+                    if (banned) {
+                        banLayer.style.display = 'flex';
+                        authLayer.style.display = 'none';
+                        mainContent.style.display = 'none';
+                        document.body.style.overflow = 'hidden';
+                        const token = localStorage.getItem('apilio_process_token');
+                        if (token) processCodeDisplay.textContent = token;
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('禁止状态检查失败，继续执行', e);
+                }
+
+                authInput.focus();
+                setupDevToolsDetection();
+                renderVersions();
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
