@@ -22,4 +22,8 @@
 -------
 
 # 欢迎进入Chrome OS, 提升工作/coder的效率！
-### 如有问题，请联系 +86 17112171226 / cuimoqi@163.com
+### 如有问题，请联系 +86 17112171226 / cuimoqi@163.com、
+
+
+#### 注：本脚本使用了部分 win32.run 的开机截图，如有侵权请联系我删除内容。
+#### Note: This script uses some boot screenshots from win32.run. If there is any copyright infringement, please contact me to remove the content.
