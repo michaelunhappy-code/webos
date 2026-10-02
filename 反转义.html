@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML 转义文本还原工具</title>
+<style>
+*{
+    box-sizing:border-box;
+}
+body{
+    margin:0;
+    font-family:Consolas,"Microsoft YaHei",sans-serif;
+    background:#f5f7fa;
+    color:#222;
+}
+.container{
+    width:min(1100px,94%);
+    margin:30px auto;
+}
+h1{
+    margin-bottom:8px;
+}
+.tip{
+    color:#666;
+    margin-bottom:20px;
+}
+.area{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+.panel{
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.panel h2{
+    margin:0 0 10px;
+    font-size:18px;
+}
+textarea{
+    width:100%;
+    height:420px;
+    resize:vertical;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:12px;
+    font-family:Consolas,monospace;
+    font-size:14px;
+    line-height:1.5;
+    outline:none;
+}
+textarea:focus{
+    border-color:#4b8bf4;
+}
+.buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:16px 0;
+}
+button{
+    border:none;
+    border-radius:8px;
+    padding:10px 18px;
+    cursor:pointer;
+    font-size:14px;
+    background:#4b8bf4;
+    color:white;
+}
+button:hover{
+    filter:brightness(.95);
+}
+button.secondary{
+    background:#666;
+}
+button.danger{
+    background:#d9534f;
+}
+.status{
+    min-height:22px;
+    color:#138a36;
+}
+@media(max-width:800px){
+    .area{
+        grid-template-columns:1fr;
+    }
+}
+@media(prefers-color-scheme:dark){
+    body{
+        background:#111827;
+        color:#e5e7eb;
+    }
+    .tip{
+        color:#9ca3af;
+    }
+    .panel{
+        background:#1f2937;
+        border-color:#374151;
+    }
+    textarea{
+        background:#111827;
+        color:#e5e7eb;
+        border-color:#4b5563;
+    }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>HTML 转义文本还原工具</h1>
+    <div class="tip">
+        可将 &amp;lt;、&amp;gt;、&amp;quot;、&amp;amp;、&amp;#39; 等 HTML 实体还原成正常字符。
+    </div>
+
+    <div class="area">
+        <div class="panel">
+            <h2>转义文本</h2>
+            <textarea id="input" placeholder="把转义后的文本粘贴到这里，例如：
+
+#include &amp;lt;bits/stdc++.h&amp;gt;
+cout&amp;lt;&amp;lt;&amp;quot;Hello&amp;quot;;"></textarea>
+        </div>
+
+        <div class="panel">
+            <h2>正常文本</h2>
+            <textarea id="output" readonly placeholder="转换结果会显示在这里"></textarea>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button onclick="convertText()">转换</button>
+        <button onclick="copyResult()" class="secondary">复制结果</button>
+        <button onclick="swapText()" class="secondary">结果放回输入框</button>
+        <button onclick="clearAll()" class="danger">清空</button>
+    </div>
+
+    <div id="status" class="status"></div>
+</div>
+
+<script>
+function decodeHtml(text){
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = text;
+    return textarea.value;
+}
+
+function convertText(){
+    const input = document.getElementById("input").value;
+    const output = decodeHtml(input);
+    document.getElementById("output").value = output;
+    showStatus("转换完成");
+}
+
+async function copyResult(){
+    const text = document.getElementById("output").value;
+    if(!text){
+        showStatus("没有可复制的内容", true);
+        return;
+    }
+
+    try{
+        await navigator.clipboard.writeText(text);
+        showStatus("已复制到剪贴板");
+    }catch(e){
+        const output = document.getElementById("output");
+        output.select();
+        document.execCommand("copy");
+        showStatus("已复制到剪贴板");
+    }
+}
+
+function swapText(){
+    const output = document.getElementById("output").value;
+    document.getElementById("input").value = output;
+    showStatus("已放回输入框");
+}
+
+function clearAll(){
+    document.getElementById("input").value = "";
+    document.getElementById("output").value = "";
+    showStatus("已清空");
+}
+
+function showStatus(text, error = false){
+    const status = document.getElementById("status");
+    status.textContent = text;
+    status.style.color = error ? "#d9534f" : "#138a36";
+    clearTimeout(window.statusTimer);
+    window.statusTimer = setTimeout(() => {
+        status.textContent = "";
+    }, 2000);
+}
+
+document.getElementById("input").addEventListener("input", convertText);
+</script>
+</body>
+</html>
