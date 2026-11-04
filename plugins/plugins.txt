@@ -1,1 +1,5 @@
-Test_plugin 1.0 hello.html
+[JSON工作台] [1.0.0] [json-workbench.html]
+[正则实验室] [1.0.0] [regex-lab.html]
+[配色工作台] [1.0.0] [palette-studio.html]
+[学习闪卡] [1.0.0] [flashcards.html]
+[决策矩阵] [1.0.0] [decision-matrix.html]
