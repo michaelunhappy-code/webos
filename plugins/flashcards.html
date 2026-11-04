@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>学习闪卡 · Web OS</title>
+<style>
+:root{color-scheme:light;--bg:#f3f6fa;--panel:#fff;--ink:#172439;--muted:#66758a;--line:#dee5ef;--accent:#087f8c;--soft:#e5f5f4;--danger:#b53a49;--code:#f6f8fb;--shadow:0 8px 28px #17243906}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#101720;--panel:#192330;--ink:#e3ebf5;--muted:#9caec2;--line:#2d3b4d;--accent:#5dd5ce;--soft:#173a3d;--danger:#ff99a5;--code:#131c28;--shadow:none}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button,input,select{min-height:38px}button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:7px 13px;cursor:pointer;transition:background .15s}button:hover{background:var(--soft)}button:disabled{opacity:.5;cursor:not-allowed}button.primary{background:var(--accent);border-color:var(--accent);color:var(--panel);font-weight:650}button.danger{color:var(--danger)}button.small{padding:4px 10px;min-height:32px;font-size:12px}button[aria-pressed="true"]{border-color:var(--accent);background:var(--soft);color:var(--accent)}:focus-visible{outline:3px solid var(--accent);outline-offset:2px}input,textarea,select{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:8px 10px}textarea{resize:vertical;line-height:1.6}label{display:grid;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}input[type="checkbox"]{width:16px;min-height:16px;accent-color:var(--accent)}input[type="color"]{padding:3px;min-height:44px}input[type="range"]{padding:0;accent-color:var(--accent)}h1,h2,h3,p{margin:0}h1{font-size:23px;line-height:1.25;letter-spacing:-.6px}h2{font-size:15px}h3{font-size:14px}.app{max-width:1120px;margin:auto;padding:24px}.app-header{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:22px}.brand{display:flex;gap:13px;align-items:center}.brand-icon{width:44px;height:44px;flex:none;background:var(--soft);color:var(--accent);border:1px solid var(--line);border-radius:13px;display:grid;place-items:center;font:700 19px ui-monospace,monospace}.eyebrow{font-size:10px;letter-spacing:1.7px;color:var(--accent);font-weight:750;margin-bottom:4px}.subtitle{font-size:12px;color:var(--muted);margin-top:5px}.header-actions{display:flex;gap:10px;align-items:center;flex-shrink:0}.status-dot{font-size:11px;color:var(--muted)}.status-dot::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px}.panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:var(--shadow)}.panel-head,.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.panel-head{margin-bottom:12px}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.toolbar label{display:flex;align-items:center;gap:6px}.toolbar select{width:auto}.grid{display:grid;gap:16px}.columns{grid-template-columns:1fr 1fr}.stack{display:grid;gap:14px}.muted,.hint{color:var(--muted);font-size:12px}.hint{line-height:1.7}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px}.editor{min-height:280px;background:var(--code);tab-size:2}.message{font-size:12px;min-height:21px;overflow-wrap:anywhere}.error{color:var(--danger)}.success{color:var(--accent)}.tag{padding:2px 8px;border:1px solid var(--line);border-radius:20px;color:var(--muted);font-size:11px}.empty{padding:28px 12px;text-align:center;color:var(--muted)}.separator{height:1px;background:var(--line);margin:16px 0}.grow{flex:1;min-width:0}.nowrap{white-space:nowrap}.notice{padding:12px 16px;margin-bottom:16px;border:1px solid var(--danger);border-radius:10px;color:var(--danger);font-size:12px}.file-input{display:none}[hidden]{display:none!important}.footer{display:flex;justify-content:space-between;gap:12px;margin-top:18px;font-size:11px;color:var(--muted)}#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);max-width:90vw;padding:10px 18px;border-radius:10px;background:var(--ink);color:var(--bg);box-shadow:0 8px 30px #0002;z-index:20;pointer-events:none}dialog{max-width:min(480px,90vw);width:100%;border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--ink);padding:20px}dialog::backdrop{background:#10172088}dialog textarea{min-height:140px;margin:12px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}details summary{cursor:pointer;color:var(--muted);font-size:12px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:11px;color:var(--muted);font-weight:600}.table-scroll{overflow:auto}.check{display:flex;align-items:center;gap:6px}mark{background:#fff0a6;color:#523f06;border-radius:3px;padding:1px 0}.stats{display:flex;gap:22px;flex-wrap:wrap}.stat strong{display:block;font-size:24px;line-height:1.3;letter-spacing:-1px}.stat span{font-size:11px;color:var(--muted)}
+.stack{align-content:start}.check{white-space:nowrap}.check select{width:auto}
+@media(max-width:650px){.app{padding:16px}.app-header{align-items:flex-start;gap:10px;margin-bottom:16px}.brand{gap:10px}.brand-icon{width:38px;height:38px}.header-actions{gap:6px}.status-dot{display:none}h1{font-size:20px}.columns{grid-template-columns:1fr}.panel{padding:14px}.editor{min-height:210px}.toolbar button{flex-grow:1}.footer{flex-wrap:wrap}input,textarea,select{font-size:16px}.mono{font-size:13px}}
+
+.study-panel{margin-top:16px;text-align:center;border-color:var(--accent)}.study-card{padding:30px 10px;max-width:680px;margin:auto}.study-card h2{font-size:22px;margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}.study-card p{white-space:pre-wrap;text-align:left;overflow-wrap:anywhere}.study-panel>.toolbar{justify-content:center}.card-list{max-height:530px;overflow:auto}.card-item{padding:14px 0;border-bottom:1px solid var(--line)}.card-item:first-child{padding-top:0}.card-question{margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}</style></head><body>
+<main class="app"><header class="app-header"><div class="brand"><div class="brand-icon" aria-hidden="true">▣</div><div><div class="eyebrow">WEB OS / PLUGIN 04</div><h1>学习闪卡</h1><p class="subtitle">把知识变成问答，按掌握程度安排复习。</p></div></div><div class="header-actions"><span class="status-dot" id="save-state" role="status">本地保存</span><button id="theme-toggle" class="small" aria-label="切换深浅主题">深色</button></div></header>
+<div id="storage-warning" class="notice" role="alert" hidden></div>
+
+<section class="panel"><div class="row"><div id="card-stats" class="stats"></div><div class="toolbar"><button id="review-due" class="primary">复习到期卡片</button><button id="review-all">复习全部</button></div></div></section>
+<section id="study-panel" class="panel study-panel" hidden><div class="row"><span id="study-progress" class="tag"></span><button id="end-study" class="small">结束本轮</button></div><div class="study-card"><span id="study-deck" class="eyebrow"></span><h2 id="study-front"></h2><div id="study-answer" hidden><div class="separator"></div><p id="study-back"></p></div></div><button id="flip" class="primary">显示答案 · Space</button><div id="rating" class="toolbar" hidden><button data-rating="again">再学一次 · 1 分钟</button><button data-rating="good" class="primary">记住了</button><button data-rating="easy">很熟悉</button></div></section>
+<div class="grid columns" style="margin-top:16px"><section class="panel stack"><h2 id="editor-title">新建卡片</h2><form id="card-form" class="stack"><label>分类<input id="deck" maxlength="40" value="默认" required></label><label>正面 · 问题<textarea id="front" rows="3" maxlength="2000" required></textarea></label><label>背面 · 答案<textarea id="back" rows="4" maxlength="4000" required></textarea></label><div class="toolbar"><button id="save-card" type="submit" class="primary">添加卡片</button><button id="cancel-edit" type="button" hidden>取消编辑</button><button id="sample-cards" type="button">添加示例</button></div></form></section><section class="panel stack"><div class="row"><h2>卡片库</h2><div class="toolbar"><button id="import-cards" class="small">导入</button><button id="export-cards" class="small">导出</button></div></div><label>搜索<input id="card-search" placeholder="问题、答案或分类" maxlength="100"></label><div id="undo-row" class="row" hidden><span class="hint">已删除一张卡片</span><button id="undo-delete" class="small">撤销</button></div><div id="card-list" class="card-list"></div></section></div><input id="card-file" class="file-input" type="file" accept=".json,application/json">
+
+<footer class="footer"><span>Web OS 官方插件</span><span>离线可用 · 内容保存在本地</span></footer></main>
+<div id="toast" role="status" hidden></div><dialog id="copy-dialog"><h2>复制内容</h2><p class="hint">请按 Ctrl/Cmd+C，或长按文本复制。</p><textarea id="copy-text" readonly aria-label="待复制内容"></textarea><button id="copy-close">完成</button></dialog>
+<script>
+'use strict';
+const KEY = 'webos.plugin.flashcards.v1';
+
+const $ = selector => document.querySelector(selector);
+const node = (tag, className = '', text = '') => { const el = document.createElement(tag); el.className = className; el.textContent = text; return el; };
+function toast(text) { $('#toast').textContent = text; $('#toast').hidden = false; clearTimeout(toast.timer); toast.timer = setTimeout(() => $('#toast').hidden = true, 3000); }
+function storageError(text) { $('#storage-warning').textContent = text; $('#storage-warning').hidden = false; $('#save-state').textContent = '未保存'; }
+function loadState(fallback) {
+    try { const raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : fallback; }
+    catch (_) { storageError('无法读取保存内容。当前仍可使用，请导出重要内容。'); return fallback; }
+}
+function persist(value) {
+    try { localStorage.setItem(KEY, JSON.stringify(value)); $('#save-state').textContent = '已保存'; return true; }
+    catch (_) { storageError('本地保存失败，请导出内容后再关闭窗口。'); return false; }
+}
+function download(name, text, type = 'application/json') {
+    const url = URL.createObjectURL(new Blob([text], {type:type + ';charset=utf-8'}));
+    const link = document.createElement('a'); link.href = url; link.download = name; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); toast('已复制'); return; } catch (_) {}
+    const input = document.createElement('textarea'); input.value = text; input.style.cssText = 'position:fixed;left:-9999px;'; document.body.append(input); input.select();
+    let copied = false; try { copied = document.execCommand('copy'); } catch (_) {} input.remove();
+    if (copied) { toast('已复制'); return; }
+    $('#copy-text').value = text; $('#copy-dialog').showModal(); $('#copy-text').focus(); $('#copy-text').select();
+}
+async function readFile(file, maxMB = 1) { if (!file) return null; if (file.size > maxMB * 1024 * 1024) throw new Error('请选择不超过 ' + maxMB + ' MB 的文件'); return file.text(); }
+const uid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
+const debounce = (fn, delay = 180) => { let timer; return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); }; };
+function applyTheme(dark) { document.documentElement.dataset.theme = dark ? 'dark' : 'light'; $('#theme-toggle').textContent = dark ? '浅色' : '深色'; $('#theme-toggle').setAttribute('aria-pressed', String(dark)); }
+try { applyTheme((localStorage.getItem(KEY + '.theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark'); } catch (_) { applyTheme(false); }
+$('#theme-toggle').onclick = () => { const dark = document.documentElement.dataset.theme !== 'dark'; applyTheme(dark); try { localStorage.setItem(KEY + '.theme', dark ? 'dark' : 'light'); } catch (_) {} };
+$('#copy-close').onclick = () => $('#copy-dialog').close();
+
+
+function validCard(card) { return card && typeof card.front==='string' && card.front.trim() && card.front.length<=2000 && typeof card.back==='string' && card.back.trim() && card.back.length<=4000 && typeof card.deck==='string' && card.deck.length<=40; }
+function normalizeCard(card) { return {id:typeof card.id==='string'?card.id:uid(),front:card.front,back:card.back,deck:card.deck||'默认',due:Number.isFinite(card.due)&&card.due>=0?card.due:0,interval:Number.isFinite(card.interval)&&card.interval>=0?Math.min(card.interval,365):0,reviews:Number.isInteger(card.reviews)&&card.reviews>=0?card.reviews:0}; }
+const saved=loadState({cards:[]});
+let cards=Array.isArray(saved?.cards)?saved.cards.filter(validCard).slice(0,500).map(normalizeCard):[];
+let editing=null,deleted=null,queue=[],queueTotal=0;
+function save() { persist({cards}); }
+function daysText(days) { return days+' 天'; }
+function nextInterval(card,easy=false) { return Math.min(365,easy?Math.max(3,card.interval*2):card.interval===0?1:card.interval<3?3:card.interval<7?7:Math.round(card.interval*1.8)); }
+function render() {
+    const due=cards.filter(card=>card.due<=Date.now()).length;
+    $('#card-stats').replaceChildren();[['卡片总数',cards.length],['待复习',due],['已复习',cards.filter(card=>card.reviews>0).length]].forEach(([label,value])=>{const item=node('div','stat');item.append(node('strong','',String(value)),node('span','',label));$('#card-stats').append(item);});
+    const query=$('#card-search').value.trim().toLowerCase();$('#card-list').replaceChildren();
+    const filtered=cards.filter(card=>(card.front+'\n'+card.back+'\n'+card.deck).toLowerCase().includes(query));
+    if(!filtered.length)$('#card-list').append(node('div','empty',cards.length?'没有匹配的卡片。':'添加第一张卡片，开始积累知识。'));
+    filtered.slice(0,200).forEach(card=>{
+        const row=node('article','card-item'), meta=node('div','row');meta.append(node('span','tag',card.deck),node('span','hint',card.due<=Date.now()?'待复习':'下次 '+new Date(card.due).toLocaleDateString()));
+        const actions=node('div','toolbar');const edit=node('button','small','编辑'),remove=node('button','small danger','删除');
+        edit.onclick=()=>{editing=card.id;$('#deck').value=card.deck;$('#front').value=card.front;$('#back').value=card.back;$('#editor-title').textContent='编辑卡片';$('#save-card').textContent='保存修改';$('#cancel-edit').hidden=false;$('#front').focus();};
+        remove.onclick=()=>{deleted=card;cards=cards.filter(item=>item.id!==card.id);if(editing===card.id)resetEditor();queue=queue.filter(id=>id!==card.id);$('#undo-row').hidden=false;save();render();showStudy();};
+        actions.append(edit,remove);row.append(meta,node('p','card-question',card.front),actions);$('#card-list').append(row);
+    });
+    if(filtered.length>200)$('#card-list').append(node('p','hint','仅显示前 200 张，请搜索定位其他卡片。'));
+}
+function resetEditor() { editing=null;$('#front').value='';$('#back').value='';$('#editor-title').textContent='新建卡片';$('#save-card').textContent='添加卡片';$('#cancel-edit').hidden=true; }
+$('#card-form').onsubmit=event=>{
+    event.preventDefault();const front=$('#front').value.trim(),back=$('#back').value.trim(),deck=$('#deck').value.trim()||'默认';if(!front||!back)return;
+    if(editing){const card=cards.find(card=>card.id===editing);if(card)Object.assign(card,{front,back,deck});}
+    else{if(cards.length>=500){toast('最多保存 500 张卡片。');return;}cards.unshift({id:uid(),front,back,deck,due:0,interval:0,reviews:0});}
+    save();resetEditor();render();toast('卡片已保存');
+};
+$('#cancel-edit').onclick=resetEditor;$('#card-search').oninput=render;
+$('#undo-delete').onclick=()=>{if(deleted&&!cards.some(card=>card.id===deleted.id))cards.unshift(deleted);deleted=null;$('#undo-row').hidden=true;save();render();};
+function startReview(all) { queue=cards.filter(card=>all||card.due<=Date.now()).sort((a,b)=>a.due-b.due).map(card=>card.id);queueTotal=queue.length;if(!queue.length){toast(all?'请先添加卡片。':'当前没有到期卡片，可以选择复习全部。');return;}$('#study-panel').hidden=false;showStudy();$('#study-panel').scrollIntoView({behavior:'smooth',block:'start'}); }
+function showStudy() {
+    if($('#study-panel').hidden)return;
+    while(queue.length&&!cards.some(card=>card.id===queue[0]))queue.shift();
+    if(!queue.length){$('#study-panel').hidden=true;toast('本轮复习完成');return;}
+    const card=cards.find(card=>card.id===queue[0]);$('#study-progress').textContent=(queueTotal-queue.length+1)+' / '+queueTotal;$('#study-deck').textContent=card.deck;$('#study-front').textContent=card.front;$('#study-back').textContent=card.back;$('#study-answer').hidden=true;$('#rating').hidden=true;$('#flip').hidden=false;
+    $('#flip').focus({preventScroll:true});
+    $('[data-rating="good"]').textContent='记住了 · '+daysText(nextInterval(card));$('[data-rating="easy"]').textContent='很熟悉 · '+daysText(nextInterval(card,true));
+}
+$('#review-due').onclick=()=>startReview(false);$('#review-all').onclick=()=>startReview(true);$('#end-study').onclick=()=>{$('#study-panel').hidden=true;queue=[];};
+$('#flip').onclick=()=>{$('#study-answer').hidden=false;$('#rating').hidden=false;$('#flip').hidden=true;};
+$('#rating').onclick=event=>{const rating=event.target.closest('[data-rating]')?.dataset.rating;if(!rating)return;const card=cards.find(card=>card.id===queue[0]);if(!card)return;card.interval=rating==='again'?0:nextInterval(card,rating==='easy');card.due=Date.now()+(rating==='again'?60000:card.interval*86400000);card.reviews++;queue.shift();save();render();showStudy();};
+document.addEventListener('keydown',event=>{if(event.code==='Space'&&!event.repeat&&!event.ctrlKey&&!event.metaKey&&!event.altKey&&!['INPUT','TEXTAREA','BUTTON','SELECT'].includes(document.activeElement.tagName)&&!$('#study-panel').hidden&&!$('#flip').hidden){event.preventDefault();$('#flip').click();}});
+$('#sample-cards').onclick=()=>{const samples=[['二分查找的前提是什么？','在可判定的单调性或有序区间上缩小搜索范围。'],['C++ 中 vector 的 size 和 capacity 有何区别？','size 是当前元素数；capacity 是重新分配前可容纳的元素数。'],['为什么比较浮点数时常用误差范围？','二进制浮点表示可能带来舍入误差，直接比较可能不符合预期。']];for(const[front,back]of samples){if(cards.length<500&&!cards.some(card=>card.front===front))cards.push({id:uid(),front,back,deck:'编程基础',due:0,interval:0,reviews:0});}save();render();toast('示例已添加');};
+$('#export-cards').onclick=()=>download('flashcards.json',JSON.stringify({type:'webos-flashcards',version:1,cards},null,2));$('#import-cards').onclick=()=>$('#card-file').click();
+$('#card-file').onchange=async event=>{try{const text=await readFile(event.target.files[0],32);if(text===null)return;const data=JSON.parse(text);if(data?.type!=='webos-flashcards'||data.version!==1||!Array.isArray(data.cards)||data.cards.length>500||!data.cards.every(validCard))throw new Error('不是有效的闪卡备份文件');const known=new Set(cards.map(card=>JSON.stringify([card.front,card.back,card.deck]))),added=[];for(const card of data.cards){const key=JSON.stringify([card.front,card.back,card.deck]);if(!known.has(key)){added.push({...normalizeCard(card),id:uid()});known.add(key);}}if(cards.length+added.length>500)throw new Error('导入后将超过 500 张，请先整理卡片');cards.push(...added);save();render();toast('已合并 '+added.length+' 张卡片');}catch(error){toast(error.message);}finally{event.target.value='';}};
+render();setInterval(render,60000);
+
+</script></body></html>

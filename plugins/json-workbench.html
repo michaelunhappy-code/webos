@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>JSON工作台 · Web OS</title>
+<style>
+:root{color-scheme:light;--bg:#f3f6fa;--panel:#fff;--ink:#172439;--muted:#66758a;--line:#dee5ef;--accent:#087f8c;--soft:#e5f5f4;--danger:#b53a49;--code:#f6f8fb;--shadow:0 8px 28px #17243906}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#101720;--panel:#192330;--ink:#e3ebf5;--muted:#9caec2;--line:#2d3b4d;--accent:#5dd5ce;--soft:#173a3d;--danger:#ff99a5;--code:#131c28;--shadow:none}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button,input,select{min-height:38px}button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:7px 13px;cursor:pointer;transition:background .15s}button:hover{background:var(--soft)}button:disabled{opacity:.5;cursor:not-allowed}button.primary{background:var(--accent);border-color:var(--accent);color:var(--panel);font-weight:650}button.danger{color:var(--danger)}button.small{padding:4px 10px;min-height:32px;font-size:12px}button[aria-pressed="true"]{border-color:var(--accent);background:var(--soft);color:var(--accent)}:focus-visible{outline:3px solid var(--accent);outline-offset:2px}input,textarea,select{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:8px 10px}textarea{resize:vertical;line-height:1.6}label{display:grid;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}input[type="checkbox"]{width:16px;min-height:16px;accent-color:var(--accent)}input[type="color"]{padding:3px;min-height:44px}input[type="range"]{padding:0;accent-color:var(--accent)}h1,h2,h3,p{margin:0}h1{font-size:23px;line-height:1.25;letter-spacing:-.6px}h2{font-size:15px}h3{font-size:14px}.app{max-width:1120px;margin:auto;padding:24px}.app-header{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:22px}.brand{display:flex;gap:13px;align-items:center}.brand-icon{width:44px;height:44px;flex:none;background:var(--soft);color:var(--accent);border:1px solid var(--line);border-radius:13px;display:grid;place-items:center;font:700 19px ui-monospace,monospace}.eyebrow{font-size:10px;letter-spacing:1.7px;color:var(--accent);font-weight:750;margin-bottom:4px}.subtitle{font-size:12px;color:var(--muted);margin-top:5px}.header-actions{display:flex;gap:10px;align-items:center;flex-shrink:0}.status-dot{font-size:11px;color:var(--muted)}.status-dot::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px}.panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:var(--shadow)}.panel-head,.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.panel-head{margin-bottom:12px}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.toolbar label{display:flex;align-items:center;gap:6px}.toolbar select{width:auto}.grid{display:grid;gap:16px}.columns{grid-template-columns:1fr 1fr}.stack{display:grid;gap:14px}.muted,.hint{color:var(--muted);font-size:12px}.hint{line-height:1.7}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px}.editor{min-height:280px;background:var(--code);tab-size:2}.message{font-size:12px;min-height:21px;overflow-wrap:anywhere}.error{color:var(--danger)}.success{color:var(--accent)}.tag{padding:2px 8px;border:1px solid var(--line);border-radius:20px;color:var(--muted);font-size:11px}.empty{padding:28px 12px;text-align:center;color:var(--muted)}.separator{height:1px;background:var(--line);margin:16px 0}.grow{flex:1;min-width:0}.nowrap{white-space:nowrap}.notice{padding:12px 16px;margin-bottom:16px;border:1px solid var(--danger);border-radius:10px;color:var(--danger);font-size:12px}.file-input{display:none}[hidden]{display:none!important}.footer{display:flex;justify-content:space-between;gap:12px;margin-top:18px;font-size:11px;color:var(--muted)}#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);max-width:90vw;padding:10px 18px;border-radius:10px;background:var(--ink);color:var(--bg);box-shadow:0 8px 30px #0002;z-index:20;pointer-events:none}dialog{max-width:min(480px,90vw);width:100%;border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--ink);padding:20px}dialog::backdrop{background:#10172088}dialog textarea{min-height:140px;margin:12px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}details summary{cursor:pointer;color:var(--muted);font-size:12px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:11px;color:var(--muted);font-weight:600}.table-scroll{overflow:auto}.check{display:flex;align-items:center;gap:6px}mark{background:#fff0a6;color:#523f06;border-radius:3px;padding:1px 0}.stats{display:flex;gap:22px;flex-wrap:wrap}.stat strong{display:block;font-size:24px;line-height:1.3;letter-spacing:-1px}.stat span{font-size:11px;color:var(--muted)}
+.stack{align-content:start}.check{white-space:nowrap}.check select{width:auto}
+@media(max-width:650px){.app{padding:16px}.app-header{align-items:flex-start;gap:10px;margin-bottom:16px}.brand{gap:10px}.brand-icon{width:38px;height:38px}.header-actions{gap:6px}.status-dot{display:none}h1{font-size:20px}.columns{grid-template-columns:1fr}.panel{padding:14px}.editor{min-height:210px}.toolbar button{flex-grow:1}.footer{flex-wrap:wrap}input,textarea,select{font-size:16px}.mono{font-size:13px}}
+
+</style></head><body>
+<main class="app"><header class="app-header"><div class="brand"><div class="brand-icon" aria-hidden="true">{}</div><div><div class="eyebrow">WEB OS / PLUGIN 01</div><h1>JSON工作台</h1><p class="subtitle">校验、排版与压缩，让数据清晰可读。</p></div></div><div class="header-actions"><span class="status-dot" id="save-state" role="status">本地保存</span><button id="theme-toggle" class="small" aria-label="切换深浅主题">深色</button></div></header>
+<div id="storage-warning" class="notice" role="alert" hidden></div>
+
+<section class="panel stack">
+<div class="row"><div class="toolbar"><button id="format" class="primary">格式化</button><button id="minify">压缩</button><button id="import">导入 JSON</button><button id="sample">示例</button></div><label class="check">缩进 <select id="indent" aria-label="缩进"><option value="2">2 空格</option><option value="4">4 空格</option><option value="tab">Tab</option></select></label></div>
+<div class="grid columns"><div class="stack"><div class="row"><h2>输入</h2><span id="input-count" class="tag"></span></div><textarea id="source" class="editor mono" spellcheck="false" aria-label="JSON 输入" placeholder='{"hello": "world"}' maxlength="1000000"></textarea></div><div class="stack"><div class="row"><h2>结果</h2><div class="toolbar"><button id="copy" class="small">复制</button><button id="export" class="small">下载</button></div></div><textarea id="result" class="editor mono" spellcheck="false" readonly aria-label="JSON 结果"></textarea></div></div>
+<div id="validation" class="message" role="status"></div><p class="hint">格式化会保留原始数字文本和键顺序，大整数不会被改写。</p>
+</section><input id="file" type="file" accept=".json,application/json,text/plain" class="file-input">
+
+<footer class="footer"><span>Web OS 官方插件</span><span>离线可用 · 内容保存在本地</span></footer></main>
+<div id="toast" role="status" hidden></div><dialog id="copy-dialog"><h2>复制内容</h2><p class="hint">请按 Ctrl/Cmd+C，或长按文本复制。</p><textarea id="copy-text" readonly aria-label="待复制内容"></textarea><button id="copy-close">完成</button></dialog>
+<script>
+'use strict';
+const KEY = 'webos.plugin.json-workbench.v1';
+
+const $ = selector => document.querySelector(selector);
+const node = (tag, className = '', text = '') => { const el = document.createElement(tag); el.className = className; el.textContent = text; return el; };
+function toast(text) { $('#toast').textContent = text; $('#toast').hidden = false; clearTimeout(toast.timer); toast.timer = setTimeout(() => $('#toast').hidden = true, 3000); }
+function storageError(text) { $('#storage-warning').textContent = text; $('#storage-warning').hidden = false; $('#save-state').textContent = '未保存'; }
+function loadState(fallback) {
+    try { const raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : fallback; }
+    catch (_) { storageError('无法读取保存内容。当前仍可使用，请导出重要内容。'); return fallback; }
+}
+function persist(value) {
+    try { localStorage.setItem(KEY, JSON.stringify(value)); $('#save-state').textContent = '已保存'; return true; }
+    catch (_) { storageError('本地保存失败，请导出内容后再关闭窗口。'); return false; }
+}
+function download(name, text, type = 'application/json') {
+    const url = URL.createObjectURL(new Blob([text], {type:type + ';charset=utf-8'}));
+    const link = document.createElement('a'); link.href = url; link.download = name; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); toast('已复制'); return; } catch (_) {}
+    const input = document.createElement('textarea'); input.value = text; input.style.cssText = 'position:fixed;left:-9999px;'; document.body.append(input); input.select();
+    let copied = false; try { copied = document.execCommand('copy'); } catch (_) {} input.remove();
+    if (copied) { toast('已复制'); return; }
+    $('#copy-text').value = text; $('#copy-dialog').showModal(); $('#copy-text').focus(); $('#copy-text').select();
+}
+async function readFile(file, maxMB = 1) { if (!file) return null; if (file.size > maxMB * 1024 * 1024) throw new Error('请选择不超过 ' + maxMB + ' MB 的文件'); return file.text(); }
+const uid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
+const debounce = (fn, delay = 180) => { let timer; return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); }; };
+function applyTheme(dark) { document.documentElement.dataset.theme = dark ? 'dark' : 'light'; $('#theme-toggle').textContent = dark ? '浅色' : '深色'; $('#theme-toggle').setAttribute('aria-pressed', String(dark)); }
+try { applyTheme((localStorage.getItem(KEY + '.theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark'); } catch (_) { applyTheme(false); }
+$('#theme-toggle').onclick = () => { const dark = document.documentElement.dataset.theme !== 'dark'; applyTheme(dark); try { localStorage.setItem(KEY + '.theme', dark ? 'dark' : 'light'); } catch (_) {} };
+$('#copy-close').onclick = () => $('#copy-dialog').close();
+
+
+const saved = loadState({source:'',indent:'2',compact:false});
+$('#source').value = typeof saved?.source === 'string' ? saved.source : '';
+$('#indent').value = ['2','4','tab'].includes(saved?.indent) ? saved.indent : '2';
+let compact = saved?.compact === true;
+function formatTokens(text, unit, minified) {
+    const tokens = text.match(/"(?:\\.|[^"\\])*"|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|true|false|null|[{}\[\],:]/g) || [];
+    if (minified) return tokens.join('');
+    let level = 0, result = '';
+    const newline = () => '\n' + unit.repeat(level);
+    tokens.forEach((token, index) => {
+        if (token === '{' || token === '[') { result += token; if (tokens[index+1] !== (token === '{' ? '}' : ']')) { level++; result += newline(); } }
+        else if (token === '}' || token === ']') { if (tokens[index-1] !== (token === '}' ? '{' : '[')) { level--; result += newline(); } result += token; }
+        else if (token === ',') result += ',' + newline();
+        else if (token === ':') result += ': ';
+        else result += token;
+    });
+    return result;
+}
+function render(save = true) {
+    const text = $('#source').value;
+    $('#input-count').textContent = text.length.toLocaleString() + ' 字符';
+    $('#validation').className = 'message';
+    $('#copy').disabled = $('#export').disabled = true;
+    if (!text.trim()) { $('#result').value = ''; $('#validation').textContent = '粘贴 JSON 开始。'; }
+    else {
+        try {
+            const parsed = JSON.parse(text);
+            $('#result').value = formatTokens(text, $('#indent').value === 'tab' ? '\t' : ' '.repeat(Number($('#indent').value)), compact);
+            $('#validation').textContent = 'JSON 有效 · ' + (parsed === null ? 'null' : Array.isArray(parsed) ? '数组，' + parsed.length + ' 项' : typeof parsed === 'object' ? '对象，' + Object.keys(parsed).length + ' 个键' : typeof parsed) + ' · 输出 ' + $('#result').value.length.toLocaleString() + ' 字符';
+            $('#validation').className = 'message success'; $('#copy').disabled = $('#export').disabled = false;
+        } catch (error) { $('#result').value = ''; $('#validation').textContent = 'JSON 无效：' + error.message; $('#validation').className = 'message error'; }
+    }
+    if (save) persist({source:text,indent:$('#indent').value,compact});
+}
+const scheduleRender = debounce(() => render(false));
+$('#source').oninput = () => { persist({source:$('#source').value,indent:$('#indent').value,compact}); $('#copy').disabled = $('#export').disabled = true; $('#validation').className = 'message'; $('#validation').textContent = '正在校验…'; scheduleRender(); };
+$('#indent').onchange = () => render();
+$('#format').onclick = () => { compact = false; render(); };
+$('#minify').onclick = () => { compact = true; render(); };
+$('#copy').onclick = () => copyText($('#result').value);
+$('#export').onclick = () => download('formatted.json', $('#result').value);
+$('#sample').onclick = () => { $('#source').value = '{"project":"Web OS","plugins":["JSON","Regex"],"enabled":true,"id":9007199254740993}'; compact = false; render(); };
+$('#import').onclick = () => $('#file').click();
+$('#file').onchange = async event => { try { const text = await readFile(event.target.files[0]); if (text !== null) { $('#source').value = text; render(); } } catch (error) { toast(error.message); } event.target.value = ''; };
+window.addEventListener('pagehide', () => persist({source:$('#source').value,indent:$('#indent').value,compact}));
+render(false);
+
+</script></body></html>

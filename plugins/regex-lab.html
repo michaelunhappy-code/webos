@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>正则实验室 · Web OS</title>
+<style>
+:root{color-scheme:light;--bg:#f3f6fa;--panel:#fff;--ink:#172439;--muted:#66758a;--line:#dee5ef;--accent:#087f8c;--soft:#e5f5f4;--danger:#b53a49;--code:#f6f8fb;--shadow:0 8px 28px #17243906}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#101720;--panel:#192330;--ink:#e3ebf5;--muted:#9caec2;--line:#2d3b4d;--accent:#5dd5ce;--soft:#173a3d;--danger:#ff99a5;--code:#131c28;--shadow:none}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button,input,select{min-height:38px}button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:7px 13px;cursor:pointer;transition:background .15s}button:hover{background:var(--soft)}button:disabled{opacity:.5;cursor:not-allowed}button.primary{background:var(--accent);border-color:var(--accent);color:var(--panel);font-weight:650}button.danger{color:var(--danger)}button.small{padding:4px 10px;min-height:32px;font-size:12px}button[aria-pressed="true"]{border-color:var(--accent);background:var(--soft);color:var(--accent)}:focus-visible{outline:3px solid var(--accent);outline-offset:2px}input,textarea,select{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:8px 10px}textarea{resize:vertical;line-height:1.6}label{display:grid;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}input[type="checkbox"]{width:16px;min-height:16px;accent-color:var(--accent)}input[type="color"]{padding:3px;min-height:44px}input[type="range"]{padding:0;accent-color:var(--accent)}h1,h2,h3,p{margin:0}h1{font-size:23px;line-height:1.25;letter-spacing:-.6px}h2{font-size:15px}h3{font-size:14px}.app{max-width:1120px;margin:auto;padding:24px}.app-header{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:22px}.brand{display:flex;gap:13px;align-items:center}.brand-icon{width:44px;height:44px;flex:none;background:var(--soft);color:var(--accent);border:1px solid var(--line);border-radius:13px;display:grid;place-items:center;font:700 19px ui-monospace,monospace}.eyebrow{font-size:10px;letter-spacing:1.7px;color:var(--accent);font-weight:750;margin-bottom:4px}.subtitle{font-size:12px;color:var(--muted);margin-top:5px}.header-actions{display:flex;gap:10px;align-items:center;flex-shrink:0}.status-dot{font-size:11px;color:var(--muted)}.status-dot::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px}.panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:var(--shadow)}.panel-head,.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.panel-head{margin-bottom:12px}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.toolbar label{display:flex;align-items:center;gap:6px}.toolbar select{width:auto}.grid{display:grid;gap:16px}.columns{grid-template-columns:1fr 1fr}.stack{display:grid;gap:14px}.muted,.hint{color:var(--muted);font-size:12px}.hint{line-height:1.7}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px}.editor{min-height:280px;background:var(--code);tab-size:2}.message{font-size:12px;min-height:21px;overflow-wrap:anywhere}.error{color:var(--danger)}.success{color:var(--accent)}.tag{padding:2px 8px;border:1px solid var(--line);border-radius:20px;color:var(--muted);font-size:11px}.empty{padding:28px 12px;text-align:center;color:var(--muted)}.separator{height:1px;background:var(--line);margin:16px 0}.grow{flex:1;min-width:0}.nowrap{white-space:nowrap}.notice{padding:12px 16px;margin-bottom:16px;border:1px solid var(--danger);border-radius:10px;color:var(--danger);font-size:12px}.file-input{display:none}[hidden]{display:none!important}.footer{display:flex;justify-content:space-between;gap:12px;margin-top:18px;font-size:11px;color:var(--muted)}#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);max-width:90vw;padding:10px 18px;border-radius:10px;background:var(--ink);color:var(--bg);box-shadow:0 8px 30px #0002;z-index:20;pointer-events:none}dialog{max-width:min(480px,90vw);width:100%;border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--ink);padding:20px}dialog::backdrop{background:#10172088}dialog textarea{min-height:140px;margin:12px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}details summary{cursor:pointer;color:var(--muted);font-size:12px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:11px;color:var(--muted);font-weight:600}.table-scroll{overflow:auto}.check{display:flex;align-items:center;gap:6px}mark{background:#fff0a6;color:#523f06;border-radius:3px;padding:1px 0}.stats{display:flex;gap:22px;flex-wrap:wrap}.stat strong{display:block;font-size:24px;line-height:1.3;letter-spacing:-1px}.stat span{font-size:11px;color:var(--muted)}
+.stack{align-content:start}.check{white-space:nowrap}.check select{width:auto}
+@media(max-width:650px){.app{padding:16px}.app-header{align-items:flex-start;gap:10px;margin-bottom:16px}.brand{gap:10px}.brand-icon{width:38px;height:38px}.header-actions{gap:6px}.status-dot{display:none}h1{font-size:20px}.columns{grid-template-columns:1fr}.panel{padding:14px}.editor{min-height:210px}.toolbar button{flex-grow:1}.footer{flex-wrap:wrap}input,textarea,select{font-size:16px}.mono{font-size:13px}}
+
+.regex-top{grid-template-columns:1fr auto}.flag-list{gap:12px;margin-top:9px}.match-preview{min-height:72px;max-height:230px;overflow:auto;background:var(--code);padding:12px;border-radius:9px;white-space:pre-wrap}.capture-list{max-height:260px;overflow:auto}.capture-row{padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}@media(max-width:650px){.regex-top{grid-template-columns:1fr}}</style></head><body>
+<main class="app"><header class="app-header"><div class="brand"><div class="brand-icon" aria-hidden="true">.*</div><div><div class="eyebrow">WEB OS / PLUGIN 02</div><h1>正则实验室</h1><p class="subtitle">可视化匹配、捕获分组与替换预览。</p></div></div><div class="header-actions"><span class="status-dot" id="save-state" role="status">本地保存</span><button id="theme-toggle" class="small" aria-label="切换深浅主题">深色</button></div></header>
+<div id="storage-warning" class="notice" role="alert" hidden></div>
+
+<section class="panel stack"><div class="grid regex-top"><label>表达式（不用输入两侧 /）<input id="pattern" class="mono" spellcheck="false" maxlength="2000" aria-label="正则表达式"></label><div><div class="muted">匹配选项</div><div id="flags" class="toolbar flag-list"><label><input type="checkbox" value="g" checked>g</label><label><input type="checkbox" value="i">i</label><label><input type="checkbox" value="m">m</label><label><input type="checkbox" value="s">s</label><label><input type="checkbox" value="u">u</label></div></div></div><div class="row"><p class="hint">g 全部匹配 · i 忽略大小写 · m 多行 · s 点号包含换行 · u Unicode</p><button id="run" class="primary">运行匹配</button></div><div id="regex-status" class="message" role="status"></div></section>
+<div class="grid columns" style="margin-top:16px"><section class="panel stack"><h2>测试文本</h2><textarea id="test-text" class="editor mono" spellcheck="false" maxlength="20000" aria-label="测试文本"></textarea><label>替换为（支持 $1、$&amp;、$&lt;name&gt;）<input id="replacement" class="mono" maxlength="500" aria-label="替换内容" spellcheck="false"></label></section><section class="panel stack"><h2>匹配高亮</h2><pre id="highlights" class="mono match-preview"></pre><details id="capture-details"><summary>捕获分组与位置</summary><div id="captures" class="capture-list"></div></details><div class="separator"></div><div class="row"><h2>替换预览</h2><button id="copy-replaced" class="small">复制结果</button></div><pre id="replaced" class="mono match-preview"></pre></section></div>
+
+<footer class="footer"><span>Web OS 官方插件</span><span>离线可用 · 内容保存在本地</span></footer></main>
+<div id="toast" role="status" hidden></div><dialog id="copy-dialog"><h2>复制内容</h2><p class="hint">请按 Ctrl/Cmd+C，或长按文本复制。</p><textarea id="copy-text" readonly aria-label="待复制内容"></textarea><button id="copy-close">完成</button></dialog>
+<script>
+'use strict';
+const KEY = 'webos.plugin.regex-lab.v1';
+
+const $ = selector => document.querySelector(selector);
+const node = (tag, className = '', text = '') => { const el = document.createElement(tag); el.className = className; el.textContent = text; return el; };
+function toast(text) { $('#toast').textContent = text; $('#toast').hidden = false; clearTimeout(toast.timer); toast.timer = setTimeout(() => $('#toast').hidden = true, 3000); }
+function storageError(text) { $('#storage-warning').textContent = text; $('#storage-warning').hidden = false; $('#save-state').textContent = '未保存'; }
+function loadState(fallback) {
+    try { const raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : fallback; }
+    catch (_) { storageError('无法读取保存内容。当前仍可使用，请导出重要内容。'); return fallback; }
+}
+function persist(value) {
+    try { localStorage.setItem(KEY, JSON.stringify(value)); $('#save-state').textContent = '已保存'; return true; }
+    catch (_) { storageError('本地保存失败，请导出内容后再关闭窗口。'); return false; }
+}
+function download(name, text, type = 'application/json') {
+    const url = URL.createObjectURL(new Blob([text], {type:type + ';charset=utf-8'}));
+    const link = document.createElement('a'); link.href = url; link.download = name; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); toast('已复制'); return; } catch (_) {}
+    const input = document.createElement('textarea'); input.value = text; input.style.cssText = 'position:fixed;left:-9999px;'; document.body.append(input); input.select();
+    let copied = false; try { copied = document.execCommand('copy'); } catch (_) {} input.remove();
+    if (copied) { toast('已复制'); return; }
+    $('#copy-text').value = text; $('#copy-dialog').showModal(); $('#copy-text').focus(); $('#copy-text').select();
+}
+async function readFile(file, maxMB = 1) { if (!file) return null; if (file.size > maxMB * 1024 * 1024) throw new Error('请选择不超过 ' + maxMB + ' MB 的文件'); return file.text(); }
+const uid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
+const debounce = (fn, delay = 180) => { let timer; return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); }; };
+function applyTheme(dark) { document.documentElement.dataset.theme = dark ? 'dark' : 'light'; $('#theme-toggle').textContent = dark ? '浅色' : '深色'; $('#theme-toggle').setAttribute('aria-pressed', String(dark)); }
+try { applyTheme((localStorage.getItem(KEY + '.theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark'); } catch (_) { applyTheme(false); }
+$('#theme-toggle').onclick = () => { const dark = document.documentElement.dataset.theme !== 'dark'; applyTheme(dark); try { localStorage.setItem(KEY + '.theme', dark ? 'dark' : 'light'); } catch (_) {} };
+$('#copy-close').onclick = () => $('#copy-dialog').close();
+
+
+const defaults = {pattern:'(?<prefix>[A-Z]+)-(\\d+)',flags:'g',text:'ISSUE-42 已完成\nTASK-108 进行中\nNOTE-7 待确认',replacement:'[$1 #$2]'};
+const saved = loadState(defaults);
+$('#pattern').value = typeof saved?.pattern === 'string' ? saved.pattern : defaults.pattern;
+$('#test-text').value = typeof saved?.text === 'string' ? saved.text : defaults.text;
+$('#replacement').value = typeof saved?.replacement === 'string' ? saved.replacement : defaults.replacement;
+$('#flags').querySelectorAll('input').forEach(input => input.checked = (typeof saved?.flags === 'string' ? saved.flags : 'g').includes(input.value));
+function draft() { return {pattern:$('#pattern').value,flags:Array.from(document.querySelectorAll('#flags input:checked'),input=>input.value).join(''),text:$('#test-text').value,replacement:$('#replacement').value}; }
+function regexWorker() {
+    self.onmessage = ({data}) => {
+        try {
+            const regex = new RegExp(data.pattern, data.flags), matches = [];
+            let match, truncated = false;
+            while ((match = regex.exec(data.text)) !== null) {
+                if (matches.length >= 500) { truncated = true; break; }
+                matches.push({index:match.index,text:match[0],groups:Array.from(match).slice(1),named:match.groups || {}});
+                if (!regex.global) break;
+                if (!match[0].length) { const code = data.text.codePointAt(regex.lastIndex); regex.lastIndex += regex.unicode && code > 0xffff ? 2 : 1; }
+            }
+            const replaced = data.text.replace(new RegExp(data.pattern,data.flags), data.replacement);
+            self.postMessage({matches,truncated,replaced:replaced.slice(0,200000),replacementTruncated:replaced.length>200000});
+        } catch (error) { self.postMessage({error:error.message}); }
+    };
+}
+let worker, workerURL, timer, generation = 0, replacementResult = '';
+function stopWorker() { clearTimeout(timer); worker?.terminate(); worker = null; if (workerURL) URL.revokeObjectURL(workerURL); workerURL = null; }
+function showError(text) { $('#regex-status').textContent = text; $('#regex-status').className = 'message error'; $('#copy-replaced').disabled = true; }
+function run(save = true) {
+    stopWorker(); const id = ++generation, data = draft(); if (save) persist(data);
+    $('#highlights').replaceChildren(); $('#captures').replaceChildren(); $('#replaced').textContent = ''; $('#copy-replaced').disabled = true;
+    $('#regex-status').className = 'message'; $('#regex-status').textContent = '正在匹配…';
+    try {
+        workerURL = URL.createObjectURL(new Blob(['(' + regexWorker.toString() + ')();'],{type:'text/javascript'}));
+        worker = new Worker(workerURL);
+        worker.onerror = event => { event.preventDefault(); if (id !== generation) return; stopWorker(); showError('当前页面不能启动后台匹配，请将插件保存为 HTML 后用浏览器打开。'); };
+        worker.onmessage = ({data:result}) => {
+            if (id !== generation) return; stopWorker();
+            if (result.error) { showError('表达式无效：' + result.error); return; }
+            $('#regex-status').textContent = (result.truncated ? '超过 500 处匹配，仅显示前 500 处' : '匹配到 ' + result.matches.length + ' 处') + (result.replacementTruncated ? ' · 替换结果过长，仅预览前 200000 字符' : '');
+            $('#regex-status').className = 'message success';
+            let cursor = 0;
+            result.matches.forEach((match,index) => {
+                $('#highlights').append(document.createTextNode(data.text.slice(cursor,match.index)));
+                const mark = node('mark','',match.text || '▏'); mark.title = '第 ' + (index+1) + ' 处 · 位置 ' + match.index; $('#highlights').append(mark); cursor = match.index+match.text.length;
+                const row = node('div','capture-row'); row.append(node('strong','', '#' + (index+1) + ' · 位置 ' + match.index),node('pre','mono',JSON.stringify({match:match.text,groups:match.groups,named:match.named},null,2))); $('#captures').append(row);
+            });
+            $('#highlights').append(document.createTextNode(data.text.slice(cursor)));
+            replacementResult = result.replaced; $('#replaced').textContent = replacementResult; $('#copy-replaced').disabled = result.replacementTruncated;
+        };
+        timer = setTimeout(() => { if (id !== generation) return; stopWorker(); showError('匹配超过 800 ms，已中止。请缩短文本或简化表达式。'); },800);
+        worker.postMessage(data);
+    } catch (_) { stopWorker(); showError('无法启动后台匹配。请将 HTML 保存后在浏览器中打开。'); }
+}
+const schedule = debounce(() => run(false),250);
+for (const id of ['#pattern','#test-text','#replacement']) $(id).oninput = () => { persist(draft()); stopWorker(); generation++; $('#copy-replaced').disabled = true; $('#regex-status').className = 'message'; $('#regex-status').textContent = '等待匹配…'; schedule(); };
+$('#flags').onchange = () => run(); $('#run').onclick = () => run();
+$('#copy-replaced').onclick = () => copyText(replacementResult);
+window.addEventListener('pagehide', () => { persist(draft()); stopWorker(); });
+run(false);
+
+</script></body></html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>配色工作台 · Web OS</title>
+<style>
+:root{color-scheme:light;--bg:#f3f6fa;--panel:#fff;--ink:#172439;--muted:#66758a;--line:#dee5ef;--accent:#087f8c;--soft:#e5f5f4;--danger:#b53a49;--code:#f6f8fb;--shadow:0 8px 28px #17243906}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#101720;--panel:#192330;--ink:#e3ebf5;--muted:#9caec2;--line:#2d3b4d;--accent:#5dd5ce;--soft:#173a3d;--danger:#ff99a5;--code:#131c28;--shadow:none}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button,input,select{min-height:38px}button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:7px 13px;cursor:pointer;transition:background .15s}button:hover{background:var(--soft)}button:disabled{opacity:.5;cursor:not-allowed}button.primary{background:var(--accent);border-color:var(--accent);color:var(--panel);font-weight:650}button.danger{color:var(--danger)}button.small{padding:4px 10px;min-height:32px;font-size:12px}button[aria-pressed="true"]{border-color:var(--accent);background:var(--soft);color:var(--accent)}:focus-visible{outline:3px solid var(--accent);outline-offset:2px}input,textarea,select{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:8px 10px}textarea{resize:vertical;line-height:1.6}label{display:grid;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}input[type="checkbox"]{width:16px;min-height:16px;accent-color:var(--accent)}input[type="color"]{padding:3px;min-height:44px}input[type="range"]{padding:0;accent-color:var(--accent)}h1,h2,h3,p{margin:0}h1{font-size:23px;line-height:1.25;letter-spacing:-.6px}h2{font-size:15px}h3{font-size:14px}.app{max-width:1120px;margin:auto;padding:24px}.app-header{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:22px}.brand{display:flex;gap:13px;align-items:center}.brand-icon{width:44px;height:44px;flex:none;background:var(--soft);color:var(--accent);border:1px solid var(--line);border-radius:13px;display:grid;place-items:center;font:700 19px ui-monospace,monospace}.eyebrow{font-size:10px;letter-spacing:1.7px;color:var(--accent);font-weight:750;margin-bottom:4px}.subtitle{font-size:12px;color:var(--muted);margin-top:5px}.header-actions{display:flex;gap:10px;align-items:center;flex-shrink:0}.status-dot{font-size:11px;color:var(--muted)}.status-dot::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px}.panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:var(--shadow)}.panel-head,.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.panel-head{margin-bottom:12px}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.toolbar label{display:flex;align-items:center;gap:6px}.toolbar select{width:auto}.grid{display:grid;gap:16px}.columns{grid-template-columns:1fr 1fr}.stack{display:grid;gap:14px}.muted,.hint{color:var(--muted);font-size:12px}.hint{line-height:1.7}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px}.editor{min-height:280px;background:var(--code);tab-size:2}.message{font-size:12px;min-height:21px;overflow-wrap:anywhere}.error{color:var(--danger)}.success{color:var(--accent)}.tag{padding:2px 8px;border:1px solid var(--line);border-radius:20px;color:var(--muted);font-size:11px}.empty{padding:28px 12px;text-align:center;color:var(--muted)}.separator{height:1px;background:var(--line);margin:16px 0}.grow{flex:1;min-width:0}.nowrap{white-space:nowrap}.notice{padding:12px 16px;margin-bottom:16px;border:1px solid var(--danger);border-radius:10px;color:var(--danger);font-size:12px}.file-input{display:none}[hidden]{display:none!important}.footer{display:flex;justify-content:space-between;gap:12px;margin-top:18px;font-size:11px;color:var(--muted)}#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);max-width:90vw;padding:10px 18px;border-radius:10px;background:var(--ink);color:var(--bg);box-shadow:0 8px 30px #0002;z-index:20;pointer-events:none}dialog{max-width:min(480px,90vw);width:100%;border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--ink);padding:20px}dialog::backdrop{background:#10172088}dialog textarea{min-height:140px;margin:12px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}details summary{cursor:pointer;color:var(--muted);font-size:12px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:11px;color:var(--muted);font-weight:600}.table-scroll{overflow:auto}.check{display:flex;align-items:center;gap:6px}mark{background:#fff0a6;color:#523f06;border-radius:3px;padding:1px 0}.stats{display:flex;gap:22px;flex-wrap:wrap}.stat strong{display:block;font-size:24px;line-height:1.3;letter-spacing:-1px}.stat span{font-size:11px;color:var(--muted)}
+.stack{align-content:start}.check{white-space:nowrap}.check select{width:auto}
+@media(max-width:650px){.app{padding:16px}.app-header{align-items:flex-start;gap:10px;margin-bottom:16px}.brand{gap:10px}.brand-icon{width:38px;height:38px}.header-actions{gap:6px}.status-dot{display:none}h1{font-size:20px}.columns{grid-template-columns:1fr}.panel{padding:14px}.editor{min-height:210px}.toolbar button{flex-grow:1}.footer{flex-wrap:wrap}input,textarea,select{font-size:16px}.mono{font-size:13px}}
+
+.swatches{display:grid;grid-template-columns:repeat(5,1fr);border-radius:11px;overflow:hidden}.swatch{border:0!important;border-radius:0;min-height:146px;padding:13px 8px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;min-width:0;position:relative}.swatch[aria-pressed="true"]::after{content:"✓";position:absolute;right:10px;top:10px;font-size:17px}.swatch .mono{font-size:11px}.swatch-number{opacity:.7;font-size:11px}.color-fields{display:grid;grid-template-columns:100px 1fr;gap:10px}.color-preview{padding:18px;border-radius:11px;display:flex;flex-direction:column;justify-content:space-between;gap:12px}.color-preview strong{font-size:25px;line-height:1.25}.preview-label{font-size:10px;letter-spacing:.5px}.shades{display:flex;margin-top:7px;gap:3px}.shades button{flex:1;min-width:0;padding:0;min-height:27px;border:0;border-radius:5px}.gradient{height:20px;border-radius:6px}.css-output{background:var(--code);padding:13px;border-radius:9px;min-height:200px}.library-row{display:flex;align-items:center;gap:8px}.library-restore{flex:1;display:flex;align-items:center;gap:9px;text-align:left;min-width:0;overflow-wrap:anywhere}.mini-swatches{display:flex;width:65px;height:20px;border-radius:4px;overflow:hidden;flex-shrink:0}.mini-swatches i{flex:1}@media(max-width:650px){.swatch{min-height:120px;padding:10px 5px}.swatch .mono{font-size:9px}}</style></head><body>
+<main class="app"><header class="app-header"><div class="brand"><div class="brand-icon" aria-hidden="true">◐</div><div><div class="eyebrow">WEB OS / PLUGIN 03</div><h1>配色工作台</h1><p class="subtitle">收集五色方案，快速得到可用的 CSS。</p></div></div><div class="header-actions"><span class="status-dot" id="save-state" role="status">本地保存</span><button id="theme-toggle" class="small" aria-label="切换深浅主题">深色</button></div></header>
+<div id="storage-warning" class="notice" role="alert" hidden></div>
+
+<section class="panel stack"><div class="row"><h2>当前色板</h2><div class="toolbar"><button id="generate">生成配色</button><button id="copy-css" class="primary">复制 CSS</button></div></div><div id="swatches" class="swatches" aria-label="选择颜色"></div><div class="grid columns"><div class="stack"><div class="color-fields"><label>颜色选择<input id="picker" type="color" aria-label="选择当前颜色"></label><label>HEX<input id="hex" class="mono" maxlength="7" aria-label="HEX 颜色" spellcheck="false"></label></div><div id="color-values" class="mono hint"></div><div><div class="muted">明暗变体 · 点击应用</div><div id="shades" class="shades"></div></div></div><div id="color-preview" class="color-preview"><span class="preview-label">COLOR PREVIEW</span><strong>让色彩<br>有迹可循。</strong><span id="contrast" class="preview-label"></span></div></div><div id="gradient" class="gradient" aria-label="色板渐变预览"></div></section>
+<div class="grid columns" style="margin-top:16px"><section class="panel stack"><h2>保存为色板</h2><form id="save-palette" class="toolbar"><input id="palette-name" class="grow" maxlength="40" placeholder="例如：薄荷与海风" aria-label="色板名称" required><button type="submit" class="primary">保存色板</button></form><div class="row"><span class="hint">最多收藏 20 组。</span><button id="export-palettes" class="small">导出收藏</button></div><div id="palette-library" class="stack"></div></section><section class="panel stack"><div class="row"><h2>CSS 变量</h2><button id="download-css" class="small">下载 CSS</button></div><pre id="css-output" class="mono css-output"></pre></section></div>
+
+<footer class="footer"><span>Web OS 官方插件</span><span>离线可用 · 内容保存在本地</span></footer></main>
+<div id="toast" role="status" hidden></div><dialog id="copy-dialog"><h2>复制内容</h2><p class="hint">请按 Ctrl/Cmd+C，或长按文本复制。</p><textarea id="copy-text" readonly aria-label="待复制内容"></textarea><button id="copy-close">完成</button></dialog>
+<script>
+'use strict';
+const KEY = 'webos.plugin.palette-studio.v1';
+
+const $ = selector => document.querySelector(selector);
+const node = (tag, className = '', text = '') => { const el = document.createElement(tag); el.className = className; el.textContent = text; return el; };
+function toast(text) { $('#toast').textContent = text; $('#toast').hidden = false; clearTimeout(toast.timer); toast.timer = setTimeout(() => $('#toast').hidden = true, 3000); }
+function storageError(text) { $('#storage-warning').textContent = text; $('#storage-warning').hidden = false; $('#save-state').textContent = '未保存'; }
+function loadState(fallback) {
+    try { const raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : fallback; }
+    catch (_) { storageError('无法读取保存内容。当前仍可使用，请导出重要内容。'); return fallback; }
+}
+function persist(value) {
+    try { localStorage.setItem(KEY, JSON.stringify(value)); $('#save-state').textContent = '已保存'; return true; }
+    catch (_) { storageError('本地保存失败，请导出内容后再关闭窗口。'); return false; }
+}
+function download(name, text, type = 'application/json') {
+    const url = URL.createObjectURL(new Blob([text], {type:type + ';charset=utf-8'}));
+    const link = document.createElement('a'); link.href = url; link.download = name; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); toast('已复制'); return; } catch (_) {}
+    const input = document.createElement('textarea'); input.value = text; input.style.cssText = 'position:fixed;left:-9999px;'; document.body.append(input); input.select();
+    let copied = false; try { copied = document.execCommand('copy'); } catch (_) {} input.remove();
+    if (copied) { toast('已复制'); return; }
+    $('#copy-text').value = text; $('#copy-dialog').showModal(); $('#copy-text').focus(); $('#copy-text').select();
+}
+async function readFile(file, maxMB = 1) { if (!file) return null; if (file.size > maxMB * 1024 * 1024) throw new Error('请选择不超过 ' + maxMB + ' MB 的文件'); return file.text(); }
+const uid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
+const debounce = (fn, delay = 180) => { let timer; return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); }; };
+function applyTheme(dark) { document.documentElement.dataset.theme = dark ? 'dark' : 'light'; $('#theme-toggle').textContent = dark ? '浅色' : '深色'; $('#theme-toggle').setAttribute('aria-pressed', String(dark)); }
+try { applyTheme((localStorage.getItem(KEY + '.theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark'); } catch (_) { applyTheme(false); }
+$('#theme-toggle').onclick = () => { const dark = document.documentElement.dataset.theme !== 'dark'; applyTheme(dark); try { localStorage.setItem(KEY + '.theme', dark ? 'dark' : 'light'); } catch (_) {} };
+$('#copy-close').onclick = () => $('#copy-dialog').close();
+
+
+const defaults = {colors:['#087F8C','#55B7A7','#D5F2E3','#F6D7A7','#D96C52'],selected:0,library:[]};
+const saved = loadState(defaults);
+const validColors = colors => Array.isArray(colors) && colors.length === 5 && colors.every(color=>typeof color==='string' && /^#[\da-f]{6}$/i.test(color));
+let colors = validColors(saved?.colors) ? saved.colors : defaults.colors.slice();
+let selected = Number.isInteger(saved?.selected) && saved.selected>=0 && saved.selected<5 ? saved.selected : 0;
+let library = Array.isArray(saved?.library) ? saved.library.filter(item=>typeof item?.name==='string' && validColors(item.colors)).slice(0,20) : [];
+function save() { persist({colors,selected,library}); }
+function rgb(hex) { return [1,3,5].map(index=>parseInt(hex.slice(index,index+2),16)); }
+function hsl(hex) {
+    const [r,g,b] = rgb(hex).map(value=>value/255), hi=Math.max(r,g,b), lo=Math.min(r,g,b), diff=hi-lo, l=(hi+lo)/2;
+    let h=0,s=0;
+    if (diff) { s=diff/(1-Math.abs(2*l-1)); h=hi===r?((g-b)/diff)%6:hi===g?(b-r)/diff+2:(r-g)/diff+4; h=((h*60)%360+360)%360; }
+    return [h,s*100,l*100];
+}
+function fromHSL(h,s,l) {
+    s/=100; l/=100; const a=s*Math.min(l,1-l);
+    return '#' + [0,8,4].map(n=>{const k=(n+h/30)%12;return Math.round(255*(l-a*Math.max(-1,Math.min(k-3,9-k,1)))).toString(16).padStart(2,'0');}).join('').toUpperCase();
+}
+function luminance(hex) { return rgb(hex).map(value=>{value/=255;return value<=.04045?value/12.92:((value+.055)/1.055)**2.4;}).reduce((sum,value,index)=>sum+value*[.2126,.7152,.0722][index],0); }
+function ratio(a,b) { const x=luminance(a), y=luminance(b); return (Math.max(x,y)+.05)/(Math.min(x,y)+.05); }
+function css() { return ':root {\n' + colors.map((color,index)=>'  --color-'+(index+1)+': '+color+';').join('\n') + '\n}\n\n.palette-gradient {\n  background: linear-gradient(90deg, '+colors.join(', ')+');\n}'; }
+function render() {
+    $('#swatches').replaceChildren();
+    colors.forEach((color,index)=>{
+        const button=node('button','swatch'); button.style.background=color; button.style.color=ratio(color,'#FFFFFF')>=ratio(color,'#172439')?'#FFFFFF':'#172439'; button.setAttribute('aria-label','选择颜色 '+(index+1)+' '+color); button.setAttribute('aria-pressed',String(index===selected));
+        button.append(node('span','swatch-number',String(index+1).padStart(2,'0')),node('span','mono',color)); button.onclick=()=>{selected=index;render();save();}; $('#swatches').append(button);
+    });
+    const color=colors[selected], values=hsl(color);
+    $('#picker').value=color; $('#hex').value=color;
+    $('#color-values').textContent='rgb('+rgb(color).join(', ')+') · hsl('+Math.round(values[0])+', '+Math.round(values[1])+'%, '+Math.round(values[2])+'%)';
+    $('#shades').replaceChildren();
+    [12,25,38,50,62,75,90].forEach(light=>{const shade=fromHSL(values[0],values[1],light), button=node('button');button.style.background=shade;button.setAttribute('aria-label','应用颜色 '+shade);button.title=shade;button.onclick=()=>updateColor(shade);$('#shades').append(button);});
+    $('#color-preview').style.background=color; $('#color-preview').style.color=ratio(color,'#FFFFFF')>=ratio(color,'#172439')?'#FFFFFF':'#172439';
+    $('#contrast').textContent='对白色 '+ratio(color,'#FFFFFF').toFixed(2)+':1 · 对深色 '+ratio(color,'#172439').toFixed(2)+':1';
+    $('#gradient').style.background='linear-gradient(90deg,'+colors.join(',')+')'; $('#css-output').textContent=css();
+}
+function updateColor(color) { colors[selected]=color.toUpperCase(); render(); save(); }
+function renderLibrary() {
+    $('#palette-library').replaceChildren();
+    if (!library.length) $('#palette-library').append(node('div','empty','还没有收藏，保存第一组配色。'));
+    library.forEach((palette,index)=>{
+        const row=node('div','library-row'), restore=node('button','library-restore');
+        const strip=node('span','mini-swatches');palette.colors.forEach(color=>{const dot=node('i');dot.style.background=color;strip.append(dot);});restore.append(strip,node('span','',palette.name));
+        restore.onclick=()=>{colors=palette.colors.slice();render();save();toast('已应用色板');};
+        const remove=node('button','small danger','删除');remove.setAttribute('aria-label','删除色板 '+palette.name);remove.onclick=()=>{library.splice(index,1);renderLibrary();save();};row.append(restore,remove);$('#palette-library').append(row);
+    });
+}
+$('#picker').oninput=event=>updateColor(event.target.value);
+$('#hex').onchange=event=>{let value=event.target.value.trim();if(!value.startsWith('#'))value='#'+value;if(/^#[\da-f]{3}$/i.test(value))value='#'+Array.from(value.slice(1),ch=>ch+ch).join('');if(!/^#[\da-f]{6}$/i.test(value)){toast('请输入 3 位或 6 位 HEX 颜色');event.target.value=colors[selected];return;}updateColor(value);};
+$('#generate').onclick=()=>{const hue=crypto.getRandomValues(new Uint16Array(1))[0]%360;colors=[[hue,65,35],[(hue+25)%360,48,57],[hue,40,88],[(hue+180)%360,64,78],[(hue+195)%360,60,55]].map(values=>fromHSL(...values));render();save();};
+$('#save-palette').onsubmit=event=>{event.preventDefault();const name=$('#palette-name').value.trim();if(!name)return;if(library.length>=20){toast('已收藏 20 组，请先删除一组。');return;}library.unshift({name,colors:colors.slice()});$('#palette-name').value='';renderLibrary();save();toast('色板已收藏');};
+$('#copy-css').onclick=()=>copyText(css());$('#download-css').onclick=()=>download('palette.css',css(),'text/css');
+$('#export-palettes').onclick=()=>download('palettes.json',JSON.stringify({type:'webos-palettes',version:1,current:colors,palettes:library},null,2));
+render();renderLibrary();
+
+</script></body></html>
