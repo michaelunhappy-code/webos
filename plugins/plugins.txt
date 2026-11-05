@@ -3,3 +3,5 @@
 [配色工作台] [1.0.0] [palette-studio.html]
 [学习闪卡] [1.0.0] [flashcards.html]
 [决策矩阵] [1.0.0] [decision-matrix.html]
+[成绩统计与发布] [1.0.0] [gradebook.html]
+[Excalidraw白板] [1.0.0] [excalidraw.html]
