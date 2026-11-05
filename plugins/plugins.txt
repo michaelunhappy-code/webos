@@ -5,3 +5,6 @@
 [决策矩阵] [1.0.0] [decision-matrix.html]
 [成绩统计与发布] [1.0.0] [gradebook.html]
 [Excalidraw白板] [1.0.0] [excalidraw.html]
+[PDF整理工作台] [1.0.0] [pdf-workshop.html]
+[批量图片处理] [1.0.0] [image-batch.html]
+[ZIP文件工作台] [1.0.0] [zip-workshop.html]
