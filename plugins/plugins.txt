@@ -9,3 +9,4 @@
 [批量图片处理] [1.0.0] [image-batch.html]
 [ZIP文件工作台] [1.0.0] [zip-workshop.html]
 [html反转义] [1.0.0] [escape.html]
+[AI检测器] [1.0.0] [ai-test.html]
