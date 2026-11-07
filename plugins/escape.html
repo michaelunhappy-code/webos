@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>反转义工具</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0a1020;
+            --panel: #131d31;
+            --line: #293651;
+            --text: #eef3ff;
+            --muted: #94a3bf;
+            --accent: #7c9cff;
+            --accent2: #70e1c4
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(ellipse at 15% 0%, #1b2d56 0%, transparent 43%), var(--bg);
+            color: var(--text);
+            font-family: Inter, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            min-height: 100vh
+        }
+
+        .wrap {
+            max-width: 1180px;
+            margin: auto;
+            padding: 42px 24px
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 30px
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px
+        }
+
+        .logo {
+            display: grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #7096ff, #6cdbc2);
+            color: #091328;
+            font-size: 26px;
+            font-weight: 900;
+            box-shadow: 0 8px 32px #729cff44
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 27px;
+            letter-spacing: -.7px
+        }
+
+        header p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .offline {
+            color: #8fe3ca;
+            border: 1px solid #2c7769;
+            background: #173c3a;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 12px
+        }
+
+        .intro {
+            font-size: 15px;
+            color: #b5c2dc;
+            margin: 0 0 25px;
+            line-height: 1.8
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 18px
+        }
+
+        .chip {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            border: 1px solid var(--line);
+            background: #16233b;
+            border-radius: 10px;
+            padding: 9px 12px;
+            color: #cdd9ee;
+            font-size: 13px;
+            cursor: pointer
+        }
+
+        .chip input {
+            accent-color: var(--accent);
+            cursor: pointer
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px
+        }
+
+        .panel {
+            background: #121c30;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 12px 35px #0002
+        }
+
+        .paneltop {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 17px 18px;
+            border-bottom: 1px solid var(--line);
+            gap: 10px
+        }
+
+        .paneltop strong {
+            font-size: 15px
+        }
+
+        .count {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        textarea {
+            display: block;
+            width: 100%;
+            height: 350px;
+            resize: vertical;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: #e4edff;
+            padding: 20px;
+            font: 14px/1.8 Consolas, 'Cascadia Code', monospace;
+            tab-size: 4
+        }
+
+        textarea::placeholder {
+            color: #71819e
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 18px
+        }
+
+        button {
+            border: 1px solid #344360;
+            border-radius: 10px;
+            padding: 11px 17px;
+            background: #1b2a43;
+            color: #e4ebff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .15s
+        }
+
+        button:hover {
+            background: #2b3d5d;
+            transform: translateY(-1px)
+        }
+
+        button.primary {
+            background: linear-gradient(135deg, #7e9cff, #6288ef);
+            color: #0c1730;
+            border: 0
+        }
+
+        button.primary:hover {
+            filter: brightness(1.12)
+        }
+
+        .hint {
+            margin-top: 22px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.9
+        }
+
+        .hint code {
+            color: #b8e8d9;
+            background: #1b2b39;
+            border-radius: 5px;
+            padding: 2px 5px
+        }
+
+        .status {
+            margin-left: auto;
+            color: #90dfc9;
+            font-size: 13px;
+            align-self: center
+        }
+
+        footer {
+            color: #70819f;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 46px
+        }
+
+        @media(max-width:760px) {
+            .wrap {
+                padding: 24px 14px
+            }
+
+            .layout {
+                grid-template-columns: 1fr
+            }
+
+            textarea {
+                height: 245px
+            }
+
+            h1 {
+                font-size: 22px
+            }
+
+            .offline {
+                font-size: 11px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="wrap">
+        <header>
+            <div class="brand">
+                <div class="logo">&lt;/&gt;</div>
+                <div>
+                    <h1>反转义工具</h1>
+                </div>
+            </div><span class="offline">● 纯离线运行</span>
+        </header>
+        <p class="intro">将 HTML 实体、反斜杠转义、Unicode 编码等恢复成原始文本。所有处理都在本地浏览器完成，不上传任何内容。</p>
+        <div class="controls"><label class="chip"><input id="html" type="checkbox" checked>HTML 实体（&amp;lt; →
+                &lt;）</label><label class="chip"><input id="slash" type="checkbox" checked>反斜杠（\\n、\\\\）</label><label
+                class="chip"><input id="unicode" type="checkbox" checked>Unicode（\\uXXXX、\\xXX）</label><label
+                class="chip"><input id="percent" type="checkbox">URL 百分号编码（%XX）</label><label class="chip"><input
+                    id="repeat" type="checkbox">多层解码（最多 5 次）</label></div>
+        <div class="layout">
+            <section class="panel">
+                <div class="paneltop"><strong>输入 · 转义文本</strong><span id="inCount" class="count">0 字符</span></div>
+                <textarea id="input" spellcheck="false"
+                    placeholder="粘贴转义文本，例如：&#10;&amp;lt;div&amp;gt;Hello\\nWorld&amp;lt;/div&amp;gt;"></textarea>
+            </section>
+            <section class="panel">
+                <div class="paneltop"><strong>输出 · 还原结果</strong><span id="outCount" class="count">0 字符</span></div>
+                <textarea id="output" spellcheck="false" readonly placeholder="还原后的文本将显示在这里……"></textarea>
+            </section>
+        </div>
+        <div class="actions"><button class="primary" id="decode">立即反转义</button><button id="copy">复制结果</button><button
+                id="download">下载 TXT</button><button id="swap">结果移至输入</button><button id="example">载入示例</button><button
+                id="clear">清空</button><span class="status" id="status">实时解码已开启</span></div>
+        <p class="hint">支持
+            <code>&amp;lt;</code>、<code>&amp;#60;</code>、<code>&amp;#x3C;</code>、<code>\\n</code>、<code>\\t</code>、<code>\\\\</code>、<code>\\u4F60</code>
+            等。HTML 实体可识别常见缺少分号的写法（如 <code>&amp;lt</code>）。多层解码可能继续改变原本希望保留的转义字符，请按需开启。</p>
+        <footer>单文件 · 离线使用</footer>
+    </main>
+    <script>
+        'use strict';
+        const $ = id => document.getElementById(id), input = $('input'), output = $('output'), status = $('status');
+        function htmlDecode(s) { const el = document.createElement('textarea'); return s.replace(/&(?:#[xX][\da-fA-F]+|#\d+|[a-zA-Z][a-zA-Z\d]+);?|&(?:lt|gt|amp|quot|apos|nbsp)(?![a-zA-Z\d])/g, m => { el.innerHTML = m; return el.value; }); }
+        function slashDecode(s) { return s.replace(/\\(?:u\{([0-9a-fA-F]{1,6})\}|u([0-9a-fA-F]{4})|x([0-9a-fA-F]{2})|([\\'"`nrtbfv0]))/g, (m, br, u, x, c) => { if (br || u || x) { const n = parseInt(br || u || x, 16); return n <= 0x10ffff && !(n >= 0xd800 && n <= 0xdfff) ? String.fromCodePoint(n) : m; } return { '\\': '\\', "'": "'", '"': '"', '`': '`', n: '\n', r: '\r', t: '\t', b: '\b', f: '\f', v: '\v', '0': '\0' }[c] ?? m; }); }
+        function decodeOnce(s) { if ($('html').checked) s = htmlDecode(s); if ($('unicode').checked || $('slash').checked) { if ($('unicode').checked && $('slash').checked) s = slashDecode(s); else if ($('unicode').checked) s = s.replace(/\\(?:u\{([0-9a-fA-F]{1,6})\}|u([0-9a-fA-F]{4})|x([0-9a-fA-F]{2}))/g, (m, a, b, c) => { let n = parseInt(a || b || c, 16); return n <= 0x10ffff && !(n >= 0xd800 && n <= 0xdfff) ? String.fromCodePoint(n) : m; }); else s = s.replace(/\\([\\'"`nrtbfv0])/g, (m, c) => ({ '\\': '\\', "'": "'", '"': '"', '`': '`', n: '\n', r: '\r', t: '\t', b: '\b', f: '\f', v: '\v', '0': '\0' }[c] ?? m)); } if ($('percent').checked) { try { s = decodeURIComponent(s) } catch { s = s.replace(/%([0-9a-fA-F]{2})/g, (_, h) => String.fromCharCode(parseInt(h, 16))); } } return s; }
+        function run() { let s = input.value; for (let i = 0; i < ($('repeat').checked ? 5 : 1); i++) { const next = decodeOnce(s); if (next === s) break; s = next; } output.value = s; $('inCount').textContent = input.value.length + ' 字符'; $('outCount').textContent = s.length + ' 字符'; status.textContent = '已更新'; }
+        input.addEventListener('input', run); document.querySelectorAll('.chip input').forEach(el => el.addEventListener('change', run)); $('decode').onclick = run;
+        $('copy').onclick = async () => { try { await navigator.clipboard.writeText(output.value) } catch { output.focus(); output.select(); document.execCommand('copy'); output.setSelectionRange(0, 0) } status.textContent = '已复制结果'; };
+        $('download').onclick = () => { const url = URL.createObjectURL(new Blob([output.value], { type: 'text/plain;charset=utf-8' })); const a = document.createElement('a'); a.href = url; a.download = 'decoded.txt'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); status.textContent = '已生成 TXT'; };
+        $('swap').onclick = () => { input.value = output.value; run(); }; $('clear').onclick = () => { input.value = ''; run(); input.focus(); }; $('example').onclick = () => { input.value = '&lt;h1&gt;Hello &amp; welcome&lt;/h1&gt;\\n\\u4F60\\u597D\\tC:\\\\Users\\\\Demo'; run(); }; run();
+    </script>
+</body>
+
+</html>
