@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeTrace · AI 风格分析实验室</title>
+<style>
+:root{color-scheme:dark;--bg:#0a1020;--bg2:#111a2e;--panel:#121d30;--panel2:#17243b;--stroke:#293851;--text:#eef4ff;--muted:#94a5be;--blue:#7aaaff;--cyan:#6cdddc;--amber:#ffce84;--pink:#f8a9a9;--shadow:0 18px 60px #05091450}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--text);background:radial-gradient(circle at 11% -11%,#17294a 0,transparent 37%),radial-gradient(circle at 94% 12%,#15273b 0,transparent 32%),var(--bg);font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;min-height:100vh}button,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}.wrap{max-width:1430px;margin:0 auto;padding:24px 28px 70px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:4px 2px 28px}.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:17px;letter-spacing:.2px}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(145deg,#83adff,#5cd6d9);color:#0c2139;display:grid;place-items:center;font-size:19px;box-shadow:0 6px 23px #6b9cff22}.top-note{display:flex;align-items:center;gap:8px;color:#a9c1d6;font-size:12px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#72d6ad;box-shadow:0 0 0 4px #72d6ad1f}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:27px}.eyebrow{color:#86b7ff;letter-spacing:2px;font-size:11px;font-weight:750;text-transform:uppercase}.hero h1{font-size:clamp(26px,3vw,41px);line-height:1.2;letter-spacing:-.9px;margin:10px 0 12px}.hero p{color:var(--muted);margin:0;max-width:800px;font-size:14px}.hero-chip{flex-shrink:0;border:1px solid #2b4360;background:#132238bd;color:#aacaff;border-radius:100px;padding:8px 13px;font-size:12px}.layout{display:grid;grid-template-columns:minmax(0,1.13fr) minmax(350px,.87fr);align-items:start;gap:20px}.card{border:1px solid var(--stroke);background:linear-gradient(160deg,#172239e3,#111b2eea);border-radius:18px;box-shadow:var(--shadow);min-width:0;overflow:hidden}.card-head{padding:21px 23px 14px;display:flex;align-items:center;justify-content:space-between;gap:13px}.card-title{font-weight:750;font-size:16px}.subtle{font-size:12px;color:var(--muted)}.card-body{padding:0 23px 22px}.file-zone{border:1px dashed #456080;background:#101e34a8;border-radius:13px;min-height:101px;display:flex;align-items:center;gap:16px;padding:15px 17px;transition:.18s;cursor:pointer}.file-zone:hover,.file-zone.drag{border-color:#8fb6fb;background:#1c3050}.upload-icon{width:45px;height:45px;border-radius:13px;background:#213651;display:grid;place-items:center;color:#a4ccfa;flex-shrink:0;font-size:24px}.file-zone strong{display:block;font-size:13px}.file-zone small{display:block;color:var(--muted);margin-top:3px}.file-zone input{display:none}.filename{margin-top:10px;display:flex;align-items:center;gap:8px;color:#b7d4ed;font-size:12px;min-height:15px;overflow-wrap:anywhere}.row{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.field-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:18px 0 10px}.field-label{font-weight:650;font-size:13px}.seg{background:#0c1628;border:1px solid #2c3950;border-radius:10px;padding:3px;display:inline-flex}.seg button{padding:7px 12px;border:0;border-radius:7px;color:#9caec7;background:transparent;font-size:12px}.seg button.active{background:#294365;color:#e3f2ff;box-shadow:0 3px 7px #07102188}textarea{border:1px solid #32445e;background:#0b1425;outline:none;border-radius:12px;color:#dceafa;width:100%;min-height:340px;max-height:640px;resize:vertical;padding:18px 19px;line-height:1.7;font:12.5px/1.7 ui-monospace,SFMono-Regular,Consolas,"Cascadia Code",monospace;tab-size:4}textarea::placeholder{color:#697e99}textarea:focus{border-color:#689fe3}.toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:9px;margin-top:10px}.toolbar .mini{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.small-btn{border:1px solid #34445d;background:#19263b;color:#c0d1e6;border-radius:9px;font-size:12px;padding:7px 11px}.small-btn:hover{background:#243851}.primary{border:0;border-radius:11px;background:linear-gradient(100deg,#93b8ff,#65d8d3);color:#11233b;padding:12px 23px;font-weight:800;box-shadow:0 8px 25px #5cbdc51e}.primary:hover{filter:brightness(1.08)}.primary:disabled{opacity:.5;cursor:not-allowed;filter:none}.run-row{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:20px;flex-wrap:wrap}.privacy{font-size:11px;color:#91a6bf;max-width:300px}.status{font-size:12px;color:#aaccdf;margin-top:12px;min-height:19px}.progress{height:5px;background:#263954;border-radius:100px;margin-top:8px;overflow:hidden;display:none}.progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,#7aaaff,#74d9ca);transition:width .15s}.result{padding:22px 23px 24px}.empty{min-height:405px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#95aac5}.empty-art{height:110px;width:110px;border-radius:50%;border:1px solid #3b506d;display:grid;place-items:center;margin-bottom:20px;background:radial-gradient(circle,#203856 12%,#101c30 72%);font-size:44px;color:#83b1ff}.empty strong{font-size:17px;color:#e0efff}.empty p{max-width:290px;margin:9px 0 0;font-size:12px}.report{display:none}.result-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.report-tag{font-size:11px;color:#afd6df;border:1px solid #2b5362;border-radius:100px;padding:4px 10px;background:#14303a}.donut-wrap{display:flex;align-items:center;gap:23px;margin:23px 0 17px}.donut{position:relative;width:148px;height:148px;flex-shrink:0}.donut svg{width:100%;height:100%;transform:rotate(-90deg)}.donut .track{fill:none;stroke:#293b57;stroke-width:12}.donut .arc{fill:none;stroke:#8baaff;stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset .8s}.donut-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}.donut-label b{font-size:38px;line-height:1.1;font-weight:820;letter-spacing:-2px}.donut-label small{font-size:11px;color:var(--muted);margin-top:4px}.score-info{min-width:0;flex:1}.score-info h2{font-size:19px;margin:0 0 5px}.score-info p{font-size:12px;color:var(--muted);margin:0 0 15px}.stat-ratio{display:flex;justify-content:space-between;gap:12px;font-size:12px}.ratio-track{display:flex;height:9px;border-radius:100px;background:#2a3d59;overflow:hidden;margin:8px 0}.ratio-ai{width:50%;background:linear-gradient(90deg,#7a9fff,#a0baff);transition:width .6s}.ratio-human{flex:1;background:linear-gradient(90deg,#65c9bb,#86e3d0)}.score-desc{font-size:11px;color:#9bb2cc}.metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:17px 0}.metric{background:#0f1a2d;border:1px solid #293954;border-radius:12px;padding:10px 12px}.metric strong{font-weight:800;display:block;font-size:17px}.metric small{color:#90a5c1;font-size:10px}.warn{background:#302b26;border:1px solid #5b4a33;color:#f3d5a3;border-radius:12px;padding:11px 12px;font-size:11px;line-height:1.65}.section-title{display:flex;align-items:center;justify-content:space-between;gap:9px;font-size:15px;font-weight:750;margin:0 0 12px}.section-sub{font-size:11px;color:var(--muted);font-weight:400}.legend{font-size:11px;color:#a2b5ce;margin:15px 0 11px}.bar{display:flex;height:12px;overflow:hidden;background:#23334d;border-radius:100px}.bar>span{transition:width .5s}.bar-low{background:#69cbb9}.bar-mid{background:#f1c67e}.bar-high{background:#f19098}.bar-legend{display:flex;justify-content:space-between;margin-top:7px;color:#9daec6;font-size:11px;gap:8px}.detail-layout{display:grid;grid-template-columns:1fr;gap:20px;margin-top:20px}.evidence-list,.segment-list{display:flex;flex-direction:column;gap:9px}.evidence{display:flex;align-items:flex-start;gap:11px;padding:12px;border-radius:12px;border:1px solid #293a55;background:#111c2f}.evidence .bullet{width:24px;height:24px;background:#25344e;border-radius:8px;color:#aaccff;text-align:center;line-height:24px;font-size:13px;flex-shrink:0;font-weight:750}.evidence strong{font-size:12px}.evidence p{margin:4px 0 0;font-size:11px;line-height:1.55;color:#94acc8}.evcount{color:#e2bd7e;font-size:11px;margin-left:auto;white-space:nowrap}.segment-card{background:#111c2e;border:1px solid #2a3b54;border-radius:13px;overflow:hidden}.segment-head{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;gap:10px;flex-wrap:wrap}.segment-head strong{font-size:12px}.heat{display:inline-block;font-weight:800;font-size:12px;padding:3px 8px;border-radius:8px;background:#342c36;color:#ffb4bd}.heat.med{background:#393127;color:#fbd08a}.heat.low{background:#1f3435;color:#98dfd3}.segment-code{border-top:1px solid #29384f;background:#0b1525;color:#a7bfd4;overflow:auto;max-height:210px;padding:12px 14px;font:11.5px/1.65 ui-monospace,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.markedline{display:block;background:#5d493033;color:#f1dab1;border-left:2px solid #e7bc80;padding-left:7px;margin-left:-9px}.segment-foot{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;border-top:1px solid #263750;padding:10px 12px}.segment-foot span{font-size:11px;color:#b2c4da}.locate{background:#223652;border:1px solid #355579;color:#b3d6ff;border-radius:8px;padding:4px 10px;font-size:11px;flex-shrink:0}.locate:hover{background:#2e4c73}.bottom-note{color:#8198b8;font-size:11px;margin:25px 0 0}.exportbtn{display:inline-flex;align-items:center;gap:5px}.hide{display:none!important}.fine{font-size:11px;color:var(--muted)}.footer{margin:28px 0 0;color:#6f87a5;font-size:11px;text-align:center}.full-report-card{margin-top:20px}.full-report-card .card-body{padding-top:1px}.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.filterbtn{background:#19263a;color:#a9c0da;border:1px solid #2a3e59;padding:7px 11px;border-radius:8px;font-size:12px}.filterbtn.active{background:#284667;color:#e2f0ff;border-color:#527baa}.empty-line{font-size:12px;color:#91a7bf;border:1px dashed #334a67;border-radius:12px;padding:20px;text-align:center}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(min-width:1200px){.result .donut{width:156px;height:156px}}@media(max-width:980px){.layout{grid-template-columns:minmax(0,1fr)}.hero-chip{display:none}.empty{min-height:260px}.donut-wrap{justify-content:flex-start}}@media(max-width:580px){.wrap{padding:16px 13px 40px}.topbar{padding-bottom:23px}.hero h1{font-size:26px}.top-note{font-size:10px}.card-body{padding:0 14px 15px}.card-head,.result{padding:18px 14px}.donut-wrap{gap:12px}.donut{width:124px;height:124px}.donut-label b{font-size:31px}.metric{padding:9px 8px}.metric strong{font-size:15px}.score-info h2{font-size:16px}.hero{margin-bottom:20px}.privacy{max-width:230px}.primary{flex:1}.file-zone{padding:12px}textarea{min-height:270px}}
+
+.advanced{margin-top:15px;border:1px solid #334863;border-radius:12px;background:#111e32;padding:11px 15px}.advanced summary,.rulebook summary{font-weight:700;color:#b6d7ff;cursor:pointer}.advanced-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:22px;margin-top:13px}.advanced label{display:block;color:#d9e8ff;font-size:12px;margin-bottom:7px}.advanced select,.advanced input{max-width:100%;background:#0a1527;color:#dceafa;border:1px solid #3a526e;padding:9px;border-radius:8px}.fine{font-size:11px;color:#91a9c3}.advanced p{margin:6px 0}.insight-strip{display:flex;justify-content:space-between;gap:12px;margin:8px 0 15px;color:#a4c9e8;font-size:11px}.comparison{padding:12px;border:1px solid #344c65;border-radius:12px;margin:13px 0;background:#122741}.comparison strong{display:block;color:#bde5ef}.comparison ul{margin:8px 0 0;padding-left:18px;font-size:11px;color:#b5c7d6}.category-chip{border:1px solid #344b69;color:#a9bed8;background:#15243a;border-radius:100px;font-size:11px;padding:5px 11px;cursor:pointer}.category-chip.active{background:#284566;border-color:#7daff2;color:#f3faff}.evline{margin:7px 0 0}.evline button{background:#1c3551;border:1px solid #395a79;border-radius:7px;padding:3px 8px;color:#b9d9ee;font-size:11px}.rulebook{margin-top:18px;padding:12px;border:1px solid #2b405a;border-radius:12px;background:#101b2f}.catalog{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:9px}.catalog-item{padding:8px;background:#13243b;border:1px solid #2b3d56;border-radius:8px;min-width:0}.catalog-item strong{display:block;font-size:11px;color:#e2efff}.catalog-item small{font-size:10px;color:#8fa6c5}.evidence{align-items:flex-start}.evidence:focus-within{border-color:#6689af}@media(max-width:700px){.advanced-grid,.catalog{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar"><div class="brand"><div class="logo">⌘</div><div>CodeTrace <span style="font-weight:400;color:#8198b3">/ LAB</span></div></div><div class="top-note"><span class="dot"></span> 本地离线运行 · 无内容上传</div></header>
+<section class="hero"><div><div class="eyebrow">HEURISTIC STYLE INSPECTION / V3.0 · STRUCTURAL CPP ENGINE</div><h1>AI 代码与文本风格检测 · 高级版</h1><p>支持无注释 C++ 结构分析、跨区段一致性、术语命名族、异常与冗余检查、注释和文风特征，还可与本人历史代码对照。所有结果均为风格线索，不是 AI 身份鉴定。</p></div><div class="hero-chip">TXT · DOCX · DOC · CPP · HPP</div></section>
+<div class="layout">
+<section class="card"><div class="card-head"><div><div class="card-title">01 / 输入内容</div><div class="subtle">上传文件或直接粘贴，文件不会发送到服务器</div></div><span style="color:#7fb8ef;font-size:12px">LOCAL</span></div><div class="card-body">
+<div class="file-zone" id="fileZone" role="button" tabindex="0" aria-label="选择文件上传"><div class="upload-icon">⇧</div><div><strong>点击选择文件，或拖拽到这里</strong><small>支持 .txt / .docx / .doc / .cpp / .cc / .c / .h / .hpp / .md</small><small>建议不超过 40 MB · 不需要联网</small></div><input type="file" id="fileInput" accept=".txt,.docx,.doc,.cpp,.cc,.c,.h,.hpp,.cxx,.md,.text"></div>
+<div class="filename" id="filename">尚未上传文件</div>
+<div class="field-bar"><span class="field-label">待检测内容</span><div class="seg" aria-label="选择分析模式"><button class="active" data-mode="auto">自动识别</button><button data-mode="code">C++ 代码</button><button data-mode="text">普通文本</button></div></div>
+<textarea id="source" spellcheck="false" placeholder="在这里粘贴 C++ / C 代码或中文、英文文本……&#10;&#10;也可以上传 .cpp、.txt、.docx、.doc 文件。&#10;&#10;检测在浏览器本地进行，支持超长代码分段分析。"></textarea>
+<div class="toolbar"><span class="fine" id="inputStat">0 字符 · 0 行</span><div class="mini"><button class="small-btn" id="demoCpp">注释示例</button><button class="small-btn" id="demoNoComment">无注释 C++ 示例</button><button class="small-btn" id="demoText">文本示例</button><button class="small-btn" id="clear">清空</button></div></div>
+<details class="advanced"><summary>高级选项：检测敏感度 / 代码风格对比 / 规则说明</summary>
+<div class="advanced-grid"><div><label for="sensitivity">检测敏感度</label><select id="sensitivity"><option value="balanced">平衡（推荐）</option><option value="sensitive">偏敏感（更多误报）</option><option value="conservative">偏谨慎（减少误报）</option></select><p class="fine">调整规则聚合阈值。偏敏感会提高指数，也会提高误报率。</p></div>
+<div><label for="referenceFile">可选：上传本人历史 C++ 代码作参照</label><div class="row"><input id="referenceFile" type="file" accept=".cpp,.cc,.c,.cxx,.hpp,.h,.txt"><button class="small-btn" id="clearReference">移除参照</button></div><p class="fine" id="referenceStatus">未选择参照文件（最多 10 MB）</p></div></div>
+<p class="fine">本工具不联网，不执行上传的代码。规则只能观察表面特征；人工代码也会表现出相同风格。参考代码比对仅适用于语言、项目和题型大致相近的样本。</p>
+</details>
+<div class="run-row"><div class="privacy">🔒 使用本地规则分析，不调用外部 AI 接口。百分比不是经过验证的生成概率。</div><button class="primary" id="start">开始深度分析 ↗</button></div><div class="status" id="status" aria-live="polite"></div><div class="progress" id="progress"><span id="progressBar"></span></div>
+</div></section>
+<section class="card"><div class="result" id="rightResult"><div class="result-top"><span class="card-title">02 / 检测结果</span><span class="report-tag">规则模型 · 非鉴定工具</span></div>
+<div class="empty" id="empty"><div class="empty-art">⌁</div><strong>准备好分析你的内容</strong><p>提交文本或代码后，将显示 AI 风格指数、区段分布、可疑线索及可定位的原文片段。</p></div>
+<div class="report" id="report">
+<div class="donut-wrap"><div class="donut"><svg viewBox="0 0 156 156" aria-hidden="true"><circle class="track" cx="78" cy="78" r="63"></circle><circle class="arc" id="arc" cx="78" cy="78" r="63" stroke-dasharray="395.84" stroke-dashoffset="395.84"></circle></svg><div class="donut-label"><b id="aiNum">--%</b><small>AI 风格指数</small></div></div><div class="score-info"><h2 id="summaryLabel">尚无分析</h2><p id="summaryText"></p><div class="stat-ratio"><span>AI 风格 <b id="aiSmall">--%</b></span><span>人工风格参考 <b id="humanSmall">--%</b></span></div><div class="ratio-track"><div class="ratio-ai" id="ratioAi"></div><div class="ratio-human"></div></div><div class="score-desc">两项合计 100%，仅是互补的启发式指标</div></div></div>
+<div class="metric-grid"><div class="metric"><strong id="mChars">--</strong><small>总字符数</small></div><div class="metric"><strong id="mLines">--</strong><small>总行数</small></div><div class="metric"><strong id="mUnits">--</strong><small>分析区段</small></div></div>
+<div class="insight-strip"><span id="ruleStat">多维规则引擎</span><span id="coverageStat">等待检测</span></div>
+<div id="comparePanel" class="comparison hide"></div>
+<div class="warn"><strong>重要说明：</strong>这不是可靠的 AI 作者身份鉴定。代码模板、竞赛风格、标准化文风、人工润色都可能触发规则；“人工率”不等于真实由人撰写的概率，请勿以此作为判罚、成绩或学术诚信的唯一依据。</div>
+<div class="legend">区段风格指数分布</div><div class="bar" id="distribution"><span class="bar-low" style="width:100%"></span><span class="bar-mid" style="width:0%"></span><span class="bar-high" style="width:0%"></span></div><div class="bar-legend"><span id="dLow">弱线索 0</span><span id="dMed">中等线索 0</span><span id="dHigh">较多线索 0</span></div>
+<div class="row" style="margin-top:18px"><button class="small-btn exportbtn" id="exportTxt">↓ 导出 TXT 报告</button><button class="small-btn exportbtn" id="exportJson">↓ 导出 JSON</button></div>
+</div></div></section>
+</div>
+<section class="card full-report-card hide" id="details"><div class="card-head"><div><div class="card-title">03 / 可疑特征与定位</div><div class="subtle">每项只描述可观测的风格特征，不表示已经证明由 AI 生成</div></div><span class="subtle" id="detailCount">—</span></div><div class="card-body"><div class="section-title">主要触发线索 <span class="section-sub" id="signalCount"></span></div>
+<div class="filter-row" id="categoryFilters"></div>
+<div class="evidence-list" id="evidence"></div>
+<details class="rulebook"><summary>查看全部规则目录与权重说明</summary><p class="fine">权重仅用于聚合风格特征；不代表某条规则的真实准确率。各类特征在工程、课程与算法竞赛中均可能出现。</p><div id="ruleCatalog" class="catalog"></div></details><div style="height:24px"></div><div class="section-title">逐段查看 <span class="section-sub">点击定位可回到输入区域</span></div><div class="filter-row"><button class="filterbtn active" data-filter="all">全部区段</button><button class="filterbtn" data-filter="high">较多线索</button><button class="filterbtn" data-filter="medium">中等线索</button><button class="filterbtn" data-filter="low">弱线索</button></div><div class="segment-list" id="segments"></div><div class="bottom-note" id="truncateNotice"></div></div></section>
+<footer class="footer">CodeTrace 本地风格检测实验室 · 纯 HTML / CSS / JavaScript · 浏览器端文件解析</footer>
+</div>
+<script id="analysis-worker" type="text/plain">
+'use strict';
+/* CodeTrace 3.0 - offline structural style inspector. Rules describe observable style, not provenance. */
+const CATS={comment:'解释性注释',architecture:'程序组织',naming:'命名习惯',defensive:'防御与冗余',format:'排版一致性',template:'模板痕迹',language:'文本表达'};
+const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
+function R(id,title,cat,w,rx,min=1,scope='all',detail='',strength='context'){
+ return {id,title,cat,w,rx,min,scope,detail:detail||title,strength};
+}
+const CODE_RULES=[
+ R('step_comments','分步骤教学注释','comment',17,/\/\/\s*(?:step\s*[\d一二三四五六七八九十]+|步骤\s*[\d一二三四五六七八九十]+|第[一二三四五六七八九十]+步|phase\s*\d+|阶段\s*\d+)/gi,1,'comment','使用 Step 1 / 步骤一等教程式序号组织代码。','strong'),
+ R('complexity_explain','复杂度解释','comment',14,/(?:time\s*complexity|space\s*complexity|复杂度\s*[：:]|时间复杂度|空间复杂度|overall complexity|big[- ]?o notation)/gi,1,'comment','出现算法复杂度的文字说明；题解与教学代码也很常见。','strong'),
+ R('explainer_voice','面向读者的讲解口吻','comment',14,/(?:we\s+(?:need|can|will|first|now)\b|let['’]?s\b|this\s+function\b|the\s+following\b|here\s+we\b|首先我们|接下来我们|下面我们|此时我们|这里我们|让我们|该函数用于)/gi,2,'comment','注释具有对读者讲解算法的叙事视角。','strong'),
+ R('comment_headings','装饰性分节注释','comment',7,/(?:\/\/\s*[-=*#]{4,}|\/\*\s*[-=*]{5,})/gm,2,'comment','较多分隔线或章节标题式注释。'),
+ R('doc_comment','API 文档式注释','comment',9,/(?:\/\*\*|@param\b|@return\b|@brief\b|\bParameters\s*:)/gi,2,'comment','出现 Doxygen / API 文档格式；软件工程项目也常这样写。'),
+ R('comment_tutorial','算法概述或说明注释','comment',12,/(?:algorithm\s+(?:overview|explanation)|approach\s*:|implementation\s+details|核心思想|算法思路|解题思路|思路分析|实现思路|代码解释|详细解释)/gi,1,'comment','文字直接呈现讲解稿或教程的结构。','strong'),
+ R('comment_obvious','逐语句解释代码','comment',6,/(?:initialize\s+(?:the\s+)?(?:array|vector|result|queue)|read\s+(?:the\s+)?input|output\s+(?:the\s+)?(?:answer|result)|遍历每个|读入数据|输出结果|初始化数组|初始化变量|更新答案|计算答案)/gi,2,'comment','多处注释仅复述紧随其后的操作。'),
+ R('comment_long','很长的解释性行注释','comment',5,/^\s*\/\/[^\n]{105,}$/gm,2,'comment','多行很长的注释更接近文字教程。'),
+ R('comment_labels','提示类标签密集','comment',5,/(?:\bNOTE\s*:|\bIMPORTANT\s*:|\bTODO\s*:|\bFIXME\s*:|注意\s*[：:])/gi,3,'comment','NOTE/IMPORTANT/注意等标签反复出现。'),
+ R('comment_numbered_parts','多处编号小节','comment',7,/\/\/\s*(?:\d+[.)、]|[一二三四五六七八九十][.、]|part\s+[a-z\d]+)/gim,3,'comment','注释组织为多个并列编号小节。'),
+ R('comment_translation','双语说明语句','comment',5,/(?:\/\/[^\n]*[\u4e00-\u9fa5][^\n]*[A-Za-z]{5,}|\/\/[^\n]*[A-Za-z]{5,}[^\n]*[\u4e00-\u9fa5])/gm,3,'comment','多行注释混用中英文；双语教学也会如此。'),
+ R('assistant_artifacts','AI 回复残留','template',25,/(?:^|\n)\s*(?:```(?:cpp|c\+\+)?|下面是(?:完整)?(?:代码|实现)|here(?:'s| is) (?:the|a) (?:complete )?(?:code|solution)|希望(?:这|以上).*(?:帮助|解决)|as an ai language model)/gim,1,'all','存在 Markdown 代码围栏或助手回复口吻，可能来自复制粘贴。','strong'),
+ R('solution_class','Solution 类模板','architecture',6,/\bclass\s+Solution\s*\{|\bstruct\s+Solution\s*\{/g,1,'code','典型题库解法包装；很多人工解题同样使用。'),
+ R('named_input_helper','输入处理助手函数','architecture',7,/\b(?:void|auto|bool|int|long\s+long)\s+(?:readInput|parseInput|inputData|read_input|parse_input)\s*\(/g,1,'code','使用用途明确的输入封装函数。'),
+ R('named_output_helper','输出处理助手函数','architecture',7,/\b(?:void|auto|bool|int|long\s+long)\s+(?:printResult|printAnswer|outputResult|writeOutput|outputAnswer|print_output)\s*\(/g,1,'code','使用用途明确的输出封装函数。'),
+ R('named_solver_helper','通用解题助手函数','architecture',6,/\b(?:void|auto|bool|int|long\s+long)\s+(?:solveProblem|processInput|processData|computeResult|computeAnswer|solveCase|solveTestCase)\s*\(/g,1,'code','存在 solveProblem/processData 等高层抽象命名。'),
+ R('solve_wrapper','主函数包装 solve()','architecture',3,/\b(?:void|auto|int)\s+solve\s*\(\s*\)|\bsolve\s*\(\s*\)\s*;/g,2,'code','主函数只负责初始化与调用 solve；竞赛中也很常见。'),
+ R('multi_helper_modules','模块划分较细','architecture',5,/\b(?:void|int|bool|long\s+long|double|auto|vector\s*<[^\n]{1,55}>)\s+(?:initialize\w*|validate\w*|calculate\w*|compute\w*|process\w*|generate\w*|build\w*|handle\w*)\s*\(/g,3,'code','有多个以明确职责命名的助手函数，可能是工程规范。'),
+ R('test_harness','测试脚手架','architecture',6,/(?:\bassert\s*\(|\bstatic_assert\s*\(|\bTEST\s*\(|\bRUN_TESTS\b|\bvoid\s+runTests\s*\()/g,3,'code','测试辅助代码较集中；这也是正常软件开发习惯。'),
+ R('generic_class_names','功能类通用命名','naming',4,/\b(?:class|struct)\s+(?:DataProcessor|InputHandler|OutputHandler|SolutionHelper|AlgorithmSolver|ResultManager)\b/g,1,'code','使用较通用的职责命名。'),
+ R('camel_long_names','多词驼峰长命名','naming',5,/\b[a-z]{3,}(?:[A-Z][a-z]{3,}){2,}\b/g,5,'code','多个较长 camelCase 标识符，属于可读性偏好的弱线索。'),
+ R('snake_long_names','多词下划线命名','naming',5,/\b[a-z]{3,}(?:_[a-z]{3,}){2,}\b/g,5,'code','多个较长 snake_case 标识符，属于可读性偏好的弱线索。'),
+ R('verbose_data_names','高频描述性标识符','naming',4,/\b(?:currentIndex|previousIndex|currentValue|maximumValue|minimumValue|resultVector|inputArray|outputArray|finalResult|temporaryResult|adjacencyList|visitedNodes|currentNode|currentDistance|shortestDistance|maximumLength|minimumLength|numberOfNodes|numberOfEdges)\b/g,4,'code','较多完整描述含义的变量名，不能单独用于识别来源。'),
+ R('std_namespace_explicit','显式 std:: 修饰较多','format',3,/\bstd::(?:vector|map|set|string|cout|cin|pair|sort|queue|priority_queue|unordered_map|unordered_set|make_pair|function|array)\b/g,8,'code','大量 std:: 前缀体现一种常见编码规范。'),
+ R('explicit_types','显式类型转换集中','format',3,/\b(?:static_cast|reinterpret_cast|const_cast|dynamic_cast)\s*</g,4,'code','显式类型转换较多；大型项目会规范使用。'),
+ R('constexpr_style','现代常量写法','format',3,/\b(?:constexpr|consteval|[[maybe_unused]]|[[nodiscard]])\b/g,3,'code','现代 C++ 语法出现较多。'),
+ R('guard_exceptions','异常防御逻辑','defensive',9,/\b(?:throw\s+(?:std::)?(?:runtime_error|invalid_argument|out_of_range|logic_error)|catch\s*\(\s*const\s+(?:std::)?exception|std::optional\s*<|std::expected\s*<)/g,2,'code','本段包含多种异常或失效处理；在正式项目中完全正常。'),
+ R('input_validation','多处输入有效性校验','defensive',6,/\bif\s*\(\s*(?:!\s*(?:cin|scanf|input|fin|file)|(?:n|m|size|length)\s*(?:<=|<|==)\s*0|(?:input|data)\.empty\s*\()/g,2,'code','存在较密集的输入检查；按题目要求可能必要。'),
+ R('error_messages','详细异常文字','defensive',6,/(?:cerr\s*<<\s*"[^"\n]{16,}"|throw\s+[^;\n]{0,90}"[^"\n]{15,}"|fprintf\s*\(\s*stderr\s*,\s*"[^"\n]{15,}")/g,2,'code','有多条面向使用者的解释性错误消息。'),
+ R('check_bounds','边界与容量检查集中','defensive',5,/\b(?:numeric_limits\s*<|std::numeric_limits\s*<|isfinite\s*\(|isnan\s*\(|assert\s*\(|\.at\s*\()/g,4,'code','安全或边界检查工具密集；不代表不必要。'),
+ R('verbose_guard','双层守卫/边界早退','defensive',3,/\bif\s*\([^\n]{1,80}\)\s*\{?\s*(?:return\b|continue\s*;|break\s*;)/g,5,'code','多处守卫式提前返回，属于常见工程风格。'),
+ R('redundant_init','显式重复初始化','defensive',4,/\b(?:result|answer|ans|sum|count|total)\s*=\s*(?:0|false|"")\s*;/g,5,'code','局部变量有多处零值初始化；通常也是正确的编程习惯。'),
+ R('trivial_getters','简单封装访问器','architecture',5,/\b(?:getValue|getResult|getData|getSize|setValue|setResult|setData|processResult)\s*\(/g,4,'code','出现多个通用 getter/setter 命名。'),
+ R('mixed_io','多种输入输出风格混用','template',5,/\b(?:scanf|printf)\s*\(/g,2,'code','混合 I/O 本身不是 AI 信号，仅作为代码上下文使用。'),
+ R('portable_shell','跨平台编译分支','template',5,/^\s*#\s*(?:ifdef|if\s+defined)\s*\(?_WIN32\)?/gm,1,'code','针对 Windows 做编译条件分支；可能为复用模板。'),
+ R('code_fence_remnants','代码中的 Markdown 残留','template',23,/(?:^|\n)\s*```\s*(?:cpp|c\+\+|c|)?\s*(?:\n|$)/gi,1,'all','代码内出现 Markdown 围栏；这提示代码可能来自格式化回答或文档。','strong'),
+ R('verbose_todo','TODO 说明集中','comment',4,/\b(?:TODO|FIXME|NOTE|IMPORTANT)\s*:/gi,4,'comment','反复出现带标签的待办或说明。'),
+ R('paragraph_comment','段落式块注释','comment',8,/\/\*[\s\S]{110,900}?\*\//g,2,'comment','出现较长说明块，可能是教学、注释规范或代码生成痕迹。'),
+ R('cpp_polyfill','工具型通用包装','template',5,/\b(?:readInt|fastRead|fastIO|FastIO|FastInput|FastOutput|solveTestCase|processTestCase)\b/g,3,'code','多处通用模板命名；人工竞赛模板也经常如此。'),
+ R('section_title','明确阶段标签','comment',7,/\/\/\s*(?:input|output|initialization|preprocessing|main logic|final answer|cleanup|输入|输出|预处理|核心逻辑|处理流程|计算结果)\s*(?:[:：]|$)/gim,2,'comment','注释用 Input/Output/预处理等阶段标题组织。'),
+ R('narrative_parens','教程化括号说明','comment',6,/(?:\/\/[^\n]*(?:for\s+clarity|for\s+readability|for\s+simplicity|as\s+needed|for\s+convenience|为了方便|便于理解|更容易理解))/gi,1,'comment','注释强调教学展示或可读性。'),
+ R('explain_correctness','正确性说明','comment',11,/(?:正确性证明|正确性分析|proof\s+of\s+correctness|why\s+this\s+works|this\s+ensures\s+that|这保证了|因此可以保证)/gi,1,'comment','代码注释直接解释正确性，常见于题解与生成式示例。','strong'),
+ R('overdocument_params','参数说明过度细致','comment',7,/(?:\b@param\s+\w+|\b@return\s+\w+|参数\s*[:：]\s*\w+|返回值\s*[:：]\s*\w+)/gi,3,'comment','函数说明中较多参数、返回值标注。'),
+ R('multiple_catches','捕获异常分支较多','defensive',5,/\bcatch\s*\(/g,3,'code','连续的异常捕获分支是工程化特征。'),
+ R('using_types','连续类型别名','architecture',3,/\b(?:using\s+\w+\s*=|typedef\s+[^;]{5,80}\s+\w+\s*;)/g,4,'code','类型别名较多；模板代码也常见。'),
+ R('stl_functional','函数式/泛型抽象','architecture',4,/\b(?:std::function\s*<|\[&\]\s*\(|\[=\]\s*\(|std::transform\s*\(|std::accumulate\s*\()/g,3,'code','使用 lambda/函数式封装；并不能说明代码来源。')
+];
+const TEXT_RULES=[
+ R('text_transition','公式化衔接语密集','language',12,/(?:首先|其次|此外|与此同时|值得注意的是|需要指出的是|综上所述|总而言之|不可忽视的是|从这一角度来看|furthermore|moreover|in conclusion|to summarize|additionally)/gi,3,'all','多次使用规范化段落衔接语。'),
+ R('text_general','抽象通用表达','language',12,/(?:有效提升|进一步优化|全面推动|显著增强|至关重要|不可或缺|多维度|深入探讨|赋能|核心价值|发挥着重要作用|具有重要意义|plays a crucial role|comprehensive approach|robust solution|delve into)/gi,3,'all','出现不少不含具体信息的抽象套语。'),
+ R('text_balance','成对对照句型','language',10,/(?:一方面[^\n。]{6,180}另一方面|不仅[^\n。]{5,100}而且|not only[^\n.]{6,120}but also)/gi,2,'all','多个成对结构可能是规范议论文风格。'),
+ R('text_list','列表格式重复','format',6,/(?:^|\n)\s*(?:\d+[.)、]|[一二三四五六七八九十][、.]|[-*])\s+[^\n]{8,}/g,4,'all','使用较多格式一致的编号或项目符号。'),
+ R('text_qualify','谨慎限定语密集','language',7,/(?:在一定程度上|从某种意义上说|具体情况具体分析|需要综合考虑|并不意味着|值得进一步研究|depending on context|it is important to note|it is essential to consider)/gi,3,'all','重复采用委婉限定性表述。'),
+ R('text_roadmap','文章结构提示','template',11,/(?:本文将(?:从|围绕)|接下来我们将|下面将从|the following sections|in this (?:article|essay),? we will|this article explores|本文首先|本文最后)/gi,2,'all','文章反复宣布后续结构。'),
+ R('text_empty_praise','空泛积极评价','language',8,/(?:带来积极影响|创造更多可能性|提升整体效率|实现长远发展|提供有力支撑|助力高质量发展|provide valuable insights|unlock new possibilities|enhance overall efficiency)/gi,3,'all','多次出现较难核查的笼统评价。'),
+ R('text_symmetric','双面论述结构','language',6,/(?:既有[^\n。]{4,90}也有|既要[^\n。]{4,90}又要|既是[^\n。]{4,90}也是|on one hand[^\n.]{8,180}on the other hand)/gi,2,'all','出现对称式论述。'),
+ R('text_reinforce','总结性重复','language',8,/(?:总的来说|归根结底|综上可以看出|由此可见|as discussed above|overall, it is clear|in summary|all things considered)/gi,2,'all','多次使用收束或重复总结的句型。'),
+ R('text_exhort','标准建议收尾','language',6,/(?:我们应该积极|我们需要共同努力|只有这样才能|只有通过[^。]{5,90}才能|it is imperative that we|we must work together)/gi,2,'all','出现规范化的行动建议。'),
+ R('text_explanation','释义式铺陈','language',7,/(?:换句话说|也就是说|这意味着|换言之|in other words|this means that|put simply)/gi,3,'all','重复使用解释转述语。'),
+ R('text_generic_subject','高频宏大主语','language',5,/(?:随着[^。\n]{5,30}的(?:快速|不断)发展|在当今社会|在数字化时代|in today's rapidly evolving|in the modern world)/gi,2,'all','以宽泛时代背景展开论述。'),
+ R('text_outline','纲目提示','template',8,/(?:^|\n)\s*(?:#{2,3}\s+|(?:第[一二三四五六七八九十]部分|Chapter\s+\d+))/gim,3,'all','大量分节标题反复出现。'),
+ R('text_transition_en','英文衔接短语','language',7,/(?:in addition|as a result|on the other hand|for this reason|in contrast|more importantly|at the same time)/gi,4,'all','英文衔接短语较密集。'),
+ R('text_hype','英语宣传套话','language',8,/(?:game[- ]changer|groundbreaking|cutting[- ]edge|transformative power|ever[- ]evolving landscape|seamless integration|leverage the power)/gi,2,'all','多次使用通用英语宣传套语。'),
+ R('text_repetitive_question','反问句式重复','language',5,/(?:为何[^？\n]{4,70}？|那么[^？\n]{3,70}？|what does this mean\?|why is this important\?)/gi,3,'all','用反问句推进论述。')
+];
+
+// V3: lightweight evidence. Every rule is contextual, never a provenance proof.
+const CODE_RULES_V3=[
+ R('role_named_class','角色化算法类名','architecture',8,/\b(?:class|struct)\s+(?:[A-Za-z]{3,}(?:Solver|Processor|Manager|Helper|Handler|Calculator|Analyzer|Engine|Service))\b/g,1,'code','类名具有通用职责后缀；标准工程项目同样会这样写。'),
+ R('generic_state_object','状态被抽象成泛型对象','architecture',5,/\b(?:struct|class)\s+(?:State|Context|Result|NodeInfo|QueryResult|SolverState)\b/g,1,'code','封装成 State/Context/Result 之类的通用数据类型。'),
+ R('semantic_helper_names','结果处理型助手命名','architecture',6,/\b(?:calculateAnswer|computeAnswer|processResult|generateOutput|initializeGraph|buildAdjacencyList|validateInput|displayResult|solveInstance|printSolution|parseTestCase)\s*\(/g,1,'code','使用语义完整的辅助函数命名；属于代码组织习惯。'),
+ R('orchestrated_main','主函数串联多个职责步骤','architecture',7,/\b(?:readInput|parseInput|initializeGraph|processInput)\s*\([\s\S]{0,1200}?\b(?:computeResult|calculateAnswer|solveProblem|processData)\s*\([\s\S]{0,1200}?\b(?:printResult|outputResult|writeOutput|printAnswer)\s*\(/g,1,'code','读入、计算、输出被组织为顺序的独立调用；也可能是人工设计。'),
+ R('semantic_method_trio','类方法按读入-运算-输出拆分','architecture',7,/\b(?:readInput|parseInput)\s*\([\s\S]{0,900}?\b(?:computeResult|calculateResult|solveProblem)\s*\([\s\S]{0,900}?\b(?:printResult|writeOutput|outputResult)\s*\(/g,1,'code','同一区段包含清晰的输入、求解、输出方法组。'),
+ R('generator_like_naming','current/next/previous 变量族','naming',7,/\b(?:current(?:Node|Index|Value|Distance|Position|Element)|next(?:Node|Index|Value|Position)|previous(?:Node|Index|Value)|sourceNode|targetNode|edgeWeight|finalAnswer)\b/g,5,'code','current/next/source/target 等修饰词反复成组出现，常见于解释性代码。'),
+ R('verbose_path_names','最短路语义命名集中','naming',4,/\b(?:shortestDistances?|adjacencyLists?|currentDistances?|minimumDistances?|visitedVertices|visitedNodes|neighborVertices|nextVertices|sourceVertices)\b/g,3,'code','最短路专有变量名较长且高度描述性；正常项目也常见。'),
+ R('camel_method_family','较长的驼峰方法名反复出现','naming',5,/\b(?:[a-z]{4,}[A-Z][a-z]{4,})\s*\(/g,5,'code','多个多词函数名具有可读性优先的命名习惯。'),
+ R('underscore_method_family','较长的蛇形方法名反复出现','naming',5,/\b[a-z]{4,}_[a-z]{4,}(?:_[a-z]{3,})?\s*\(/g,5,'code','多个多词 snake_case 函数名具有相似命名习惯。'),
+ R('templated_vocabulary','描述性默认术语集中','naming',5,/\b(?:inputData|resultData|outputData|processedData|temporaryValue|currentResult|computedResult|intermediateResult|answerValue|resultValue)\b/g,4,'code','result/data/value 等通用名词多次作为标识符尾部。'),
+ R('defensive_throw_on_input','输入异常转成详细错误','defensive',11,/\bif\s*\([^\n]{0,110}(?:cin|scanf|input|read)[^\n]{0,90}\)[^\n]{0,130}\bthrow\b|\bthrow\s+(?:std::)?(?:invalid_argument|runtime_error)\s*\([^\n]{0,150}(?:input|read|range|node|size)/gi,1,'code','输入校验与异常报告联系紧密；竞赛代码中不常见，工程中完全合理。'),
+ R('user_friendly_error','长篇报错字符串','defensive',7,/(?:\b(?:std::)?(?:runtime_error|invalid_argument|out_of_range|logic_error)\s*\(\s*"[^"\n]{25,}"|\bcerr\s*<<\s*"[^"\n]{30,}")/g,1,'code','出现面向读者的较长错误提示。'),
+ R('guarded_conversion','显式转换与上界保护并用','defensive',6,/(?:\bstatic_cast\s*<[^>]{1,50}>\s*\([^;\n]{1,100}\)[^;\n]{0,180}\b(?:min|max|clamp|numeric_limits)|\b(?:min|max|clamp)\s*\([^;\n]{1,100}static_cast\s*<)/g,1,'code','显示类型转换与上界保护组合出现；可能是谨慎的工程代码。'),
+ R('bounds_throws','下标检查直接抛错','defensive',9,/\bif\s*\([^\n]{1,130}(?:<\s*0|>=\s*\w+\.size\(\)|>\s*(?:n|m|size|length))\s*\)[^\n]{0,120}\bthrow\b/g,1,'code','针对下标范围抛出异常；需要结合题目判断是否必要。'),
+ R('exception_in_main','main 中结构化 try/catch','defensive',7,/\bint\s+main\s*\([^)]*\)\s*\{[\s\S]{0,800}?\btry\s*\{[\s\S]{0,2500}?\bcatch\s*\(/g,1,'code','main 使用完整的异常捕获流程；可能来自通用示例或生产工程。'),
+ R('redundant_stream_checks','多次 I/O 流状态校验','defensive',6,/\bif\s*\(\s*(?:!\s*(?:std::)?cin\b|\s*(?:std::)?cin\s*\.\s*fail\s*\(|\s*(?:std::)?cout\s*\.\s*fail\s*\()/g,2,'code','对流状态重复进行检查；在需要容错的程序中属于好习惯。'),
+ R('noisy_stream_flush','频繁强制刷新输出','format',4,/\b(?:std::)?endl\b|\b(?:std::)?flush\b/g,7,'code','频繁刷新输出；这可能降低性能，也可能是交互要求。'),
+ R('verbose_loop_names','迭代变量语义很长','naming',5,/\bfor\s*\(\s*(?:int|size_t|auto|long\s+long)\s+(?:currentIndex|nodeIndex|elementIndex|vertexIndex|edgeIndex|positionIndex|iterationIndex|testCaseIndex)\b/g,2,'code','循环变量以语义后缀命名；很多人工代码追求可读性。'),
+ R('styled_structured_binding','长标识符结构化绑定','naming',4,/\bauto\s*\[\s*(?:current|next|previous|source|target)[A-Z]\w+\s*,\s*(?:current|next|previous|source|target|edge)[A-Z]\w+/g,1,'code','结构化绑定中使用成组的描述性名称。'),
+ R('repeated_explicit_types','重复写出完整模板类型','format',4,/\b(?:std::)?vector\s*<\s*(?:std::)?(?:pair|vector)\s*<[^\n]{5,90}>>/g,3,'code','多处写出嵌套容器模板类型；属于书写习惯。'),
+ R('fallback_and_errors','完整的兜底异常输出','defensive',7,/\bcatch\s*\(\s*(?:const\s+)?(?:std::)?exception\s*&\s*\w*\s*\)[\s\S]{0,240}?\b(?:cerr|fprintf|clog)\b/g,1,'code','捕获通用异常后向错误输出报告；工程实践中正常。'),
+ R('explicit_null_ptr','nullptr 和状态初始化组合','format',3,/\b(?:nullptr|std::nullopt|std::optional|std::move)\b/g,7,'code','大量使用现代 C++ 惯用法；这是非常弱的风格特征。'),
+ R('writeup_prose_in_string','程序中保留分析型说明文字','template',10,/(?:"[^"\n]{0,140}(?:step\s+\d+|time\s+complexity|algorithm\s+overview|expected\s+output|proof\s+of\s+correctness)[^"\n]{0,120}"|"[^"\n]{0,150}(?:步骤\s*[一二三四五六七八九十\d]+|时间复杂度|代码示例)[^"\n]{0,100}")/gi,1,'all','字符串里出现解题讲解的段落标签；也可能是正常教学程序。'),
+ R('surplus_debug_output','提示用户输入的交互性输出','template',5,/\b(?:cout|cerr|printf)\s*(?:<<|\()\s*"(?:Please\s+(?:enter|input)|Enter\s+(?:the|a|your)|Input\s+(?:number|size|n)|请输入[^"\n]{0,60})/gi,1,'code','在代码中直接要求用户输入；不适合多数 OJ，但正常 CLI 会这样设计。'),
+ R('assistant_response_heading','解答正文标题残留','template',19,/(?:^|\n)\s*(?:#+\s*(?:Solution|代码实现|完整代码|解法|Approach|Explanation)\b|(?:解法|思路|分析)\s*[：:]\s*下面)/gim,1,'all','代码粘贴区域仍含答案正文或讲解标题。'),
+ R('editorial_section_comments','算法描述分节术语','comment',7,/\/\/[^\n]{0,80}(?:initialization|relaxation|preprocessing|postprocessing|final processing|边界条件处理|输入校验|构建邻接表|核心算法|最后输出)/gi,2,'comment','注释按算法过程划分成多个讲解环节。'),
+ R('high_level_assurance','保证正确性式注释','comment',8,/\/\/[^\n]{0,140}(?:ensure\s+(?:that|all|no)|make\s+sure\s+that|avoid\s+(?:overflow|errors|duplicates)|保证(?:不|所有|每个)|防止(?:越界|溢出))/gi,2,'comment','注释解释代码具备的安全或正确性保证。'),
+ R('domain_agnostic_pipeline','管线式通用动作动词','architecture',4,/\b(?:initialize|process|compute|validate|prepare|finalize|execute)(?:Data|Input|Result|State|Configuration|Answer|Output)\b/g,4,'code','多个函数名按“动作+输入/结果”构成通用处理管线。'),
+ R('long_parameter_renaming','构造函数参数与成员同名','architecture',5,/\b(?:Solver|Manager|Handler|Processor)\s*\(\s*int\s+(\w+)\s*\)\s*:\s*\1\s*\(\s*\1\s*\)/g,1,'code','构造函数通过同名形参初始化成员，属于常见 C++ 惯用法。'),
+];
+CODE_RULES.push(...CODE_RULES_V3);
+TEXT_RULES.push(
+ R('text_nested_connectors','并列层层递进的转折','language',6,/(?:不仅如此|更为重要的是|与此同时|更进一步|从长远来看|也正因如此|on top of that|more significantly|looking ahead)/gi,3,'all','连用标准化段落过渡词。'),
+ R('text_action_matrix','多项行动建议并排','language',5,/(?:建立(?:完善|健全)|加强(?:管理|监督|协作)|优化(?:流程|机制|结构)|提升(?:能力|水平|效率))/gi,4,'all','使用重复的“动词+抽象名词”建议语。'),
+ R('text_mirror_summary','重复呼应开篇结尾','language',6,/(?:通过以上分析|通过上述讨论|结合以上几点|回顾全文|综上分析可以得出)/gi,2,'all','频繁使用回顾式结尾表达。'),
+ R('text_broad_tradeoffs','泛化取舍术语','language',5,/(?:机遇与挑战并存|优势与不足|利弊共存|技术是一把双刃剑|需要权衡利弊|在效率与公平之间)/gi,2,'all','使用通用取舍框架；议论文中同样常见。'),
+ R('text_meta_disclaimer','文章中反复免责声明','template',6,/(?:以下内容仅供参考|不构成专业建议|请根据实际情况调整|如需进一步了解|希望以上内容能够)/gi,2,'all','存在答复式免责声明或结束语。'),
+ R('text_markdown_table','Markdown 表格格式','format',3,/^\s*\|(?:[^\n|]+\|){2,}\s*$/gm,4,'all','内容使用 Markdown 表格；来源可能是聊天、笔记或人工写作。'),
+ R('text_overenumeration','显式层级条目较多','format',5,/^\s*(?:\d+\.\d+[.）\s]|\([a-zA-Z\d]\)\s+|[（(][一二三四五六七八九十][）)]\s*)/gm,4,'all','层级编号格式重复出现。'),
+ R('text_english_transition_cluster','英语议论文承接词','language',5,/(?:first and foremost|it is worth noting|in light of this|with that being said|in this regard|from this perspective)/gi,3,'all','多个英语承接短语呈标准化结构。')
+);
+function maskComments(text){
+ const re=/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g;let m,last=0,comment='',code='';
+ while((m=re.exec(text))!==null){const before=text.slice(last,m.index);code+=before;comment+=before.replace(/[^\n]/g,' ');const z=m[0];comment+=z;code+=z.replace(/[^\n]/g,' ');last=re.lastIndex}
+ const rest=text.slice(last);code+=rest;comment+=rest.replace(/[^\n]/g,' ');return {code,comment};
+}
+function lineOffsets(t){const v=[0];for(let i=0;i<t.length;i++)if(t.charCodeAt(i)===10)v.push(i+1);return v}
+function findLine(arr,pos,base){let lo=0,hi=arr.length;while(lo+1<hi){const m=(lo+hi)>>1;if(arr[m]<=pos)lo=m;else hi=m}return base+lo}
+function applyRule(rule,source,offsets,base){let matches=0;const lines=[];rule.rx.lastIndex=0;let m;while((m=rule.rx.exec(source))!==null){matches++;if(lines.length<4)lines.push(findLine(offsets,m.index,base));if(matches>=90)break;if(!m[0].length)rule.rx.lastIndex++}
+ return matches>=rule.min?{id:rule.id,title:rule.title,detail:rule.detail,cat:rule.cat,w:rule.w,strength:rule.strength,count:matches,lines:[...new Set(lines)]}:null;
+}
+function custom(id,title,cat,w,detail,lines=[],count=1,strength='context'){return {id,title,cat,w,detail,lines,count,strength}}
+function summarizeHits(hits,kind,sourceLength,signalMode='balanced'){
+ const perCat={},independent=new Set();let strong=0,rare=0;
+ for(const h of hits){const mult=1+Math.min(.33,Math.log2(Math.max(1,h.count))/9);perCat[h.cat]=(perCat[h.cat]||0)+h.w*mult;independent.add(h.cat);if(h.strength==='strong')strong++;}
+ let raw=0;for(const [cat,v] of Object.entries(perCat)){const cap=cat==='comment'?37:cat==='architecture'?25:cat==='naming'?15:cat==='defensive'?19:cat==='language'?40:cat==='template'?34:cat==='format'?15:14;raw+=cap*(1-Math.exp(-v/cap));}
+ const diversity=Math.max(0,independent.size-1);raw+=Math.min(12,diversity*4);
+ let score=kind==='code'?19+76*(1-Math.exp(-raw/43)):20+76*(1-Math.exp(-raw/35));
+ if(strong===0&&hits.length<=2)score=Math.min(score,49);
+ if(hits.length===0)score=kind==='code'?21:23;
+ const delta=signalMode==='sensitive'?8:signalMode==='conservative'?-8:0;score+=delta*(0.5+0.5*clamp(raw/24,0,1));
+ const factor=sourceLength<90?.28:sourceLength<200?.58:sourceLength<380?.82:1;
+ score=50+(score-50)*factor;
+ return {score:clamp(Math.round(score),3,97),raw,categoryTotals:Object.entries(perCat).map(([id,amount])=>({id,name:CATS[id],amount:Math.round(amount)})),strong,diversity};
+}
+
+function codeStructures(u,mask,codeLines,commentCount,significant){
+ const t=mask.code,h=[],start=u.startLine,full=u.text;
+ const lineFor=s=>{const at=t.indexOf(s);return at<0?[]:[start+(t.slice(0,at).match(/\n/g)||[]).length]};
+ let longNames=0,shortNames=0,vars=0,guards=0,container=0,functions=0,lookahead=0,lines=[];
+ const words=new Set(['main','return','const','class','struct','double','signed','string','vector','map','priority','queue','long','int','auto','void','bool','char','while','break','continue','namespace','static','public','private']);
+ for(let i=0;i<codeLines.length;i++){
+  const s=codeLines[i],trim=s.trim();if(!trim)continue;
+  if(/\b(?:vector|map|unordered_map|set|queue|deque|priority_queue)\s*</.test(s))container++;
+  if(/\bif\s*\([^\n]{1,140}\)\s*\{?\s*$/.test(trim)&&/\b(?:return|break|continue|throw)\b/.test((codeLines[i+1]||'').trim()))guards++;
+  if(/\b(?:void|bool|int|long\s+long|auto|double)\s+([a-zA-Z_]\w*)\s*\([^;]*\)\s*(?:const\s*)?\{?\s*$/.test(trim))functions++;
+  const re=/\b(?:int|auto|bool|long\s+long|size_t|double|float|char)\s+([a-zA-Z_]\w*)\b/g;let m;
+  while((m=re.exec(s))!==null){const name=m[1];if(words.has(name))continue;vars++;if(name.length>=12&&/(?:[A-Z]|_)/.test(name))longNames++;else if(name.length<=2)shortNames++;}
+ }
+ if(significant>=14&&vars>=5&&longNames>=5&&longNames/vars>.52){h.push(custom('stat_local_descriptive_vars','局部变量描述性命名集中','naming',8,`检测到 ${longNames}/${vars} 个变量声明使用较长组合词名称；这是编码偏好，不是来源证明。`,[],longNames));}
+ if(significant>=16&&vars>=6&&longNames>=4&&shortNames===0&&commentCount<2){h.push(custom('stat_low_comment_longnames','无注释但变量普遍很完整','naming',5,'说明注释很少，但变量采用长描述性命名；这有助于区分不同代码写作风格。',[],longNames));}
+ if(significant>=20&&guards>=3){h.push(custom('stat_guard_early_exit','密集的输入/状态守卫式分支','defensive',5,`约 ${guards} 处多行 if 之后立即提前退出或抛异常；也可能是良好的防御性编程。`,[],guards));}
+ if(significant>=20&&functions>=3&&container>=3){h.push(custom('stat_helpers_containers','多函数与容器协同组织','architecture',6,`同一区段有约 ${functions} 个函数签名、${container} 次 STL 容器类型声明；可作为复杂度上下文。`,[],functions));}
+ if(significant>=12&&commentCount===0&&container>=3&&longNames>=4){h.push(custom('stat_no_comment_polish','少注释但保持语义命名与抽象容器','architecture',6,'代码几乎没有解释性注释，但使用语义化标识符与多处容器抽象。',[],longNames));}
+ return h;
+}
+function analyzeCodeUnit(u,mode){
+ const t=u.text,offsets=lineOffsets(t),masks=maskComments(t),ls=t.split('\n'),hits=[];
+ for(const r of CODE_RULES){const s=r.scope==='code'?masks.code:r.scope==='comment'?masks.comment:t;const h=applyRule(r,s,offsets,u.startLine);if(h)hits.push(h)}
+ const codeLines=masks.code.split('\n'),cmLines=masks.comment.split('\n');let significant=0,comment=0,indented=0,aligned=0,spacing=0,tabbed=0,indentIndent=[];
+ for(let i=0;i<ls.length;i++){
+  const s=codeLines[i]||'',raw=ls[i],trim=s.trim();if(trim&&!/^#\s*(?:include|define|pragma|if|endif|else)/.test(trim)){significant++;
+  const m=/^([ \t]+)/.exec(s);if(m){indented++;const v=m[1];if(/^ +$/.test(v)){indentIndent.push(v.length);if(v.length%4===0)aligned++;}else if(/\t/.test(v))tabbed++;}
+  if(/(?:\s[+*/%=<>-]\s|\s\{\s*$|\)\s*\{)/.test(s))spacing++;
+  }
+  if(/\/\/|\/\*/.test(cmLines[i]))comment++;
+ }
+ hits.push(...codeStructures(u,masks,codeLines,comment,significant));
+ const ratio=comment/Math.max(1,significant);
+ if(significant>=8&&ratio>=.42)hits.push(custom('heavy_comment_ratio','注释占比较高','comment',ratio>.8?10:7,`注释行约为有效代码行的 ${Math.round(ratio*100)}%；教材、解释题解也会如此。`,[],Math.round(ratio*10)));
+ if(significant>=15&&indented>=10&&indentIndent.length>=8&&aligned/indentIndent.length>.94)hits.push(custom('indent_consistency','缩进阶梯很整齐','format',4,`约 ${Math.round(aligned/indentIndent.length*100)}% 的空格缩进行采用 4 的倍数；这是非常常见的代码规范。`,[],1));
+ const nonempty=ls.filter(s=>s.trim());const longComments=cmLines.filter(x=>x.trim().length>=70).length;
+ if(longComments>=3&&comment>=4)hits.push(custom('explanation_density','解释性注释集中','comment',6,`${longComments} 行解释性注释较长。`,[],longComments));
+ const avgLine=significant?codeLines.reduce((s,x)=>s+(x.trim()?x.trim().length:0),0)/significant:0;
+ if(significant>=20&&avgLine>27&&avgLine<84&&spacing/significant>.75)hits.push(custom('polished_layout','代码排版较统一','format',4,'非空语句长度、空格分布整体较统一；多人手工代码也可能符合。',[],1));
+ // Counter-indicators are styles, NOT proof of human authorship.
+ let opposing=0;const counter=[];
+ if(significant>=12&&comment<=1&&/\b(?:scanf|printf)\s*\(/.test(masks.code)&&/(?:\bint\s+[a-z]\s*[,;=]|\b[a-z]{1,2}\s*\[\s*\d{3,}\s*\])/.test(masks.code)){counter.push('紧凑竞赛式 I/O 与短变量组合');opposing+=5}
+ if(significant>=15&&ls.filter(s=>s.length>125).length>=4&&comment===0){counter.push('多处长行、基本无解释性注释');opposing+=4}
+ if(significant>=12&&/(?:^|\n)\s*#define\s+(?:rep|forn|FOR|ALL|pb|fi|se)\b/m.test(t)){counter.push('个人化宏模板写法');opposing+=3}
+ const summary=summarizeHits(hits,mode,t.length,mode==='code'?'balanced':'balanced');
+ return {hits,counter,opposing,summary};
+}
+function analyzeTextUnit(u){const t=u.text,offsets=lineOffsets(t),hits=[];for(const r of TEXT_RULES){const h=applyRule(r,t,offsets,u.startLine);if(h)hits.push(h)}
+ const sentences=t.split(/[。！？!?]+|\.(?=\s|$)/g).map(x=>x.trim()).filter(s=>s.length>12&&s.length<500);
+ if(sentences.length>=7){const avg=sentences.reduce((a,s)=>a+s.length,0)/sentences.length;const cv=Math.sqrt(sentences.reduce((a,s)=>a+(s.length-avg)**2,0)/sentences.length)/avg;if(cv<.27&&avg>21)hits.push(custom('text_equal_sentences','句长波动较小','format',5,`当前区段 ${sentences.length} 句长度较接近；不具备独立鉴别力。`));
+  const start={};for(const s of sentences){const key=s.replace(/^[\s\d（一二三四五六七八九十）、.]+/,'').slice(0,5);if(key.length>=4)start[key]=(start[key]||0)+1}const top=Math.max(0,...Object.values(start));if(top>=3)hits.push(custom('text_same_opening','句首用词重复','language',5,`同类句首短语出现 ${top} 次；排比句也可能如此。`,[],top));
+ }
+ return {hits,counter:[],opposing:0,summary:summarizeHits(hits,'text',t.length)};
+}
+function makeSnippet(u,hits){const ls=u.text.split('\n'),marked=hits.flatMap(h=>h.lines||[]).filter(x=>x>=u.startLine&&x<=u.endLine);let ix=marked.length?Math.min(...marked)-u.startLine:0;ix=clamp(ix-2,0,Math.max(0,ls.length-1));const n=Math.min(12,ls.length-ix);return ls.slice(ix,ix+n).map((x,i)=>`${u.startLine+ix+i} | ${x.slice(0,240)}`).join('\n').slice(0,2000)}
+function chunks(source,mode){const lines=source.split('\n'),out=[];const maxLines=mode==='code'?85:36,maxChars=mode==='code'?14000:4000;let part=[],start=0,offset=0,startLine=1,partLen=0;
+ function emit(endLine){if(!part.length)return;out.push({text:part.join('\n'),start,end:offset,startLine,endLine});part=[];partLen=0;start=offset;startLine=endLine+1}
+ for(let i=0;i<lines.length;i++){
+  const s=lines[i];if(s.length>maxChars){if(part.length)emit(i);for(let j=0;j<s.length;j+=maxChars){const text=s.slice(j,j+maxChars);out.push({text,start:offset+j,end:offset+j+text.length,startLine:i+1,endLine:i+1})}offset+=s.length+(i<lines.length-1?1:0);start=offset;startLine=i+2;continue}
+  if(part.length&&(part.length>=maxLines||partLen+s.length+1>maxChars))emit(i);
+  if(!part.length){start=offset;startLine=i+1}part.push(s);partLen+=s.length+1;offset+=s.length+(i<lines.length-1?1:0);
+  if(mode==='text'&&partLen>=1500&&s.trim()==='')emit(i+1);
+ }if(part.length)emit(lines.length);return out;
+}
+function detectMode(text,filename){if(/\.(?:cpp|cc|cxx|c\+\+|hpp|h|c)$/i.test(filename||''))return'code';const s=text.slice(0,15000);let score=0;if(/#\s*include\s*[<"]/.test(s))score+=3;if(/\b(?:int|signed)\s+main\s*\(/.test(s))score+=3;if(/\b(?:namespace\s+std|std::|template\s*<|scanf\s*\(|printf\s*\()/.test(s))score+=2;if(/[{};]/.test(s)&&/\b(?:for|while|if|return)\s*(?:\(|\b)/.test(s))score+=1;return score>=3?'code':'text'}
+function globalStats(source,mode){const sample=source.length>1_200_000?source.slice(0,550000)+'\n'+source.slice(Math.floor(source.length/2),Math.floor(source.length/2)+200000)+'\n'+source.slice(-450000):source;
+ const lines=sample.split('\n'),hits=[];if(mode==='code'){
+  let bracesSame=0,bracesNext=0,spaced4=0,spaced2=0,tabs=0,indent=0,comment=0,codeLines=0,short=0,meaningful=0,condensed=0;
+  for(const s of lines){const t=s.trim();if(!t)continue;if(/^\s*(?:\/\/|\/\*)/.test(s))comment++;else codeLines++;
+   if(/^\s*\{/.test(s))bracesNext++;if(/\)\s*\{\s*$/.test(s))bracesSame++;
+   const m=/^([ \t]+)/.exec(s);if(m){indent++;if(/^ +$/.test(m[1])){if(m[1].length%4===0)spaced4++;if(m[1].length%2===0)spaced2++}else if(m[1].includes('\t'))tabs++}
+   if(/\b(?:int|long|double|bool)\s+[a-z]\b/.test(s))short++;
+   if(/\b[a-z]{5,}(?:[A-Z][a-z]{3,}|_[a-z]{4,})+\b/.test(s))meaningful++;
+   if(s.length>130)condensed++;
+  }
+  if(indent>=45&&(spaced4/indent>.97||tabs/indent>.97)&&codeLines>=65)hits.push(custom('global_clean_indent','跨区段缩进高度一致','format',7,`抽样 ${indent} 条缩进行中，主导缩进格式占比 ${Math.round(Math.max(spaced4,tabs)/indent*100)}%。`));
+  const brace=bracesSame+bracesNext;if(brace>=12&&Math.max(bracesSame,bracesNext)/brace>.96)hits.push(custom('global_brace','大范围统一大括号风格','format',5,'函数与控制语句的大括号放置高度一致。'));
+  if(codeLines>=60&&meaningful>short*2&&meaningful>=10)hits.push(custom('global_readable_names','多个区段使用长描述性名称','naming',7,'长描述性标识符在多个区段频繁出现。'));
+  const fn=(sample.match(/(?:^|\n)\s*(?:inline\s+|static\s+|const\s+)*(?:void|bool|int|long\s+long|auto|double|vector\s*<[^\n]{1,60}>)\s+([A-Za-z_]\w{4,})\s*\(/g)||[]).length;
+  if(fn>=5&&codeLines>=65)hits.push(custom('global_modular','较多独立命名函数','architecture',8,`抽样发现约 ${fn} 处常规命名函数定义或声明；项目工程化组织也会如此。`));
+  if(comment>25&&comment/codeLines>.35)hits.push(custom('global_documentation','跨区段注释密集','comment',8,'从全局看，说明性注释行较多。'));
+  if(condensed>=15&&comment===0)hits.push(custom('global_dense_manual','长行密集、注释稀少','template',0,'代码更倾向紧凑竞赛写法。'));
+ }else{
+  const paras=sample.split(/\n\s*\n/).map(s=>s.trim()).filter(s=>s.length>=70);if(paras.length>=5){const lens=paras.map(s=>s.length),avg=lens.reduce((a,b)=>a+b,0)/lens.length,cv=Math.sqrt(lens.reduce((a,v)=>a+(v-avg)**2,0)/lens.length)/avg;if(cv<.24)hits.push(custom('global_even_paras','多段长度高度均匀','format',6,'多个段落长度非常接近；可能只是编辑规范。'));}
+ }
+ return {hits,sampleSize:sample.length};
+}
+
+function globalCppStructures(src){
+ const sample=src.length>1400000?src.slice(0,850000)+'\n'+src.slice(-500000):src;
+ const h=[];
+ const nameRe=/\b(?:current|next|previous)(?:Node|Index|Value|Distance|Element|Vertex|Position)|\b(?:sourceNode|targetNode|edgeWeight|shortestDistance|adjacencyList|numberOfNodes)\b/g;
+ const matchingNames=(sample.match(nameRe)||[]).length;
+ const types=(sample.match(/\b(?:class|struct)\s+[A-Za-z_]\w*(?:Solver|Processor|Handler|Manager|Engine)\b/g)||[]).length;
+ const explainFns=(sample.match(/\b(?:readInput|parseInput|processInput|buildGraph|initializeGraph|computeResult|calculateResult|printResult|writeOutput|outputResult)\s*\(/g)||[]).length;
+ const utilNames=[...(sample.match(/\b(?:readInput|parseInput|processInput|buildGraph|initializeGraph|computeResult|calculateResult|printResult|writeOutput|outputResult)\s*\(/g)||[])].map(x=>x.slice(0,x.indexOf('(')));
+ if(types>=1&&new Set(utilNames).size>=3)h.push(custom('global_class_pipeline','角色类与输入-处理-输出协作','architecture',11,`角色类 ${types} 处、不同职责方法 ${new Set(utilNames).size} 种；属于偏工程化的组织风格。`,[],1,'strong'));
+ if(matchingNames>=10&&new Set((sample.match(nameRe)||[])).size>=4)h.push(custom('global_semantic_family','跨函数的完整语义变量家族','naming',9,`current/next/source/target 等术语出现 ${matchingNames} 次，跨函数命名习惯较一致。`));
+ const typedFunctions=(sample.match(/(?:^|\n)\s*(?:(?:inline|static|constexpr|virtual)\s+)*(?:void|bool|int|auto|double|long\s+long|std::vector\s*<[^\n]{2,120}>|vector\s*<[^\n]{2,120}>)\s+[a-zA-Z_]\w{4,}\s*\([^;\n]*\)\s*(?:const)?\s*\{/g)||[]).length;
+ if(typedFunctions>=7&&explainFns>=3)h.push(custom('global_semantic_decomposition','大量显式语义函数负责子步骤','architecture',9,`约 ${typedFunctions} 个函数定义、${explainFns} 次语义职责调用。`));
+ const catches=(sample.match(/\bcatch\s*\(/g)||[]).length,throws=(sample.match(/\bthrow\s+(?:std::)?\w+/g)||[]).length;
+ if(catches>=1&&throws>=2&&/(?:^|\n)\s*int\s+main\s*\(/m.test(sample))h.push(custom('global_robust_error_flow','全局异常处理与输入检查成体系','defensive',9,`出现 ${throws} 次抛出异常与 ${catches} 个捕获分支；工程项目也常这样组织。`));
+ const before=sample.split('\n').filter(x=>x.trim()&&!/^\s*(?:\/\/|\*|\/\*)/.test(x));let short=0,long=0;
+ for(const line of before){if(/\b(?:int|bool|long|auto)\s+[a-z]\b/.test(line))short++;if(/\b(?:int|bool|long|auto)\s+[a-z]{5,}(?:[A-Z][a-z]{3,}|_[a-z]{3,})+/.test(line))long++;}
+ if(before.length>=28&&long>=7&&long>short*2)h.push(custom('global_long_names_dominate','全局局部变量倾向完整英文词组','naming',7,`全局找到约 ${long} 处长组合词变量声明、${short} 处单字母声明；仅表明习惯。`));
+ return h;
+}
+function fingerprint(text){const s=text.length>900000?text.slice(0,350000)+'\n'+text.slice(Math.floor(text.length/2),Math.floor(text.length/2)+200000)+'\n'+text.slice(-350000):text;const ls=s.split('\n');let n=0,comment=0,tab=0,indent=0,same=0,next=0,long=0,short=0,camel=0,snake=0,stl=0,printf=0,cin=0,defines=0;
+ for(const row of ls){const t=row.trim();if(!t)continue;n++;if(/^\/\/|^\/\*|^\*/.test(t))comment++;if(/^\t/.test(row))tab++;if(/^\s+\S/.test(row))indent++;if(/\)\s*\{\s*$/.test(t))same++;if(/^\{/.test(t))next++;if(/\b[a-z]{3,}(?:[A-Z][a-z]{3,})+\b/.test(t))camel++;if(/\b[a-z]{3,}(?:_[a-z]{3,})+\b/.test(t))snake++;if(/\b(?:int|long|bool)\s+[a-z]\b/.test(t))short++;if(row.length>115)long++;if(/\bstd::/.test(t))stl++;if(/\b(?:printf|scanf)\s*\(/.test(t))printf++;if(/\b(?:cin|cout)\s*(?:>>|<<)/.test(t))cin++;if(/^#\s*define\s+/.test(t))defines++}
+ const safe=n||1;return {comment:comment/safe,tab:tab/Math.max(1,indent),braceNext:next/Math.max(1,next+same),long:long/safe,camel:camel/safe,snake:snake/safe,short:short/safe,stl:stl/safe,printf:printf/safe,iostream:cin/safe,macros:defines/safe,n};
+}
+function compareStyle(text,reference){if(!reference||reference.trim().length<200)return null;const a=fingerprint(text),b=fingerprint(reference);const defs=[['comment','注释密度',.18,3],['tab','制表符缩进',.28,2],['braceNext','换行大括号风格',.30,2],['long','长代码行占比',.15,2],['camel','驼峰变量频率',.12,2],['snake','下划线变量频率',.12,2],['short','单字母变量频率',.15,2],['stl','显式 std:: 习惯',.15,1.5],['printf','C 风格 I/O',.08,1.5],['iostream','流式 I/O',.08,1.5],['macros','宏定义使用',.05,1.5]];
+ let d=0,total=0;const diffs=[];for(const [key,title,scale,weight] of defs){const x=Math.abs(a[key]-b[key]);const distance=clamp(x/scale,0,1);d+=distance*weight;total+=weight;if(distance>.32)diffs.push({name:title,current:Math.round(a[key]*100),reference:Math.round(b[key]*100),difference:Math.round(distance*100)});}
+ return {similarity:clamp(Math.round(100-85*d/Math.max(1,total)),0,100),diffs:diffs.sort((a,b)=>b.difference-a.difference).slice(0,7),referenceLines:b.n,interpretation:'只比较风格差异，不推断真实作者；项目类型、题目和代码标准会影响结果。'};
+}
+
+// Include heuristic/structural checks in the visible rule catalog, not just RegExp rules.
+const CODE_STRUCTURAL_RULES=[
+ ['heavy_comment_ratio','注释占比较高','comment',7],
+ ['indent_consistency','缩进阶梯很整齐','format',4],
+ ['explanation_density','解释性注释集中','comment',6],
+ ['polished_layout','代码排版较统一','format',4],
+ ['global_clean_indent','跨区段缩进高度一致','format',7],
+ ['global_brace','大范围统一大括号风格','format',5],
+ ['global_readable_names','多个区段使用长描述性名称','naming',7],
+ ['global_modular','较多独立命名函数','architecture',8],
+ ['global_documentation','跨区段注释密集','comment',8],
+ ['global_dense_manual','长行密集、注释稀少','template',0],
+ ['stat_local_descriptive_vars','局部变量描述性命名集中','naming',8],
+ ['stat_low_comment_longnames','无注释但变量普遍很完整','naming',5],
+ ['stat_guard_early_exit','密集的输入/状态守卫式分支','defensive',5],
+ ['stat_helpers_containers','多函数与容器协同组织','architecture',6],
+ ['stat_no_comment_polish','少注释但保持语义命名与抽象容器','architecture',6],
+ ['global_class_pipeline','角色类与输入-处理-输出协作','architecture',11],
+ ['global_semantic_family','跨函数的完整语义变量家族','naming',9],
+ ['global_semantic_decomposition','大量显式语义函数负责子步骤','architecture',9],
+ ['global_robust_error_flow','全局异常处理与输入检查成体系','defensive',9],
+ ['global_long_names_dominate','全局局部变量倾向完整英文词组','naming',7]
+].map(([id,title,cat,w])=>({id,title,cat,w,strength:w>=10?'strong':'context'}));
+const TEXT_STRUCTURAL_RULES=[
+ ['text_equal_sentences','句长波动较小','format',5],
+ ['text_same_opening','句首用词重复','language',5],
+ ['global_even_paras','多段长度高度均匀','format',6]
+].map(([id,title,cat,w])=>({id,title,cat,w,strength:'context'}));
+function run(data){const{source,mode,filename,sensitivity='balanced',reference=''}=data;const realMode=mode==='auto'?detectMode(source,filename):mode;postMessage({type:'progress',value:4,phase:'正在识别结构、准备多规则引擎…'});
+ const units=chunks(source,realMode),stats=new Map(),groups=new Map(),scored=[];let low=0,med=0,high=0,flagged=0,totalScore=0,totalWeight=0,opposing=0;const updateStep=Math.max(1,Math.floor(units.length/100));
+ for(let i=0;i<units.length;i++){
+  const u=units[i],out=realMode==='code'?analyzeCodeUnit(u,'code'):analyzeTextUnit(u);
+  const calc=summarizeHits(out.hits,realMode,u.text.length,sensitivity);
+  const score=clamp(calc.score-out.opposing,2,97);opposing+=out.opposing;
+  const entry={start:u.start,end:u.end,startLine:u.startLine,endLine:u.endLine,chars:u.text.trim().length,score,hits:out.hits,counter:out.counter,snippet:makeSnippet(u,out.hits)};
+  scored.push(entry);const w=clamp(entry.chars,90,3500);totalScore+=w*score;totalWeight+=w;
+  if(entry.hits.length)flagged++;if(score>=70)high++;else if(score>=53)med++;else low++;
+  for(const h of entry.hits){const prev=stats.get(h.id)||{...h,segments:0,instances:0};prev.segments++;prev.instances+=h.count;if(h.lines.length&&prev.lines.length<8)prev.lines.push(...h.lines.slice(0,8-prev.lines.length));stats.set(h.id,prev);}
+  if(i%updateStep===0)postMessage({type:'progress',value:6+Math.round(83*(i+1)/Math.max(1,units.length)),phase:`高级规则检测 ${i+1} / ${units.length} 区段…`});
+ }
+ const global=globalStats(source,realMode);if(realMode==='code')global.hits.push(...globalCppStructures(source));for(const h of global.hits)if(h.w>0){const prev=stats.get(h.id)||{...h,segments:0,instances:0};prev.segments++;prev.instances++;stats.set(h.id,prev)}
+ let mean=totalScore/Math.max(1,totalWeight),globalCalc=summarizeHits(global.hits.filter(h=>h.w>0),realMode,source.length,sensitivity);
+ // Global consistency is less reliable than local evidence: keep its influence small.
+ let score=Math.round(global.hits.some(h=>h.w>0) ? mean*.82+globalCalc.score*.18 : mean);
+ if(realMode==='code'){
+  const cats=new Set([...stats.values()].filter(x=>x.segments>0&&x.w>=5).map(x=>x.cat));
+  const substantive=[...stats.values()].filter(x=>x.w>=5&&x.cat!=='format'&&x.strength!=='context_only');
+  if(substantive.length>=7&&cats.size>=3)score+=7;
+  else if(substantive.length>=5&&cats.size>=3)score+=4;
+ }
+ if(realMode==='code'&&opposing>=9&&stats.size<4)score-=2;
+ score=clamp(score,3,97);
+ const signals=[...stats.values()].sort((a,b)=>(b.segments*b.w)-(a.segments*a.w));
+ const groupMap=new Map();for(const hit of stats.values()){const z=groupMap.get(hit.cat)||{id:hit.cat,name:CATS[hit.cat]||hit.cat,rules:0,segments:0};z.rules++;z.segments+=hit.segments;groupMap.set(hit.cat,z)}
+ const sorted=[...scored].sort((a,b)=>b.score-a.score||b.hits.length-a.hits.length);
+ const compare=realMode==='code'?compareStyle(source,reference):null;
+ const size=source.length;const evidenceDensity=flagged/Math.max(1,units.length);
+ const reliability=size<240||units.length<2?'样本不足':(signals.length>=6&&evidenceDensity>.33?'线索覆盖较广':signals.length>=3?'线索覆盖一般':'线索较少');
+ const summaryText=realMode==='code'?'代码不具备稳定的作者指纹；检测的是可观察风格、非 AI 生成概率。':'通用模板、规范写作和人工改写会触发同样规则，不能鉴定作者。';
+ postMessage({type:'done',result:{score,human:100-score,mode:realMode,chars:size,lines:units.length?units[units.length-1].endLine:1,units:units.length,low,med,high,flagged,signals:signals.map(x=>({...x,lines:[...new Set(x.lines)].slice(0,8)})),groups:[...groupMap.values()].sort((a,b)=>b.rules-a.rules),segments:sorted.slice(0,350),notShown:Math.max(0,sorted.length-350),sourceName:filename||'粘贴内容',analyzedAt:new Date().toISOString(),ruleCount:realMode==='code'?CODE_RULES.length+CODE_STRUCTURAL_RULES.length:TEXT_RULES.length+TEXT_STRUCTURAL_RULES.length,ruleCatalog:(realMode==='code'?[...CODE_RULES,...CODE_STRUCTURAL_RULES]:[...TEXT_RULES,...TEXT_STRUCTURAL_RULES]).map(r=>({id:r.id,title:r.title,cat:r.cat,catName:CATS[r.cat],weight:r.w,strong:r.strength==='strong'})),triggeredRules:signals.length,globalHits:global.hits.filter(h=>h.w>0),reliability,sensitivity,compare,explanation:summaryText}});
+}
+onmessage=e=>{try{run(e.data)}catch(err){postMessage({type:'error',message:String(err&&err.stack||err)})}};
+
+</script>
+<script>
+'use strict';
+const $=(id)=>document.getElementById(id);let selectedMode='auto',fileName='',worker=null,lastReport=null,activeFilter='all',activeCategory='all',referenceText='',referenceName='',inputTimer=0;
+const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pretty=n=>new Intl.NumberFormat('zh-CN').format(n);
+function status(s,isError=false){$('status').textContent=s;$('status').style.color=isError?'#f7a1aa':'#aaccdf'}
+function updateCount(){const s=$('source').value;let lines=s?1:0;for(let i=0;i<s.length;i++)if(s.charCodeAt(i)===10)lines++;$('inputStat').textContent=`${pretty(s.length)} 字符 · ${pretty(lines)} 行`}
+$('source').addEventListener('input',()=>{clearTimeout(inputTimer);inputTimer=setTimeout(updateCount,250)});
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-mode]').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedMode=b.dataset.mode}));
+$('fileZone').addEventListener('click',()=>$('fileInput').click());$('fileZone').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('fileInput').click()}});
+$('fileInput').addEventListener('change',e=>{if(e.target.files[0])loadFile(e.target.files[0]);e.target.value='' });
+for(const ev of ['dragenter','dragover'])$('fileZone').addEventListener(ev,e=>{e.preventDefault();$('fileZone').classList.add('drag')});
+for(const ev of ['dragleave','drop'])$('fileZone').addEventListener(ev,e=>{e.preventDefault();$('fileZone').classList.remove('drag')});
+$('fileZone').addEventListener('drop',e=>{if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0])});
+async function decodeText(buf){const bytes=new Uint8Array(buf);if(bytes[0]===0xff&&bytes[1]===0xfe)return new TextDecoder('utf-16le').decode(bytes.subarray(2));if(bytes[0]===0xfe&&bytes[1]===0xff)return new TextDecoder('utf-16be').decode(bytes.subarray(2));try{return new TextDecoder('utf-8',{fatal:true}).decode(bytes)}catch{}try{return new TextDecoder('gb18030',{fatal:true}).decode(bytes)}catch{}return new TextDecoder('utf-8').decode(bytes)}
+function u16(view,i){return view.getUint16(i,true)}function u32(view,i){return view.getUint32(i,true)}
+async function getZipEntry(buf,filename){const d=new DataView(buf),bytes=new Uint8Array(buf);let e=-1;for(let i=Math.max(0,buf.byteLength-65557);i<=buf.byteLength-22;i++){if(u32(d,i)===0x06054b50)e=i}if(e<0)throw Error('DOCX 不是有效 ZIP 文档');const total=u16(d,e+10),cd=u32(d,e+16);if(total>30000||cd>=buf.byteLength)throw Error('DOCX 文件目录无效');let p=cd;for(let i=0;i<total;i++){if(p+46>buf.byteLength||u32(d,p)!==0x02014b50)throw Error('DOCX ZIP 目录损坏');const method=u16(d,p+10),comp=u32(d,p+20),uncomp=u32(d,p+24),nl=u16(d,p+28),el=u16(d,p+30),cl=u16(d,p+32),local=u32(d,p+42);const name=new TextDecoder().decode(bytes.subarray(p+46,p+46+nl));if(name===filename){if(uncomp>60*1024*1024)throw Error('DOCX 文档 XML 超过 60 MB 安全限额');if(local+30>buf.byteLength||u32(d,local)!==0x04034b50)throw Error('DOCX ZIP 记录损坏');const start=local+30+u16(d,local+26)+u16(d,local+28);if(start+comp>buf.byteLength)throw Error('DOCX 内容范围越界');const payload=bytes.subarray(start,start+comp);if(method===0)return payload;if(method===8){if(typeof DecompressionStream==='undefined')throw Error('当前浏览器不支持 DOCX 解压，请使用新版 Chrome/Edge');let stream;try{stream=new DecompressionStream('deflate-raw')}catch{throw Error('当前浏览器不支持 deflate-raw 解压，请更新 Chrome/Edge')};const data=await new Response(new Blob([payload]).stream().pipeThrough(stream)).arrayBuffer();if(data.byteLength>60*1024*1024)throw Error('解压后文档超出安全限额');return new Uint8Array(data)}throw Error('DOCX 使用了暂不支持的压缩方法：'+method)}p+=46+nl+el+cl}throw Error('DOCX 中找不到 word/document.xml')}
+async function parseDocx(buf){const content=await getZipEntry(buf,'word/document.xml');const xml=new DOMParser().parseFromString(new TextDecoder().decode(content),'application/xml');if(xml.getElementsByTagName('parsererror').length)throw Error('DOCX XML 解析失败');let paragraphs=xml.getElementsByTagNameNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main','p');if(!paragraphs.length)paragraphs=xml.getElementsByTagName('w:p');const result=[];for(const p of paragraphs){let line='';const walker=xml.createTreeWalker(p,NodeFilter.SHOW_ELEMENT);let node=walker.currentNode;while(node){const nm=node.localName;if(nm==='t'&&node.namespaceURI==='http://schemas.openxmlformats.org/wordprocessingml/2006/main')line+=node.textContent;else if(nm==='tab')line+='\t';else if(nm==='br'||nm==='cr')line+='\n';node=walker.nextNode()}result.push(line)}const text=result.join('\n');if(!text.trim())throw Error('DOCX 没有可提取的正文文字（扫描版或仅含图片可能无法处理）');return text}
+function parseDoc(buf){
+ const b=new Uint8Array(buf),v=new DataView(buf);if(buf.byteLength<512||'d0cf11e0a1b11ae1'!==Array.from(b.subarray(0,8)).map(x=>x.toString(16).padStart(2,'0')).join(''))throw Error('不是传统 Word 二进制 DOC 文档');
+ const sectorSize=2**u16(v,0x1e),miniSize=2**u16(v,0x20);if(![512,4096].includes(sectorSize)||miniSize!==64)throw Error('不支持的 DOC 扇区格式');
+ const FREE=0xffffffff,END=0xfffffffe;function sec(sid){if(sid>=0xfffffffa||!Number.isInteger(sid))throw Error('DOC 扇区链无效');const o=512+sid*sectorSize;if(o+sectorSize>b.length)throw Error('DOC 扇区越界');return o}
+ const fatIds=[];for(let i=0;i<109;i++){const n=u32(v,0x4c+i*4);if(n!==FREE)fatIds.push(n)}let dif=u32(v,0x44),difCount=u32(v,0x48);for(let z=0;z<Math.min(difCount,5000)&&dif!==END&&dif!==FREE;z++){const o=sec(dif);for(let j=0;j<sectorSize/4-1;j++){const n=u32(v,o+j*4);if(n!==FREE)fatIds.push(n)}dif=u32(v,o+sectorSize-4)}
+ if(fatIds.length>40000)throw Error('DOC FAT 表超过限制');const fat=[];for(const sid of fatIds){const o=sec(sid);for(let j=0;j<sectorSize;j+=4)fat.push(u32(v,o+j))}
+ function readChain(start,size,table=fat,blockSize=sectorSize,baseBytes=b,partial=false){if(size>80*1024*1024)throw Error('DOC 流超出安全上限');if(!size)return new Uint8Array(0);const out=new Uint8Array(size);let sid=start,pos=0,seen=new Set();while(pos<size&&sid!==END&&sid!==FREE){if(sid>=table.length||seen.has(sid)||seen.size>150000)throw Error('DOC 扇区链循环或越界');seen.add(sid);const off=blockSize===sectorSize?sec(sid):sid*blockSize;const n=Math.min(blockSize,size-pos);if(off+n>baseBytes.length)throw Error('DOC 读取超出范围');out.set(baseBytes.subarray(off,off+n),pos);pos+=n;sid=table[sid]}if(pos<size&&!partial)throw Error('DOC 内容截断');return partial?out.subarray(0,pos):out}
+ const dirBytes=readChain(u32(v,0x30),Math.min(8*1024*1024,(fat.length+1)*sectorSize),fat,sectorSize,b,true);
+ // Directory streams are terminated by FAT END and their logical size is not stored in the header.
+ const dirs=[];for(let i=0;i+128<=dirBytes.length;i+=128){const dv=new DataView(dirBytes.buffer,dirBytes.byteOffset+i,128),type=dv.getUint8(66),len=dv.getUint16(64,true);if(!type||len<2||len>64)continue;let name='';for(let j=0;j<len-2;j+=2)name+=String.fromCharCode(dv.getUint16(j,true));const low=dv.getUint32(120,true),high=dv.getUint32(124,true);dirs.push({name,type,start:dv.getUint32(116,true),size:low+high*4294967296})}
+ const root=dirs.find(x=>x.type===5),word=dirs.find(x=>x.name==='WordDocument');if(!word)throw Error('DOC 缺少 WordDocument 流');
+ const smallFAT=(()=>{const count=u32(v,0x40),first=u32(v,0x3c);if(!count||first===END)return[];const x=readChain(first,Math.min(count*sectorSize,16*1024*1024));const view=new DataView(x.buffer,x.byteOffset,x.byteLength),a=[];for(let i=0;i<x.length;i+=4)a.push(u32(view,i));return a})();
+ let rootData;function stream(x){if(!x||x.size>80*1024*1024)throw Error('DOC 流不存在或过大');if(x.size<4096&&x.type===2){if(!root)throw Error('DOC 缺少根流');if(!rootData)rootData=readChain(root.start,root.size);if(!smallFAT.length)throw Error('DOC 缺少 MiniFAT');return readChain(x.start,x.size,smallFAT,miniSize,rootData)}return readChain(x.start,x.size)}
+ const wd=stream(word),wv=new DataView(wd.buffer,wd.byteOffset,wd.byteLength);if(wd.length<430||u16(wv,0)!==0xa5ec)throw Error('DOC 版本或 FIB 结构暂不支持');const flags=u16(wv,0x0a);if(flags&0x0100)throw Error('DOC 已加密，无法在本地读取');const tbl=dirs.find(x=>x.name===((flags&0x0200)?'1Table':'0Table'))||dirs.find(x=>x.name==='1Table'||x.name==='0Table');if(!tbl)throw Error('DOC 缺少 Table 流');const tb=stream(tbl),tv=new DataView(tb.buffer,tb.byteOffset,tb.byteLength),fcClx=u32(wv,0x1a2),lenClx=u32(wv,0x1a6);let extracted='';
+ if(lenClx&&fcClx+lenClx<=tb.length){let p=fcClx,end=fcClx+lenClx;while(p<end){if(tb[p]===1){if(p+3>end)break;const n=u16(tv,p+1);p+=3+n;continue}if(tb[p]===2){if(p+5>end)break;const n=u32(tv,p+1),st=p+5;if(n<4||st+n>end||(n-4)%12!==0)throw Error('DOC Piece Table 数据损坏');const count=(n-4)/12,entry=st+4*(count+1);if(count>1000000)throw Error('DOC 分段表过大');const decoder=new TextDecoder('windows-1252');let arr=[];const bodyLength=Math.min(u32(wv,0x4c)||0,100000000);for(let i=0;i<count;i++){const cp1=u32(tv,st+i*4),cp2=u32(tv,st+(i+1)*4);if(cp2<=cp1)continue;if(bodyLength&&cp1>=bodyLength)break;const chars=Math.min(cp2-cp1,bodyLength?bodyLength-cp1:cp2-cp1),fc=u32(tv,entry+i*8+2),compressed=!!(fc&0x40000000),at=(fc&0x3fffffff)/(compressed?2:1),byteLen=chars*(compressed?1:2);if(at+byteLen>wd.length)continue;arr.push(new TextDecoder(compressed?'windows-1252':'utf-16le').decode(wd.subarray(at,at+byteLen)))}extracted=arr.join('');break}break}}
+ if(!extracted){const start=u32(wv,0x18),end=u32(wv,0x1c);if(start>0&&end>start&&end<=wd.length){const slice=wd.subarray(start,end);const options=[new TextDecoder('windows-1252').decode(slice),new TextDecoder('utf-16le').decode(slice.subarray(0,slice.length-slice.length%2))];const quality=s=>(s.match(/[\u4e00-\u9fffA-Za-z0-9 \r\n.,;:()]/g)||[]).length/(s.length||1);extracted=options.sort((a,b)=>quality(b)-quality(a))[0]}}
+ extracted=extracted.replace(/[\x00-\x06\x08\x0e-\x12\x14-\x1f]/g,'').replace(/\r/g,'\n').replace(/[\x0b\x0c]/g,'\n').replace(/\x07/g,'\t');if(!extracted.trim())throw Error('未能从该 DOC 文件提取可读正文；请另存为 DOCX 再试');return extracted;
+}
+async function loadFile(file){try{if(file.size>40*1024*1024)throw Error('文件超过 40 MB；为防止浏览器内存不足，请拆分后检测');const ext=file.name.split('.').pop().toLowerCase();if(!['txt','docx','doc','cpp','cc','c','h','hpp','cxx','md','text'].includes(ext))throw Error('暂不支持该文件格式');status('正在本地读取 '+file.name+' …');$('start').disabled=true;const buf=await file.arrayBuffer();let s;if(ext==='docx')s=await parseDocx(buf);else if(ext==='doc')s=parseDoc(buf);else s=await decodeText(buf);if(s.length>45*1024*1024)throw Error('提取文本超过 45 MB 上限');$('source').value=s;fileName=file.name;$('filename').innerHTML='<span style="color:#7cdec7">●</span> '+escapeHtml(file.name)+' · '+pretty(file.size)+' 字节';updateCount();status('文件已加载：'+pretty(s.length)+' 个字符。可直接点击「开始分析」。')}catch(e){status('文件读取失败：'+e.message,true)}finally{$('start').disabled=false}}
+$('referenceFile').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{if(f.size>10*1024*1024)throw Error('参照代码不能大于 10 MB');const ext=f.name.split('.').pop().toLowerCase();if(!['cpp','cc','c','cxx','hpp','h','txt'].includes(ext))throw Error('参照文件只支持 C/C++/TXT');referenceText=await decodeText(await f.arrayBuffer());referenceName=f.name;if(referenceText.trim().length<200)throw Error('参照代码太短，至少 200 字符');$('referenceStatus').textContent='已载入 '+f.name+' · '+pretty(referenceText.length)+' 字符';status('参照代码已载入，检测时将额外比较编码习惯。')}catch(err){referenceText='';referenceName='';$('referenceStatus').textContent='载入失败：'+err.message;status('参照代码载入失败：'+err.message,true)}});
+$('clearReference').addEventListener('click',()=>{referenceText='';referenceName='';$('referenceFile').value='';$('referenceStatus').textContent='未选择参照文件（最多 10 MB）'});
+function setProgress(v,phase){$('progress').style.display='block';$('progressBar').style.width=v+'%';status(phase)}
+function analyze(){const source=$('source').value;if(source.trim().length<40){status('至少需要 40 个非空白字符才能进行有意义的分析。',true);return}if(source.length>45*1024*1024){status('内容超过 45 MB 上限，请拆分后检测。',true);return}if(worker)worker.terminate();const blob=new Blob([$('analysis-worker').textContent],{type:'text/javascript'});const url=URL.createObjectURL(blob);worker=new Worker(url);URL.revokeObjectURL(url);$('start').disabled=true;setProgress(2,'正在初始化分析引擎…');worker.onmessage=e=>{if(e.data.type==='progress')setProgress(e.data.value,e.data.phase);else if(e.data.type==='done'){lastReport=e.data.result;render(lastReport);$('start').disabled=false;$('progressBar').style.width='100%';setTimeout(()=>$('progress').style.display='none',500);status('分析完成 · '+pretty(lastReport.units)+' 个区段 · '+(lastReport.mode==='code'?'C++ / 代码模式':'文本模式'));worker.terminate();worker=null}else if(e.data.type==='error'){status('分析失败：'+e.data.message,true);$('start').disabled=false;$('progress').style.display='none';worker.terminate();worker=null}};worker.onerror=e=>{status('分析线程异常：'+e.message,true);$('start').disabled=false;$('progress').style.display='none';worker.terminate();worker=null};worker.postMessage({source,mode:selectedMode,filename:fileName,sensitivity:$('sensitivity').value,reference:referenceText})}
+$('start').addEventListener('click',analyze);
+$('clear').addEventListener('click',()=>{if(worker){worker.terminate();worker=null}$('source').value='';fileName='';$('filename').textContent='尚未上传文件';lastReport=null;$('empty').style.display='flex';$('report').style.display='none';$('details').classList.add('hide');$('progress').style.display='none';$('start').disabled=false;status('');updateCount()});
+$('demoCpp').addEventListener('click',()=>{fileName='sample.cpp';$('filename').textContent='示例：C++ 教学风格代码';$('source').value=`#include <bits/stdc++.h>\nusing namespace std;\n\n// Step 1: Read input and initialize the data structures\n// This function is responsible for computing shortest paths\nvoid solve() {\n    int n, m;\n    cin >> n >> m;\n    vector<vector<pair<int, int>>> graph(n + 1);\n    for (int i = 0; i < m; i++) {\n        int u, v, w;\n        cin >> u >> v >> w;\n        graph[u].push_back({v, w});\n    }\n    // Step 2: Initialize distance and priority queue\n    const long long INF = (1LL << 60);\n    vector<long long> dist(n + 1, INF);\n    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;\n    dist[1] = 0;\n    pq.push({0, 1});\n    // Step 3: Process all reachable vertices using Dijkstra\n    while (!pq.empty()) {\n        auto [d, u] = pq.top();\n        pq.pop();\n        if (d != dist[u]) continue;\n        for (auto [v, w] : graph[u]) {\n            if (dist[v] > d + w) {\n                dist[v] = d + w;\n                pq.push({dist[v], v});\n            }\n        }\n    }\n    // Step 4: Output results and analyze time complexity\n    // Time Complexity: O((n + m) log n).\n    for (int i = 1; i <= n; i++) {\n        cout << (dist[i] == INF ? -1 : dist[i]) << '\\n';\n    }\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    solve();\n    return 0;\n}`;updateCount();status('已填入演示代码；这是教学风格示例，不代表真实 AI 来源。')});
+$('demoText').addEventListener('click',()=>{fileName='sample.txt';$('filename').textContent='示例：结构化短文';$('source').value=`随着信息技术的快速发展，人工智能在学习与工作中发挥着越来越重要的作用。首先，人工智能能够有效提升信息处理的效率，为人们提供更加便捷的工具。此外，它还可以帮助学习者进一步优化时间管理方式。\n\n其次，人工智能在多维度信息分析方面具有重要意义。一方面，相关工具能够快速汇总资料；另一方面，使用者也需要判断信息的可信度。值得注意的是，技术工具的输出并不总是准确。\n\n最后，我们应当在使用便利工具的同时保持独立思考。综上所述，人工智能可以为教育带来积极影响，但这些变化需要结合具体场景进行评估，不能只凭通用表述下结论。`;updateCount();status('已填入演示文章；这只是模板化文风，不代表真实 AI 来源。')});
+
+$('demoNoComment').addEventListener('click',()=>{
+ fileName='uncommented_demo.cpp';$('filename').textContent='示例：无注释、描述性变量名的 C++';
+ $('source').value=`#include <bits/stdc++.h>
+using namespace std;
+class GraphSolver {
+private:
+    int numberOfNodes;
+    vector<vector<pair<int, int>>> adjacencyList;
+    vector<long long> shortestDistance;
+public:
+    explicit GraphSolver(int numberOfNodes)
+        : numberOfNodes(numberOfNodes), adjacencyList(numberOfNodes + 1), shortestDistance(numberOfNodes + 1, LLONG_MAX) {}
+    void readInput() {
+        for (int currentIndex = 0; currentIndex < numberOfNodes; currentIndex++) {
+            int sourceNode, targetNode, edgeWeight;
+            cin >> sourceNode >> targetNode >> edgeWeight;
+            if (sourceNode < 1 || sourceNode > numberOfNodes) {
+                throw invalid_argument("Source node is outside the allowed range");
+            }
+            adjacencyList[sourceNode].push_back({targetNode, edgeWeight});
+        }
+    }
+    void computeResult() {
+        priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> currentQueue;
+        shortestDistance[1] = 0;
+        currentQueue.push({0, 1});
+        while (!currentQueue.empty()) {
+            auto [currentDistance, currentNode] = currentQueue.top();
+            currentQueue.pop();
+            if (currentDistance != shortestDistance[currentNode]) continue;
+            for (auto [nextNode, edgeWeight] : adjacencyList[currentNode]) {
+                if (shortestDistance[nextNode] > currentDistance + edgeWeight) {
+                    shortestDistance[nextNode] = currentDistance + edgeWeight;
+                    currentQueue.push({shortestDistance[nextNode], nextNode});
+                }
+            }
+        }
+    }
+    void printResult() {
+        for (int currentIndex = 1; currentIndex <= numberOfNodes; ++currentIndex) {
+            cout << (shortestDistance[currentIndex] == LLONG_MAX ? -1 : shortestDistance[currentIndex]) << '\n';
+        }
+    }
+};
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int numberOfNodes;
+    if (!(cin >> numberOfNodes)) throw invalid_argument("Unable to read the number of nodes");
+    GraphSolver graphSolver(numberOfNodes);
+    graphSolver.readInput();
+    graphSolver.computeResult();
+    graphSolver.printResult();
+    return 0;
+}`;
+ updateCount();status('已填入无注释风格样本：仅用于验证检测规则，不代表其真实来源。');
+});
+function signalNode(s,i){const line=s.lines&&s.lines.length?`<div class="evline"><button data-line="${s.lines[0]}">查看第 ${s.lines[0]} 行附近 ↗</button></div>`:'';return `<div class="evidence"><div class="bullet">${i+1}</div><div style="min-width:0;flex:1"><strong>${escapeHtml(s.title)}</strong><p>${escapeHtml(s.detail)}</p>${line}</div><span class="evcount">${s.segments} 段</span></div>`}
+function renderEvidence(){if(!lastReport)return;const shown=lastReport.signals.filter(s=>activeCategory==='all'||s.cat===activeCategory);$('evidence').innerHTML=shown.length?shown.slice(0,45).map(signalNode).join(''):'<div class="empty-line">这个分类下尚无触发的规则。</div>';}
+function jumpToLine(n){const el=$('source'),text=el.value;let i=0,line=1;while(line<n){const j=text.indexOf('\n',i);if(j<0)break;i=j+1;line++}el.focus();el.setSelectionRange(i,Math.min(text.length,i+Math.min(650,text.indexOf('\n',i)<0?100:text.indexOf('\n',i)-i)));el.scrollIntoView({behavior:'smooth',block:'center'});status('已定位到第 '+n+' 行附近。')}
+$('evidence').addEventListener('click',e=>{const b=e.target.closest('[data-line]');if(b)jumpToLine(Number(b.dataset.line))});
+$('categoryFilters').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;activeCategory=b.dataset.cat;document.querySelectorAll('[data-cat]').forEach(x=>x.classList.toggle('active',x===b));renderEvidence();renderSegments()});
+function labelFor(score){return score>=70?'较多风格线索':score>=53?'部分风格线索':'线索较弱 / 不明确'}
+function render(r){$('empty').style.display='none';$('report').style.display='block';$('details').classList.remove('hide');$('aiNum').textContent=r.score+'%';$('aiSmall').textContent=r.score+'%';$('humanSmall').textContent=r.human+'%';$('ratioAi').style.width=r.score+'%';$('arc').style.strokeDashoffset=(395.84*(1-r.score/100)).toFixed(2);$('arc').style.stroke=r.score>=70?'#e9a5b4':r.score>=53?'#eec887':'#81b9ef';$('summaryLabel').textContent=labelFor(r.score);$('summaryText').textContent=r.explanation+' 本次触发 '+r.triggeredRules+' 类规则，涉及 '+r.flagged+' 个区段。';$('mChars').textContent=pretty(r.chars);$('mLines').textContent=pretty(r.lines);$('mUnits').textContent=pretty(r.units);$('ruleStat').textContent='检测规则 '+r.ruleCount+' 条 · 触发 '+r.triggeredRules+' 条';$('coverageStat').textContent='规则覆盖：'+r.reliability;
+ const base=r.units||1;document.querySelector('.bar-low').style.width=r.low/base*100+'%';document.querySelector('.bar-mid').style.width=r.med/base*100+'%';document.querySelector('.bar-high').style.width=r.high/base*100+'%';$('dLow').textContent='弱线索 '+pretty(r.low);$('dMed').textContent='中等 '+pretty(r.med);$('dHigh').textContent='较多 '+pretty(r.high);
+ $('signalCount').textContent='触发 '+r.signals.length+' 条 · 可按类型筛选';const cats=[...new Set(r.signals.map(s=>s.cat))];$('categoryFilters').innerHTML='<button class="category-chip active" data-cat="all">全部 ('+r.signals.length+')</button>'+cats.map(c=>'<button class="category-chip" data-cat="'+escapeHtml(c)+'">'+escapeHtml(({comment:'注释',architecture:'结构',naming:'命名',defensive:'防御',format:'格式',template:'模板',language:'文本'})[c]||c)+' ('+r.signals.filter(s=>s.cat===c).length+')</button>').join('');activeCategory='all';renderEvidence();
+ $('ruleCatalog').innerHTML=(r.ruleCatalog||[]).map(x=>'<div class="catalog-item"><strong>'+escapeHtml(x.title)+'</strong><small>'+escapeHtml(x.catName)+' · 权重 '+x.weight+(x.strong?' · 较强线索':' · 辅助线索')+'</small></div>').join('');
+ const cp=$('comparePanel');if(r.compare){const c=r.compare;cp.classList.remove('hide');cp.innerHTML='<strong>与本人历史代码风格相似度：'+c.similarity+'%（不是人工率）</strong><div class="fine">仅比较缩进、命名、I/O 等表面习惯，受项目题型影响很大。</div>'+(c.diffs.length?'<ul>'+c.diffs.map(d=>'<li>'+escapeHtml(d.name)+'：待测 '+d.current+'% / 参照 '+d.reference+'%</li>').join('')+'</ul>':'<div class="fine">暂未发现明显差异特征。</div>')}else{cp.classList.add('hide');cp.textContent=''}
+ $('detailCount').textContent=pretty(r.units)+' 个区段';activeFilter='all';document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x.dataset.filter==='all'));renderSegments();}
+
+function snippetHtml(s){const idx=new Set(s.hits.flatMap(h=>h.lines||[]));return s.snippet.split('\n').map(line=>{const m=/^(\d+) \|/.exec(line);const esc=escapeHtml(line);return m&&idx.has(Number(m[1]))?'<span class="markedline">'+esc+'</span>':esc}).join('\n')}
+function renderSegments(){if(!lastReport)return;let l=lastReport.segments.filter(s=>(activeCategory==='all'||s.hits.some(h=>h.cat===activeCategory))&&(activeFilter==='all'||(activeFilter==='high'&&s.score>=70)||(activeFilter==='medium'&&s.score>=53&&s.score<70)||(activeFilter==='low'&&s.score<53)));l=l.slice(0,60);$('segments').innerHTML=l.length?l.map((s,i)=>{const level=s.score>=70?'':s.score>=53?'med':'low';const tags=s.hits.length?s.hits.slice(0,3).map(x=>x.title+(x.lines.length?'（行 '+x.lines.slice(0,3).join('、')+'）':'' )).join(' / '):'未触发显著规则';return `<article class="segment-card"><div class="segment-head"><strong>第 ${s.startLine}–${s.endLine} 行 <span style="font-weight:400;color:#8ca6bf">· ${pretty(s.chars)} 字符</span></strong><span class="heat ${level}">${s.score}% 风格指数</span></div><div class="segment-code">${snippetHtml(s)||'（空白区段）'}</div><div class="segment-foot"><span>${escapeHtml(tags)}</span><button class="locate" data-start="${s.start}" data-end="${s.end}">定位原文 ↗</button></div></article>`}).join(''):'<div class="empty-line">当前筛选条件下没有可显示的区段。</div>';$('truncateNotice').textContent=`每次最多渲染 60 段、保留 350 段供筛选。当前已显示 ${l.length} 段${lastReport.notShown?'；另有 '+pretty(lastReport.notShown)+' 段未在页面列表中缓存':''}。报告统计仍覆盖完整内容。`}
+document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===btn));renderSegments()}));
+$('segments').addEventListener('click',e=>{const b=e.target.closest('[data-start]');if(!b)return;const el=$('source');el.focus();const st=Number(b.dataset.start),en=Number(b.dataset.end);el.setSelectionRange(st,Math.min(en,st+1500));el.scrollIntoView({behavior:'smooth',block:'center'});status(`已定位到第 ${el.value.slice(0,st).split('\n').length} 行附近；已选中相应区段。`)});
+function download(name,mime,content){const blob=new Blob([content],{type:mime}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500)}
+function reportPlain(r){let out=`CodeTrace AI 风格启发式检测报告\n文件：${r.sourceName}\n分析模式：${r.mode==='code'?'C++ / 代码':'普通文本'}\n时间：${new Date(r.analyzedAt).toLocaleString('zh-CN')}\n字符：${r.chars}；行数：${r.lines}；区段：${r.units}\nAI 风格指数（非概率）：${r.score}%\n规则：${r.ruleCount} 条；触发：${r.triggeredRules} 条；覆盖程度：${r.reliability}\n敏感度：${r.sensitivity}\n人工风格参考指数（非概率）：${r.human}%\n弱线索/中等/较多：${r.low}/${r.med}/${r.high}\n\n注意：此工具无法验证作者身份，百分比不能作为学术诚信或处分依据。\n\n触发线索：\n`;for(const s of r.signals)out+=`- ${s.title}（${s.segments} 段）：${s.detail}\n`;if(r.compare)out+='\n与参照代码风格相似度（非作者证据）：'+r.compare.similarity+'%\n';out+='\n可疑区段（最多 350 段，按指数排序）：\n';for(const s of r.segments)out+=`\n[第 ${s.startLine}-${s.endLine} 行] 指数 ${s.score}% / ${s.hits.map(h=>h.title).join('、')||'无线索'}\n${s.snippet}\n`;return out}
+$('exportTxt').addEventListener('click',()=>{if(lastReport)download('CodeTrace_检测报告.txt','text/plain;charset=utf-8',reportPlain(lastReport))});$('exportJson').addEventListener('click',()=>{if(lastReport)download('CodeTrace_检测报告.json','application/json;charset=utf-8',JSON.stringify({...lastReport,warning:'启发式风格指数，非AI生成的概率；不能证明作者身份'},null,2))});
+</script>
+</body>
+</html>
